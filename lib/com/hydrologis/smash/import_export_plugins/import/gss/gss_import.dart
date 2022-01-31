@@ -1,23 +1,10 @@
+part of smash_import_export_plugins;
+
 /*
  * Copyright (c) 2019-2020. Antonello Andrea (www.hydrologis.com). All rights reserved.
  * Use of this source code is governed by a GPL3 license that can be
  * found in the LICENSE file.
  */
-
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:after_layout/after_layout.dart';
-import 'package:dart_hydrologis_utils/dart_hydrologis_utils.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:smash_import_export_plugins/com/hydrologis/smash/import_export_plugins/import.dart';
-import 'package:smash_import_export_plugins/com/hydrologis/smash/import_export_plugins/utils/gss/gss_utilities.dart';
-import 'package:smash_import_export_plugins/generated/l10n.dart';
-import 'package:smashlibs/com/hydrologis/flutterlibs/utils/logging.dart';
-import 'package:smashlibs/smashlibs.dart';
 
 class GssImportPlugin extends AImportPlugin {
   ProjectDb projectDb;

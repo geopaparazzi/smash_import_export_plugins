@@ -1,19 +1,10 @@
+part of smash_import_export_plugins;
+
 /*
  * Copyright (c) 2019-2020. Antonello Andrea (www.hydrologis.com). All rights reserved.
  * Use of this source code is governed by a GPL3 license that can be
  * found in the LICENSE file.
  */
-import 'dart:io';
-
-import 'package:dart_hydrologis_db/dart_hydrologis_db.dart';
-import 'package:dart_hydrologis_utils/dart_hydrologis_utils.dart' as HU;
-import 'package:dart_jts/dart_jts.dart';
-import 'package:flutter/material.dart';
-import 'package:smash_import_export_plugins/com/hydrologis/smash/import_export_plugins/export.dart';
-import 'package:smashlibs/smashlibs.dart';
-import 'package:flutter_geopackage/flutter_geopackage.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:smash_import_export_plugins/generated/l10n.dart';
 
 const TITLE = "Geopackage";
 

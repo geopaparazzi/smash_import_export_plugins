@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:smash_import_export_plugins/com/hydrologis/smash/import_export_plugins/plugins.dart';
-import 'package:smash_import_export_plugins/generated/l10n.dart';
-import 'package:smashlibs/smashlibs.dart';
+part of smash_import_export_plugins;
 
 abstract class AExportPlugin {
   /// set the context.
