@@ -6,9 +6,7 @@ part of smash_import_export_plugins;
  * found in the LICENSE file.
  */
 
-const TITLE_KML = "KML";
-
-class KmlExportPlugin extends AExportPlugin {
+class ImagesExportPlugin extends AExportPlugin {
   ProjectDb projectDb;
   BuildContext context;
 
@@ -20,19 +18,19 @@ class KmlExportPlugin extends AExportPlugin {
   @override
   Icon getIcon() {
     return Icon(
-      MdiIcons.googleEarth,
+      SmashIcons.imagesNotesIcon,
       color: SmashColors.mainDecorations,
     );
   }
 
   @override
   String getTitle() {
-    return TITLE_KML;
+    return IEL.of(context).exportWidget_exportImagesToFolderTitle;
   }
 
   @override
   String getDescription() {
-    return IEL.of(context).exportWidget_exportToKml;
+    return IEL.of(context).exportWidget_exportImagesToFolder;
   }
 
   @override
@@ -42,7 +40,7 @@ class KmlExportPlugin extends AExportPlugin {
 
   @override
   Widget getExportPage() {
-    return KmlExportWidget(
+    return ImagesExportWidget(
       projectDb: projectDb,
     );
   }
@@ -53,28 +51,30 @@ class KmlExportPlugin extends AExportPlugin {
   }
 }
 
-class KmlExportWidget extends StatefulWidget {
+class ImagesExportWidget extends StatefulWidget {
   ProjectDb projectDb;
-  KmlExportWidget({Key key, this.projectDb}) : super(key: key);
+  ImagesExportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override
-  State<KmlExportWidget> createState() => _KmlExportWidgetState();
+  State<ImagesExportWidget> createState() => _ImagesExportWidgetState();
 }
 
-class _KmlExportWidgetState extends State<KmlExportWidget>
+class _ImagesExportWidgetState extends State<ImagesExportWidget>
     with AfterLayoutMixin {
   bool building = true;
   String outFilePath;
 
   @override
   void afterFirstLayout(BuildContext context) {
-    buildKml();
+    exportImages(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text(TITLE_KML)),
+        appBar: AppBar(
+            title:
+                Text(IEL.of(context).exportWidget_exportImagesToFolderTitle)),
         body: building
             ? Center(
                 child: SmashCircularProgress(),
@@ -85,7 +85,7 @@ class _KmlExportWidgetState extends State<KmlExportWidget>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SmashUI.titleText(
-                      IEL.of(context).exportWidget_kmlExported,
+                      IEL.of(context).exportWidget_imagesToFolderExported,
                     ),
                     SmashUI.smallText(
                       outFilePath,
@@ -95,13 +95,23 @@ class _KmlExportWidgetState extends State<KmlExportWidget>
               ));
   }
 
-  Future<void> buildKml() async {
+  Future<void> exportImages(BuildContext context) async {
     var exportsFolder = await Workspace.getExportsFolder();
-    var ts = HU.TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
+    var ts = TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
     outFilePath =
-        HU.FileUtilities.joinPaths(exportsFolder.path, "smash_export_$ts.kml");
+        FileUtilities.joinPaths(exportsFolder.path, "images_export_$ts");
+    var outFolder = Directory(outFilePath);
+    await outFolder.create();
 
-    await GpxExporter.exportDb(widget.projectDb, File(outFilePath), true);
+    var images = widget.projectDb.getImages(onlySimple: false);
+    images.forEach((image) {
+      var dataId = image.imageDataId;
+      var name = image.text;
+      var imageDataBytes = widget.projectDb.getImageDataBytes(dataId);
+      var imagePath = FileUtilities.joinPaths(outFilePath, name);
+      var imageFile = File(imagePath);
+      imageFile.writeAsBytes(imageDataBytes);
+    });
 
     setState(() {
       building = false;

@@ -70,7 +70,7 @@ class GpxExporter {
           ele: logPoint.altim,
           name: logPoint.id.toString(),
           time: DateTime.fromMillisecondsSinceEpoch(logPoint.ts),
-          cmt: "acc: ${logPoint.accuracy}m",
+          cmt: logPoint.accuracy != null ? "acc: ${logPoint.accuracy}m" : null,
         );
         segmentPts.add(wpt);
       });

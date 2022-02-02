@@ -81,6 +81,7 @@ class _PdfExportWidgetState extends State<PdfExportWidget>
               )
             : Center(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SmashUI.titleText(

@@ -84,6 +84,7 @@ class _GeopackageExportWidgetState extends State<GeopackageExportWidget>
                 ? SmashUI.errorWidget(error)
                 : Center(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SmashUI.titleText(

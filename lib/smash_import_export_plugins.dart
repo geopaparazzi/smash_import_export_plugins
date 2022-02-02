@@ -28,6 +28,7 @@ part 'com/hydrologis/smash/import_export_plugins/export/gpx/gpx_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/kml/kml_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/pdf/pdf_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/gss/gss_export.dart';
+part 'com/hydrologis/smash/import_export_plugins/export/images/images_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/import.dart';
 part 'com/hydrologis/smash/import_export_plugins/import/gss/gss_import.dart';
 part 'com/hydrologis/smash/import_export_plugins/plugins.dart';

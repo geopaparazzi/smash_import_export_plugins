@@ -81,6 +81,7 @@ class _GpxExportWidgetState extends State<GpxExportWidget>
               )
             : Center(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SmashUI.titleText(
