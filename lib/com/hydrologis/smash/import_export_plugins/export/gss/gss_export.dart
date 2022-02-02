@@ -47,7 +47,7 @@ class GssExportPlugin extends AExportPlugin {
 
   @override
   Widget getSettingsPage() {
-    return null;
+    return GssSettings();
   }
 }
 

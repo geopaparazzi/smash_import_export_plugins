@@ -45,7 +45,7 @@ class GssImportPlugin extends AImportPlugin {
 
   @override
   Widget getSettingsPage() {
-    return null;
+    return GssSettings();
   }
 }
 

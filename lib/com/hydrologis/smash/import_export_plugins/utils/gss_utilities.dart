@@ -416,3 +416,203 @@ class ProjectDataUploadListTileProgressWidgetState
     }
   }
 }
+
+class GssSettings extends StatefulWidget {
+  @override
+  GssSettingsState createState() {
+    return GssSettingsState();
+  }
+}
+
+class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
+  //static final title = "GSS";
+  //static final subtitle = "Geopaparazzi Survey Server";
+  static final iconData = MdiIcons.cloudLock;
+
+  String _gssUrl;
+  String _gssUser; // Rigth now unused, since the deviceid is the user
+  String _gssPwd;
+  bool _allowSelfCert;
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    getData();
+  }
+
+  Future<void> getData() async {
+    String gssUrl = await GpPreferences()
+        .getString(SmashPreferencesKeys.KEY_GSS_SERVER_URL, "");
+    String gssUser = await GpPreferences()
+        .getString(SmashPreferencesKeys.KEY_GSS_SERVER_USER, "");
+    String gssPwd = await GpPreferences()
+        .getString(SmashPreferencesKeys.KEY_GSS_SERVER_PWD, "dummy");
+    bool allowSelfCert = await GpPreferences().getBoolean(
+        SmashPreferencesKeys.KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE, true);
+
+    setState(() {
+      _gssUrl = gssUrl;
+      _gssUser = gssUser;
+      _gssPwd = gssPwd;
+      _allowSelfCert = allowSelfCert;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var p = SmashUI.DEFAULT_PADDING;
+    return Scaffold(
+      appBar: new AppBar(
+        title: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(
+                iconData,
+                color: SmashColors.mainBackground,
+              ),
+            ),
+            Text(IEL.of(context).settings_gss),
+          ],
+        ),
+      ),
+      body: _gssUrl == null
+          ? Center(
+              child: SmashCircularProgress(),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    child: Card(
+                      margin: SmashUI.defaultMargin(),
+                      color: SmashColors.mainBackground,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: SmashUI.defaultPadding(),
+                            child: SmashUI.normalText(
+                                IEL.of(context).settings_serverUrl,
+                                bold: true), //"Server URL"
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: p, bottom: p, right: p, left: 2 * p),
+                              child: EditableTextField(
+                                IEL
+                                    .of(context)
+                                    .settings_serverUrl, //"server url"
+                                _gssUrl,
+                                (res) async {
+                                  if (res == null || res.trim().length == 0) {
+                                    res = _gssUrl;
+                                  }
+                                  await GpPreferences().setString(
+                                      SmashPreferencesKeys.KEY_GSS_SERVER_URL,
+                                      res);
+                                  setState(() {
+                                    _gssUrl = res;
+                                  });
+                                },
+                                validationFunction: (text) {
+                                  if (text.startsWith("http://") ||
+                                      text.startsWith("https://")) {
+                                    return null;
+                                  } else {
+                                    return IEL
+                                        .of(context)
+                                        .settings_serverUrlStartWithHttp; //"Server url needs to start with http or https."
+                                  }
+                                },
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Card(
+                      margin: SmashUI.defaultMargin(),
+                      color: SmashColors.mainBackground,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: SmashUI.defaultPadding(),
+                            child: SmashUI.normalText(
+                                IEL
+                                    .of(context)
+                                    .settings_serverPassword, //"Server Password"
+                                bold: true),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: p, bottom: p, right: p, left: 2 * p),
+                              child: EditableTextField(
+                                IEL
+                                    .of(context)
+                                    .settings_serverPassword, //"server password",
+                                _gssPwd,
+                                (res) async {
+                                  if (res == null || res.trim().length == 0) {
+                                    res = _gssPwd;
+                                  }
+                                  await GpPreferences().setString(
+                                      SmashPreferencesKeys.KEY_GSS_SERVER_PWD,
+                                      res);
+                                  setState(() {
+                                    _gssPwd = res;
+                                  });
+                                },
+                                validationFunction: (text) {
+                                  if (text.toString().trim().isNotEmpty) {
+                                    return null;
+                                  } else {
+                                    return IEL
+                                        .of(context)
+                                        .settings_pleaseEnterValidPassword; //"Please enter a valid server password."
+                                  }
+                                },
+                                isPassword: true,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Card(
+                      margin: SmashUI.defaultMargin(),
+                      color: SmashColors.mainBackground,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: SmashUI.defaultPadding(),
+                            child: SmashUI.normalText(
+                                IEL
+                                    .of(context)
+                                    .settings_allowSelfSignedCert, //"Allow self signed certificates"
+                                bold: true),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: p, bottom: p, right: p, left: 2 * p),
+                              child: Checkbox(
+                                value: _allowSelfCert,
+                                onChanged: (newValue) async {
+                                  await GpPreferences().setBoolean(
+                                      SmashPreferencesKeys
+                                          .KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE,
+                                      newValue);
+                                  await getData();
+                                },
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+    );
+  }
+}

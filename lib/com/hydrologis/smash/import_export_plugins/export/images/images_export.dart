@@ -96,22 +96,27 @@ class _ImagesExportWidgetState extends State<ImagesExportWidget>
   }
 
   Future<void> exportImages(BuildContext context) async {
-    var exportsFolder = await Workspace.getExportsFolder();
-    var ts = TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
-    outFilePath =
-        FileUtilities.joinPaths(exportsFolder.path, "images_export_$ts");
-    var outFolder = Directory(outFilePath);
-    await outFolder.create();
-
     var images = widget.projectDb.getImages(onlySimple: false);
-    images.forEach((image) {
-      var dataId = image.imageDataId;
-      var name = image.text;
-      var imageDataBytes = widget.projectDb.getImageDataBytes(dataId);
-      var imagePath = FileUtilities.joinPaths(outFilePath, name);
-      var imageFile = File(imagePath);
-      imageFile.writeAsBytes(imageDataBytes);
-    });
+
+    if (images.isNotEmpty) {
+      var exportsFolder = await Workspace.getExportsFolder();
+      var ts = TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
+      outFilePath =
+          FileUtilities.joinPaths(exportsFolder.path, "images_export_$ts");
+      var outFolder = Directory(outFilePath);
+      await outFolder.create();
+
+      images.forEach((image) {
+        var dataId = image.imageDataId;
+        var name = image.text;
+        var imageDataBytes = widget.projectDb.getImageDataBytes(dataId);
+        var imagePath = FileUtilities.joinPaths(outFilePath, name);
+        var imageFile = File(imagePath);
+        imageFile.writeAsBytes(imageDataBytes);
+      });
+    } else {
+      outFilePath = "No images found in project.";
+    }
 
     setState(() {
       building = false;
