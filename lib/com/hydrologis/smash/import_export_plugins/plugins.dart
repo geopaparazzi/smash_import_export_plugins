@@ -13,4 +13,5 @@ List<AExportPlugin> exportPlugins = [
   GpxExportPlugin(),
   KmlExportPlugin(),
   GeopackageExportPlugin(),
+  GssExportPlugin(),
 ];
