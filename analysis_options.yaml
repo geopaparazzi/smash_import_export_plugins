@@ -2,3 +2,14 @@ include: package:flutter_lints/flutter.yaml
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+# include: package:pedantic/analysis_options.yaml
+# For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
+linter:
+  rules:
+    omit_local_variable_types: false,
+    prefer_single_quotes: false.
+#     - camel_case_types
+analyzer:
+#   exclude:
+#     - path/to/excluded/files/**

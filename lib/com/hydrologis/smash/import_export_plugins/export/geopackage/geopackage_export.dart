@@ -6,7 +6,7 @@ part of smash_import_export_plugins;
  * found in the LICENSE file.
  */
 
-const TITLE = "Geopackage";
+const TITLE_GPKG = "Geopackage";
 
 class GeopackageExportPlugin extends AExportPlugin {
   ProjectDb projectDb;
@@ -27,7 +27,7 @@ class GeopackageExportPlugin extends AExportPlugin {
 
   @override
   String getTitle() {
-    return TITLE;
+    return TITLE_GPKG;
   }
 
   @override
@@ -61,27 +61,24 @@ class GeopackageExportWidget extends StatefulWidget {
   State<GeopackageExportWidget> createState() => _GeopackageExportWidgetState();
 }
 
-class _GeopackageExportWidgetState extends State<GeopackageExportWidget> {
+class _GeopackageExportWidgetState extends State<GeopackageExportWidget>
+    with AfterLayoutMixin {
   bool building = true;
   String error;
   String outFilePath;
 
   @override
-  void initState() {
+  void afterFirstLayout(BuildContext context) {
     buildGeopackage();
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text(TITLE)),
+        appBar: AppBar(title: const Text(TITLE_GPKG)),
         body: building
             ? Center(
-                child: SmashCircularProgress(
-                    label: IEL
-                        .of(context)
-                        .gssImport_downloadingDataList), //"Downloading data list..."
+                child: SmashCircularProgress(),
               )
             : error != null
                 ? SmashUI.errorWidget(error)

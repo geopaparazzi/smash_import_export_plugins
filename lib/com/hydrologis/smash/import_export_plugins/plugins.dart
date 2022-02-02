@@ -10,5 +10,7 @@ List<AImportPlugin> importPlugins = [
 ];
 
 List<AExportPlugin> exportPlugins = [
+  GpxExportPlugin(),
+  KmlExportPlugin(),
   GeopackageExportPlugin(),
 ];
