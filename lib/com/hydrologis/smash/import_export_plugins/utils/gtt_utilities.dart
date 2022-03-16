@@ -513,7 +513,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                           Padding(
                             padding: SmashUI.defaultPadding(),
                             child: SmashUI.normalText(
-                                SL
+                                IEL
                                     .of(context)
                                     .settings_serverUrl, //"Server URL"
                                 bold: true),
@@ -522,7 +522,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                               padding: EdgeInsets.only(
                                   top: p, bottom: p, right: p, left: 2 * p),
                               child: EditableTextField(
-                                SL
+                                IEL
                                     .of(context)
                                     .settings_serverUrl, //"server url"
                                 _gttUrl,
@@ -543,7 +543,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                       text.startsWith("https://")) {
                                     return null;
                                   } else {
-                                    return SL
+                                    return IEL
                                         .of(context)
                                         .settings_serverUrlStartWithHttp; //"Server url needs to start with http or https."
                                   }
@@ -563,7 +563,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                           Padding(
                             padding: SmashUI.defaultPadding(),
                             child: SmashUI.normalText(
-                                SL
+                                IEL
                                     .of(context)
                                     .settings_serverUsername, //"Server Username"
                                 bold: true),
@@ -572,7 +572,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                               padding: EdgeInsets.only(
                                   top: p, bottom: p, right: p, left: 2 * p),
                               child: EditableTextField(
-                                SL
+                                IEL
                                     .of(context)
                                     .settings_serverUsername, //"server username"
                                 _gttUser,
@@ -592,7 +592,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                   if (text.toString().trim().isNotEmpty) {
                                     return null;
                                   } else {
-                                    return SL
+                                    return IEL
                                         .of(context)
                                         .settings_pleaseEnterValidUsername; //"Please enter a valid server username."
                                   }
@@ -613,7 +613,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                           Padding(
                             padding: SmashUI.defaultPadding(),
                             child: SmashUI.normalText(
-                                SL
+                                IEL
                                     .of(context)
                                     .settings_serverPassword, //"Server Password"
                                 bold: true),
@@ -622,7 +622,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                               padding: EdgeInsets.only(
                                   top: p, bottom: p, right: p, left: 2 * p),
                               child: EditableTextField(
-                                SL
+                                IEL
                                     .of(context)
                                     .settings_serverPassword, //"server password"
                                 _gttPwd,
@@ -642,7 +642,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                   if (text.toString().trim().isNotEmpty) {
                                     return null;
                                   } else {
-                                    return SL
+                                    return IEL
                                         .of(context)
                                         .settings_pleaseEnterValidPassword; //"Please enter a valid server password."
                                   }

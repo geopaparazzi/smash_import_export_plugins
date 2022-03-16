@@ -176,9 +176,9 @@ class _GttImportWidgetState extends State<GttImportWidget> {
             ToggleButtons(
               children: [
                 Text(
-                    " ${SL.of(context).gttImport_singleProject}"), //"Single Project"
+                    " ${IEL.of(context).gttImport_singleProject}"), //"Single Project"
                 Text(
-                    " ${SL.of(context).gttImport_allProjects}"), //"All Projects"
+                    " ${IEL.of(context).gttImport_allProjects}"), //"All Projects"
               ],
               isSelected: _projectSelected,
               onPressed: (index) => setState(() {
@@ -193,7 +193,9 @@ class _GttImportWidgetState extends State<GttImportWidget> {
               height: 32.0,
             ),
             SmashUI.normalText(
-              SL.of(context).gttImport_chooseGttProject, //"Choose GTT Project:"
+              IEL
+                  .of(context)
+                  .gttImport_chooseGttProject, //"Choose GTT Project:"
               bold: true,
               color: Colors.blue,
             ),
@@ -211,18 +213,18 @@ class _GttImportWidgetState extends State<GttImportWidget> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(SL.of(context).gttImport_gttImport), //"GTT Import"
+        title: new Text(IEL.of(context).gttImport_gttImport), //"GTT Import"
         actions: <Widget>[],
       ),
       body: _status == -1
           ? Center(
               child: SmashUI.errorWidget(
-                  SL.of(context).gttImport_nothingToSync, //"Nothing to sync."
+                  IEL.of(context).gttImport_nothingToSync, //"Nothing to sync."
                   bold: true))
           : _status == 0
               ? Center(
                   child: SmashCircularProgress(
-                      label: SL
+                      label: IEL
                           .of(context)
                           .gttImport_collectingSyncStats), //"Collecting sync stats..."
                 )
@@ -230,7 +232,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                   ? Center(
                       child: Padding(
                         padding: SmashUI.defaultPadding(),
-                        child: SmashUI.errorWidget(SL
+                        child: SmashUI.errorWidget(IEL
                             .of(context)
                             .gttImport_unableToSyncDueToError), //"Unable to sync due to an error, check diagnostics."
                       ),
@@ -239,7 +241,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                       ? Center(
                           child: Padding(
                             padding: SmashUI.defaultPadding(),
-                            child: SmashUI.titleText(SL
+                            child: SmashUI.titleText(IEL
                                 .of(context)
                                 .gttImport_noGttServerUrl), //"No GTT server url has been set. Check your settings."
                           ),
@@ -248,7 +250,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                           ? Center(
                               child: Padding(
                                 padding: SmashUI.defaultPadding(),
-                                child: SmashUI.titleText(SL
+                                child: SmashUI.titleText(IEL
                                     .of(context)
                                     .gttImport_noGttServerPassword), //"No GTT server password has been set. Check your settings."
                               ),
@@ -257,7 +259,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                               ? Center(
                                   child: Padding(
                                     padding: SmashUI.defaultPadding(),
-                                    child: SmashUI.titleText(SL
+                                    child: SmashUI.titleText(IEL
                                         .of(context)
                                         .gttImport_noGttServerUser), //"No GTT server user has been set. Check your settings."
                                   ),
@@ -266,7 +268,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                                   ? Center(
                                       child: Padding(
                                         padding: SmashUI.defaultPadding(),
-                                        child: SmashUI.titleText(SL
+                                        child: SmashUI.titleText(IEL
                                             .of(context)
                                             .gttImport_unableToRetrieveProjects), //"Unable to retrieve GTT Projects List. Check your settings."
                                       ),
@@ -275,7 +277,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                                       ? Center(
                                           child: Padding(
                                             padding: SmashUI.defaultPadding(),
-                                            child: SmashUI.titleText(SL
+                                            child: SmashUI.titleText(IEL
                                                 .of(context)
                                                 .gttImport_unableToRetrieveApiKey), //"Unable to retrieve GTT Api Key. Check your settings."
                                           ),
@@ -292,7 +294,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                                                     padding: SmashUI
                                                         .defaultPadding(),
                                                     child: SmashUI.titleText(
-                                                        SL
+                                                        IEL
                                                             .of(context)
                                                             .gttImport_importProjectForm, //"Import Project Forms"
                                                         bold: true),
@@ -301,7 +303,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                                                     padding: SmashUI
                                                         .defaultPadding(),
                                                     child: SmashUI.smallText(
-                                                        SL
+                                                        IEL
                                                             .of(context)
                                                             .gttImport_importFormsFromGttServer, //"Import Forms from GTT Server Projects"
                                                         color: Colors.grey),
@@ -323,7 +325,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                                               ? Center(
                                                   child: !_importCompleted
                                                       ? SmashCircularProgress(
-                                                          label: SL
+                                                          label: IEL
                                                               .of(context)
                                                               .gttImport_importingForms) //"Importing Forms"
                                                       : ListView(
@@ -332,7 +334,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                                                         ),
                                                 )
                                               : Container(
-                                                  child: Text(SL
+                                                  child: Text(IEL
                                                       .of(context)
                                                       .gttImport_shouldNotHappen), //"Should not happen"
                                                 ),
@@ -350,7 +352,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
                   importProjectForm();
                 }
               },
-              label: Text(SL.of(context).gttImport_import)) //"Import"
+              label: Text(IEL.of(context).gttImport_import)) //"Import"
           : null,
     );
   }
@@ -386,8 +388,8 @@ class _GttImportWidgetState extends State<GttImportWidget> {
     }
 
     _uploadTiles.add(GttUtilities.getResultTile(
-        SL.of(context).gttImport_projectFormImport, //"Project Form Import "
-        "$count ${SL.of(context).gttImport_projectFormImported}", //"Project Form imported from GTT Server"
+        IEL.of(context).gttImport_projectFormImport, //"Project Form Import "
+        "$count ${IEL.of(context).gttImport_projectFormImported}", //"Project Form imported from GTT Server"
         isImport: true));
 
     setState(() {

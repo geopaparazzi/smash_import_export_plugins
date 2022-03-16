@@ -4954,6 +4954,536 @@ class IEL {
       args: [],
     );
   }
+
+  /// `Choose GTT Project:`
+  String get gttExport_chooseGttProject {
+    return Intl.message(
+      'Choose GTT Project:',
+      name: 'gttExport_chooseGttProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `GTT Export`
+  String get gttExport_gttExport {
+    return Intl.message(
+      'GTT Export',
+      name: 'gttExport_gttExport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set project to DIRTY?`
+  String get gttExport_setProjectDirty {
+    return Intl.message(
+      'Set project to DIRTY?',
+      name: 'gttExport_setProjectDirty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This can't be undone!`
+  String get gttExport_thisCantBeUndone {
+    return Intl.message(
+      'This can\'t be undone!',
+      name: 'gttExport_thisCantBeUndone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore project as all dirty.`
+  String get gttExport_restoreProjectAsDirty {
+    return Intl.message(
+      'Restore project as all dirty.',
+      name: 'gttExport_restoreProjectAsDirty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set project to CLEAN?`
+  String get gttExport_setProjectToClean {
+    return Intl.message(
+      'Set project to CLEAN?',
+      name: 'gttExport_setProjectToClean',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore project as all clean.`
+  String get gttExport_restoreProjectAsClean {
+    return Intl.message(
+      'Restore project as all clean.',
+      name: 'gttExport_restoreProjectAsClean',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nothing to sync.`
+  String get gttExport_nothingToSync {
+    return Intl.message(
+      'Nothing to sync.',
+      name: 'gttExport_nothingToSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collecting sync stats...`
+  String get gttExport_collectingSyncStats {
+    return Intl.message(
+      'Collecting sync stats...',
+      name: 'gttExport_collectingSyncStats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to sync due to an error, check diagnostics.`
+  String get gttExport_unableToSyncDueToError {
+    return Intl.message(
+      'Unable to sync due to an error, check diagnostics.',
+      name: 'gttExport_unableToSyncDueToError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No GTT server url has been set. Check your settings.`
+  String get gttExport_noGttServerUrlSet {
+    return Intl.message(
+      'No GTT server url has been set. Check your settings.',
+      name: 'gttExport_noGttServerUrlSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No GTT server password has been set. Check your settings.`
+  String get gttExport_noGttPasswordSet {
+    return Intl.message(
+      'No GTT server password has been set. Check your settings.',
+      name: 'gttExport_noGttPasswordSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No GTT server user has been set. Check your settings.`
+  String get gttExport_noGttUserSet {
+    return Intl.message(
+      'No GTT server user has been set. Check your settings.',
+      name: 'gttExport_noGttUserSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to retrieve GTT Projects List. Check your settings.`
+  String get gttExport_unableToRetrieveProjects {
+    return Intl.message(
+      'Unable to retrieve GTT Projects List. Check your settings.',
+      name: 'gttExport_unableToRetrieveProjects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to retrieve GTT Api Key. Check your settings.`
+  String get gttExport_unableToRetrieveApiKey {
+    return Intl.message(
+      'Unable to retrieve GTT Api Key. Check your settings.',
+      name: 'gttExport_unableToRetrieveApiKey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync Stats`
+  String get gttExport_syncStats {
+    return Intl.message(
+      'Sync Stats',
+      name: 'gttExport_syncStats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The following data will be uploaded upon sync.`
+  String get gttExport_dataUploadedUponSync {
+    return Intl.message(
+      'The following data will be uploaded upon sync.',
+      name: 'gttExport_dataUploadedUponSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gps Logs`
+  String get gttExport_gpsLogs {
+    return Intl.message(
+      'Gps Logs',
+      name: 'gttExport_gpsLogs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Simple Notes`
+  String get gttExport_simpleNotes {
+    return Intl.message(
+      'Simple Notes',
+      name: 'gttExport_simpleNotes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Form Notes`
+  String get gttExport_formNotes {
+    return Intl.message(
+      'Form Notes',
+      name: 'gttExport_formNotes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Images`
+  String get gttExport_images {
+    return Intl.message(
+      'Images',
+      name: 'gttExport_images',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uploading data`
+  String get gttExport_uploadingData {
+    return Intl.message(
+      'Uploading data',
+      name: 'gttExport_uploadingData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Should not happen`
+  String get gttExport_shouldNotHappen {
+    return Intl.message(
+      'Should not happen',
+      name: 'gttExport_shouldNotHappen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload`
+  String get gttExport_upload {
+    return Intl.message(
+      'Upload',
+      name: 'gttExport_upload',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Form Notes Upload`
+  String get gttExport_formNotesUpload {
+    return Intl.message(
+      'Form Notes Upload',
+      name: 'gttExport_formNotesUpload',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forms uploaded to GTT Server`
+  String get gttExport_formsUploadedToGttServer {
+    return Intl.message(
+      'Forms uploaded to GTT Server',
+      name: 'gttExport_formsUploadedToGttServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Simple Notes Upload `
+  String get gttExport_simpleNotesUpload {
+    return Intl.message(
+      'Simple Notes Upload ',
+      name: 'gttExport_simpleNotesUpload',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notes uploaded to GTT Server`
+  String get gttExport_notesUploadedToGttServer {
+    return Intl.message(
+      'Notes uploaded to GTT Server',
+      name: 'gttExport_notesUploadedToGttServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `GPS Logs Upload `
+  String get gttExport_simpleLogsUpload {
+    return Intl.message(
+      'GPS Logs Upload ',
+      name: 'gttExport_simpleLogsUpload',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logs uploaded to GTT Server`
+  String get gttExport_logsUploadedToGttServer {
+    return Intl.message(
+      'Logs uploaded to GTT Server',
+      name: 'gttExport_logsUploadedToGttServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `GTT Import`
+  String get gttImport_gttImport {
+    return Intl.message(
+      'GTT Import',
+      name: 'gttImport_gttImport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nothing to sync.`
+  String get gttImport_nothingToSync {
+    return Intl.message(
+      'Nothing to sync.',
+      name: 'gttImport_nothingToSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collecting sync stats...`
+  String get gttImport_collectingSyncStats {
+    return Intl.message(
+      'Collecting sync stats...',
+      name: 'gttImport_collectingSyncStats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to sync due to an error, check diagnostics.`
+  String get gttImport_unableToSyncDueToError {
+    return Intl.message(
+      'Unable to sync due to an error, check diagnostics.',
+      name: 'gttImport_unableToSyncDueToError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No GTT server url has been set. Check your settings.`
+  String get gttImport_noGttServerUrl {
+    return Intl.message(
+      'No GTT server url has been set. Check your settings.',
+      name: 'gttImport_noGttServerUrl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No GTT server password has been set. Check your settings.`
+  String get gttImport_noGttServerPassword {
+    return Intl.message(
+      'No GTT server password has been set. Check your settings.',
+      name: 'gttImport_noGttServerPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No GTT server user has been set. Check your settings.`
+  String get gttImport_noGttServerUser {
+    return Intl.message(
+      'No GTT server user has been set. Check your settings.',
+      name: 'gttImport_noGttServerUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to retrieve GTT Projects List. Check your settings.`
+  String get gttImport_unableToRetrieveProjects {
+    return Intl.message(
+      'Unable to retrieve GTT Projects List. Check your settings.',
+      name: 'gttImport_unableToRetrieveProjects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to retrieve GTT Api Key. Check your settings.`
+  String get gttImport_unableToRetrieveApiKey {
+    return Intl.message(
+      'Unable to retrieve GTT Api Key. Check your settings.',
+      name: 'gttImport_unableToRetrieveApiKey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import Project Forms`
+  String get gttImport_importProjectForm {
+    return Intl.message(
+      'Import Project Forms',
+      name: 'gttImport_importProjectForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import Forms from GTT Server Projects`
+  String get gttImport_importFormsFromGttServer {
+    return Intl.message(
+      'Import Forms from GTT Server Projects',
+      name: 'gttImport_importFormsFromGttServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Importing Forms`
+  String get gttImport_importingForms {
+    return Intl.message(
+      'Importing Forms',
+      name: 'gttImport_importingForms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Should not happen`
+  String get gttImport_shouldNotHappen {
+    return Intl.message(
+      'Should not happen',
+      name: 'gttImport_shouldNotHappen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import`
+  String get gttImport_import {
+    return Intl.message(
+      'Import',
+      name: 'gttImport_import',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project Form Import `
+  String get gttImport_projectFormImport {
+    return Intl.message(
+      'Project Form Import ',
+      name: 'gttImport_projectFormImport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project Form imported from GTT Server`
+  String get gttImport_projectFormImported {
+    return Intl.message(
+      'Project Form imported from GTT Server',
+      name: 'gttImport_projectFormImported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Single Project`
+  String get gttImport_singleProject {
+    return Intl.message(
+      'Single Project',
+      name: 'gttImport_singleProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All Projects`
+  String get gttImport_allProjects {
+    return Intl.message(
+      'All Projects',
+      name: 'gttImport_allProjects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose GTT Project:`
+  String get gttImport_chooseGttProject {
+    return Intl.message(
+      'Choose GTT Project:',
+      name: 'gttImport_chooseGttProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export to GeoTaskTracker Server`
+  String get exportWidget_exportToGTT {
+    return Intl.message(
+      'Export to GeoTaskTracker Server',
+      name: 'exportWidget_exportToGTT',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import from GeoTaskTracker Server`
+  String get importWidget_importFromGTT {
+    return Intl.message(
+      'Import from GeoTaskTracker Server',
+      name: 'importWidget_importFromGTT',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Server Username`
+  String get settings_serverUsername {
+    return Intl.message(
+      'Server Username',
+      name: 'settings_serverUsername',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid server username.`
+  String get settings_pleaseEnterValidUsername {
+    return Intl.message(
+      'Please enter a valid server username.',
+      name: 'settings_pleaseEnterValidUsername',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<IEL> {
