@@ -54,7 +54,7 @@ class GeopackageExportPlugin extends AExportPlugin {
 }
 
 class GeopackageExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
   GeopackageExportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override

@@ -54,7 +54,7 @@ class KmlExportPlugin extends AExportPlugin {
 }
 
 class KmlExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
   KmlExportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override

@@ -52,7 +52,7 @@ class GttExportPlugin extends AExportPlugin {
 }
 
 class GttExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
 
   GttExportWidget(this.projectDb, {Key key}) : super(key: key);
 
@@ -196,7 +196,9 @@ class _GttExportWidgetState extends State<GttExportWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SmashUI.normalText(
-              IEL.of(context).gttExport_chooseGttProject, //"Choose GTT Project:"
+              IEL
+                  .of(context)
+                  .gttExport_chooseGttProject, //"Choose GTT Project:"
               bold: true,
               color: Colors.blue,
             ),

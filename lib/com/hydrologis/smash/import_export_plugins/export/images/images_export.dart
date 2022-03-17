@@ -52,7 +52,7 @@ class ImagesExportPlugin extends AExportPlugin {
 }
 
 class ImagesExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
   ImagesExportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override

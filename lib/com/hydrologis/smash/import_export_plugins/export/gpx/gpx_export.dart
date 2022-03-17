@@ -54,7 +54,7 @@ class GpxExportPlugin extends AExportPlugin {
 }
 
 class GpxExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
   GpxExportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override

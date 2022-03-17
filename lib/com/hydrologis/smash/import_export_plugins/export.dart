@@ -24,7 +24,7 @@ abstract class AExportPlugin {
 }
 
 class ExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
   ExportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override
