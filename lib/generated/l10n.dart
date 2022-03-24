@@ -4962,6 +4962,12 @@ class AppLocalizationDelegate extends LocalizationsDelegate<IEL> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'it'),
+      Locale.fromSubtags(languageCode: 'ja'),
+      Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
+      Locale.fromSubtags(languageCode: 'ru'),
     ];
   }
 
