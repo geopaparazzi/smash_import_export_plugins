@@ -1,4 +1,5 @@
 {
+  "@@locale": "fr",
   "network_completed": "Terminé.",
   "@network_completed": {},
   "network_download": "Télécharger",
