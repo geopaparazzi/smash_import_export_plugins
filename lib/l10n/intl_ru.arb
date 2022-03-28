@@ -1,0 +1,20 @@
+{
+  "exportWidget_exportImagesToFolderTitle": "Изображения",
+  "@exportWidget_exportImagesToFolderTitle": {},
+  "gssImport_data": "Данные",
+  "@gssImport_data": {},
+  "gssImport_projects": "Проекты",
+  "@gssImport_projects": {},
+  "exportWidget_export": "Экспорт",
+  "@exportWidget_export": {},
+  "gssExport_images": "Изображения:",
+  "@gssExport_images": {},
+  "importWidget_import": "Импорт",
+  "@importWidget_import": {},
+  "gssImport_gssImport": "Импорт GSS",
+  "@gssImport_gssImport": {},
+  "gssExport_gssExport": "Экспорт GSS",
+  "@gssExport_gssExport": {},
+  "network_completed": "Завершено.",
+  "@network_completed": {}
+}
