@@ -52,7 +52,7 @@ class GssExportPlugin extends AExportPlugin {
 }
 
 class GssExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
 
   GssExportWidget(this.projectDb, {Key key}) : super(key: key);
 

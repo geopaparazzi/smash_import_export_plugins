@@ -1,4 +1,5 @@
 {
+  "@@locale": "nb_NO",
   "exportWidget_gpxExported": "GPX eksportert",
   "@exportWidget_gpxExported": {},
   "exportWidget_exportToGpx": "Eksporter prosjekt til GPX",

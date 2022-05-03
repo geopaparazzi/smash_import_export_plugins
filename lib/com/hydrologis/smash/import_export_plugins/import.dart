@@ -24,7 +24,7 @@ abstract class AImportPlugin {
 }
 
 class ImportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
   ImportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override

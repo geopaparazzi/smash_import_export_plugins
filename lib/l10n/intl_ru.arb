@@ -1,4 +1,5 @@
 {
+  "@@locale": "ru",
   "exportWidget_exportImagesToFolderTitle": "Изображения",
   "@exportWidget_exportImagesToFolderTitle": {},
   "gssImport_data": "Данные",

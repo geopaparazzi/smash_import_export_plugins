@@ -54,7 +54,7 @@ class PdfExportPlugin extends AExportPlugin {
 }
 
 class PdfExportWidget extends StatefulWidget {
-  ProjectDb projectDb;
+  final ProjectDb projectDb;
   PdfExportWidget({Key key, this.projectDb}) : super(key: key);
 
   @override
