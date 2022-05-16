@@ -167,44 +167,55 @@ class _GttImportWidgetState extends State<GttImportWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _projectSelected = [false, true]; // For importing all project
+
     Widget projWidget = Container(
       padding: EdgeInsets.all(10),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ToggleButtons(
-              children: [
-                Text(
-                    " ${IEL.of(context).gttImport_singleProject}"), //"Single Project"
-                Text(
-                    " ${IEL.of(context).gttImport_allProjects}"), //"All Projects"
-              ],
-              isSelected: _projectSelected,
-              onPressed: (index) => setState(() {
-                if (index == 0) {
-                  _projectSelected = [true, false];
-                } else {
-                  _projectSelected = [false, true];
-                }
-              }),
-            ),
-            SizedBox(
-              height: 32.0,
-            ),
+            // ToggleButtons(
+            //   children: [
+            //     Text(
+            //         " ${IEL.of(context).gttImport_singleProject}"), //"Single Project"
+            //     Text(
+            //         " ${IEL.of(context).gttImport_allProjects}"), //"All Projects"
+            //   ],
+            //   isSelected: _projectSelected,
+            //   onPressed: (index) => setState(() {
+            //     if (index == 0) {
+            //       _projectSelected = [true, false];
+            //     } else {
+            //       _projectSelected = [false, true];
+            //     }
+            //   }),
+            // ),
+            // SizedBox(
+            //   height: 32.0,
+            // ),
+            // SmashUI.normalText(
+            //   IEL
+            //       .of(context)
+            //       .gttImport_chooseGttProject, //"Choose GTT Project:"
+            //   bold: true,
+            //   color: Colors.blue,
+            // ),
+            // DropdownButton(
+            //   items: _projects,
+            //   value: _selectedProj,
+            //   onChanged: _projectSelected[0]
+            //       ? (s) => setState(() => _selectedProj = s)
+            //       : null,
+            // ),
+            // SizedBox(
+            //   height: 32.0,
+            // ),
             SmashUI.normalText(
-              IEL
-                  .of(context)
-                  .gttImport_chooseGttProject, //"Choose GTT Project:"
+              "All GTT Server Projects will be imported.",
               bold: true,
               color: Colors.blue,
-            ),
-            DropdownButton(
-              items: _projects,
-              value: _selectedProj,
-              onChanged: _projectSelected[0]
-                  ? (s) => setState(() => _selectedProj = s)
-                  : null,
+              textAlign: TextAlign.center
             )
           ],
         ),
