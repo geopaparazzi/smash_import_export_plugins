@@ -84,8 +84,23 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
   bool _uploadCompleted = false;
   List<Widget> _uploadTiles;
-  List<DropdownMenuItem> _projects = [];
+  List<DropdownMenuItem> _projects = [
+    DropdownMenuItem(child: Text("Select Project"), value: "none")
+  ];
+  List<DropdownMenuItem> _gpsLogsProj = [
+    DropdownMenuItem(child: Text("Select Project"), value: "none")
+  ];
+  List<DropdownMenuItem> _simpleNotesProj = [
+    DropdownMenuItem(child: Text("Select Project"), value: "none")
+  ];
+  List<DropdownMenuItem> _imagesProj = [
+    DropdownMenuItem(child: Text("Select Project"), value: "none")
+  ];
   String _selectedProj;
+  String _selectedGpsLogProj;
+  String _selectedSimpleNotesProj;
+  String _selectedImagesProj;
+  String _defaultSubject;
 
   @override
   void initState() {
@@ -146,12 +161,50 @@ class _GttExportWidgetState extends State<GttExportWidget> {
      * Getting User Projects List
      */
     List<Map<String, dynamic>> projects = await GttUtilities.getUserProjects();
+    Set<Map<String, dynamic>> defaultProjects =
+        await GttUtilities.getDefaultConfigProjects();
 
     if (projects.isEmpty) {
       setState(() {
         _status = 7;
       });
       return;
+    }
+
+    for (Map<String, dynamic> dp in defaultProjects) {
+      final simple = dp["notes"]["simple"]["projects"];
+      final image = dp["notes"]["photo"]["projects"];
+      final gps = dp["notes"]["gps"]["projects"];
+
+      for (Map<String, dynamic> simpleProj in simple) {
+        String s = simpleProj["name"];
+        String v = "${simpleProj["id"]}";
+
+        String sub = s.length < 25 ? s : "${s.substring(0, 20)}...";
+
+        _simpleNotesProj.add(DropdownMenuItem(child: Text(sub), value: v));
+      }
+      for (Map<String, dynamic> imageProj in image) {
+        String s = imageProj["name"];
+        String v = "${imageProj["id"]}";
+
+        String sub = s.length < 25 ? s : "${s.substring(0, 20)}...";
+
+        _imagesProj.add(DropdownMenuItem(child: Text(sub), value: v));
+      }
+      for (Map<String, dynamic> gpsProj in gps) {
+        String s = gpsProj["name"];
+        String v = "${gpsProj["id"]}";
+
+        String sub = s.length < 25 ? s : "${s.substring(0, 20)}...";
+
+        _gpsLogsProj.add(DropdownMenuItem(child: Text(sub), value: v));
+      }
+
+      _selectedSimpleNotesProj = "none";
+      _selectedImagesProj = "none";
+      _selectedGpsLogProj = "none";
+      _defaultSubject = dp["defaults"]["subject"];
     }
 
     for (Map<String, dynamic> p in projects) {
@@ -163,7 +216,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       _projects.add(DropdownMenuItem(child: Text(sub), value: v));
     }
 
-    _selectedProj = "${projects[0]["id"]}";
+    _selectedProj = "none";
 
     /**
      * now gather data stats from db
@@ -178,7 +231,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
     var db = widget.projectDb;
 
-    _gpsLogCount = 0; //db.getGpsLogCount(true);
+    _gpsLogCount = 0; // db.getGpsLogCount(true);
     _simpleNotesCount = db.getSimpleNotesCount(true);
     _formNotesCount = getGttFormCount();
     _imagesCount = db.getImagesCount(true);
@@ -192,27 +245,27 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget projWidget = Container(
-      padding: EdgeInsets.all(10),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SmashUI.normalText(
-              IEL
-                  .of(context)
-                  .gttExport_chooseGttProject, //"Choose GTT Project:"
-              bold: true,
-              color: Colors.blue,
-            ),
-            DropdownButton(
-                items: _projects,
-                value: _selectedProj,
-                onChanged: (s) => setState(() => _selectedProj = s)),
-          ],
-        ),
-      ),
-    );
+    // Widget projWidget = Container(
+    //   padding: EdgeInsets.all(10),
+    //   child: Center(
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         SmashUI.normalText(
+    //           IEL
+    //               .of(context)
+    //               .gttExport_chooseGttProject, //"Choose GTT Project:"
+    //           bold: true,
+    //           color: Colors.blue,
+    //         ),
+    //         DropdownButton(
+    //             items: _projects,
+    //             value: _selectedProj,
+    //             onChanged: (s) => setState(() => _selectedProj = s)),
+    //       ],
+    //     ),
+    //   ),
+    // );
 
     return new Scaffold(
       appBar: new AppBar(
@@ -363,46 +416,129 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                   Expanded(
                                                     child: ListView(
                                                       children: <Widget>[
-                                                        projWidget,
-                                                        ListTile(
-                                                          leading: Icon(
-                                                            SmashIcons.logIcon,
-                                                            color: SmashColors
-                                                                .mainDecorations,
-                                                          ),
-                                                          title: SmashUI.normalText(
-                                                              "${IEL.of(context).gttExport_gpsLogs}: $_gpsLogCount"), //"Gps Logs:"
+                                                        // projWidget,
+                                                        SizedBox(height: 32,),
+                                                        Row(
+                                                          children: [
+                                                            Flexible(
+                                                              child: ListTile(
+                                                                leading: Icon(
+                                                                  SmashIcons
+                                                                      .logIcon,
+                                                                  color: SmashColors
+                                                                      .mainDecorations,
+                                                                ),
+                                                                title: SmashUI
+                                                                    .normalText(
+                                                                        "${IEL.of(context).gttExport_gpsLogs}: $_gpsLogCount"), //"Gps Logs:"
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: SmashUI
+                                                                  .defaultPadding(),
+                                                              child:
+                                                                  DropdownButton(
+                                                                items:
+                                                                    _gpsLogsProj,
+                                                                value:
+                                                                    _selectedGpsLogProj,
+                                                                onChanged: (s) =>
+                                                                    setState(() =>
+                                                                        _selectedGpsLogProj =
+                                                                            s),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                        ListTile(
-                                                          leading: Icon(
-                                                            SmashIcons
-                                                                .simpleNotesIcon,
-                                                            color: SmashColors
-                                                                .mainDecorations,
+                                                        Row(children: [
+                                                          Flexible(
+                                                            child: ListTile(
+                                                              leading: Icon(
+                                                                SmashIcons
+                                                                    .simpleNotesIcon,
+                                                                color: SmashColors
+                                                                    .mainDecorations,
+                                                              ),
+                                                              title: SmashUI
+                                                                  .normalText(
+                                                                      "${IEL.of(context).gttExport_simpleNotes}: $_simpleNotesCount"), //"Simple Notes"
+                                                            ),
                                                           ),
-                                                          title: SmashUI.normalText(
-                                                              "${IEL.of(context).gttExport_simpleNotes}: $_simpleNotesCount"), //"Simple Notes"
-                                                        ),
-                                                        ListTile(
-                                                          leading: Icon(
-                                                            SmashIcons
-                                                                .formNotesIcon,
-                                                            color: SmashColors
-                                                                .mainDecorations,
+                                                          Padding(
+                                                            padding: SmashUI
+                                                                .defaultPadding(),
+                                                            child:
+                                                                DropdownButton(
+                                                              items:
+                                                                  _simpleNotesProj,
+                                                              value:
+                                                                  _selectedSimpleNotesProj,
+                                                              onChanged: (s) =>
+                                                                  setState(() =>
+                                                                      _selectedSimpleNotesProj =
+                                                                          s),
+                                                            ),
                                                           ),
-                                                          title: SmashUI.normalText(
-                                                              "${IEL.of(context).gttExport_formNotes}: $_formNotesCount"), //
-                                                        ),
-                                                        ListTile(
-                                                          leading: Icon(
-                                                            SmashIcons
-                                                                .imagesNotesIcon,
-                                                            color: SmashColors
-                                                                .mainDecorations,
+                                                        ]),
+                                                        Row(children: [
+                                                          Flexible(
+                                                            child: ListTile(
+                                                              leading: Icon(
+                                                                SmashIcons
+                                                                    .formNotesIcon,
+                                                                color: SmashColors
+                                                                    .mainDecorations,
+                                                              ),
+                                                              title: SmashUI
+                                                                  .normalText(
+                                                                      "${IEL.of(context).gttExport_formNotes}: $_formNotesCount"), //
+                                                            ),
                                                           ),
-                                                          title: SmashUI.normalText(
-                                                              "${IEL.of(context).gttExport_images}: $_imagesCount"), //"Images"
-                                                        ),
+                                                          Padding(
+                                                            padding: SmashUI
+                                                                .defaultPadding(),
+                                                            child:
+                                                                DropdownButton(
+                                                              items: _projects,
+                                                              value:
+                                                                  _selectedProj,
+                                                              onChanged: (s) =>
+                                                                  setState(() =>
+                                                                      _selectedProj =
+                                                                          s),
+                                                            ),
+                                                          ),
+                                                        ]),
+                                                        Row(children: [
+                                                          Flexible(
+                                                            child: ListTile(
+                                                              leading: Icon(
+                                                                SmashIcons
+                                                                    .imagesNotesIcon,
+                                                                color: SmashColors
+                                                                    .mainDecorations,
+                                                              ),
+                                                              title: SmashUI
+                                                                  .normalText(
+                                                                      "${IEL.of(context).gttExport_images}: $_imagesCount"), //"Images"
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: SmashUI
+                                                                .defaultPadding(),
+                                                            child:
+                                                                DropdownButton(
+                                                              items:
+                                                                  _imagesProj,
+                                                              value:
+                                                                  _selectedImagesProj,
+                                                              onChanged: (s) =>
+                                                                  setState(() =>
+                                                                      _selectedImagesProj =
+                                                                          s),
+                                                            ),
+                                                          ),
+                                                        ]),
                                                       ],
                                                     ),
                                                   ),
@@ -597,7 +733,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       List<Map<String, dynamic>> uploads = await uploadImageData(imageIds, db);
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createIssue(note, _selectedProj, uploads));
+          GttUtilities.createIssue(note, _selectedSimpleNotesProj, uploads));
 
       debugPrint("SimpleNote status_code: ${ret["status_code"]}, "
           "status_message: ${ret["status_message"]}");
@@ -624,11 +760,11 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       Note note = new Note();
       note.lat = image.lat;
       note.lon = image.lon;
-      note.text = "Simple Note Image";
+      note.text = _defaultSubject;
       note.description = "POI";
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createIssue(note, _selectedProj, uploads));
+          GttUtilities.createIssue(note, _selectedImagesProj, uploads));
 
       if (ret["status_code"] == 201) {
         uploadCount++;
@@ -652,7 +788,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       List<LogDataPoint> points = db.getLogDataPointsById(log.id);
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createLogIssue(log, points, _selectedProj));
+          GttUtilities.createLogIssue(log, points, _selectedGpsLogProj));
 
       if (ret["status_code"] == 201) {
         uploadCount++;

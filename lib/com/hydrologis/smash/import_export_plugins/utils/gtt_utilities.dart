@@ -86,6 +86,37 @@ class GttUtilities {
     return retVal;
   }
 
+  static Future<Set<Map<String, dynamic>>> getDefaultConfigProjects() async {
+    Set<Map<String, dynamic>> retVal = {};
+
+    String url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
+        "/smash/settings.json";
+
+    String apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
+
+    try {
+      Dio dio = NetworkHelper.getNewDioInstance();
+
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            "X-Redmine-API-Key": apiKey,
+            "Content-Type": "application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        retVal.add(response.data);
+      }
+    } catch (exception) {
+      debugPrint("default project errors: $exception");
+    }
+
+    return retVal;
+  }
+
   static Future<String> getProjectForm(String projectId) async {
     String retVal = "";
 

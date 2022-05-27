@@ -167,7 +167,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _projectSelected = [false, true]; // For importing all project
+    _projectSelected = [false, true]; // For importing all projects
 
     Widget projWidget = Container(
       padding: EdgeInsets.all(10),
@@ -211,16 +211,14 @@ class _GttImportWidgetState extends State<GttImportWidget> {
             // SizedBox(
             //   height: 32.0,
             // ),
-            SmashUI.normalText(
-              "All GTT Server Projects will be imported.",
-              bold: true,
-              color: Colors.blue,
-              textAlign: TextAlign.center
-            )
+            SmashUI.normalText("All GTT Server Projects will be imported.",
+                bold: true, color: Colors.blue, textAlign: TextAlign.center)
           ],
         ),
       ),
     );
+
+    log('status.....: $_status');
 
     return new Scaffold(
       appBar: new AppBar(
