@@ -14,22 +14,23 @@ import 'intl/messages_all.dart';
 
 class IEL {
   IEL();
-  
+
   static IEL current;
-  
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<IEL> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name); 
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       IEL.current = IEL();
-      
+
       return IEL.current;
     });
-  } 
+  }
 
   static IEL of(BuildContext context) {
     return Localizations.of<IEL>(context, IEL);
@@ -1015,6 +1016,15 @@ class IEL {
     );
   }
 
+  /// `The following data will be uploaded only if the project is selected`
+  String get gttExport_dataUploadedSelectedProject {
+    return Intl.message(
+        'The following data will be uploaded only if the project is selected',
+        name: 'gttExport_dataUploadedSelectedProject',
+        desc: '',
+        args: []);
+  }
+
   /// `Gps Logs`
   String get gttExport_gpsLogs {
     return Intl.message(
@@ -1253,6 +1263,12 @@ class IEL {
       desc: '',
       args: [],
     );
+  }
+
+  /// `All GTT Server Projects will be imported`
+  String get gttImport_GTTServerProjectsWillBeImported {
+    return Intl.message('All GTT Server Projects will be imported',
+        name: 'gttImport_GTTServerProjectsWillBeImported', desc: '', args: []);
   }
 
   /// `Importing Forms`

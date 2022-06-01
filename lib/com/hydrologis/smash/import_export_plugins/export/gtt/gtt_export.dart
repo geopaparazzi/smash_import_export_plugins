@@ -231,7 +231,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
     var db = widget.projectDb;
 
-    _gpsLogCount = 0; // db.getGpsLogCount(true);
+    _gpsLogCount = db.getGpsLogCount(true);
     _simpleNotesCount = db.getSimpleNotesCount(true);
     _formNotesCount = getGttFormCount();
     _imagesCount = db.getImagesCount(true);
@@ -245,32 +245,14 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Widget projWidget = Container(
-    //   padding: EdgeInsets.all(10),
-    //   child: Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         SmashUI.normalText(
-    //           IEL
-    //               .of(context)
-    //               .gttExport_chooseGttProject, //"Choose GTT Project:"
-    //           bold: true,
-    //           color: Colors.blue,
-    //         ),
-    //         DropdownButton(
-    //             items: _projects,
-    //             value: _selectedProj,
-    //             onChanged: (s) => setState(() => _selectedProj = s)),
-    //       ],
-    //     ),
-    //   ),
-    // );
 
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(IEL.of(context).gttExport_gttExport), //"GTT Export"
-        actions: _status < 2
+        actions: <Widget>[],
+        // Set project to clean and dirty
+        /*
+          _status < 2
             ? <Widget>[
                 IconButton(
                   icon: Icon(MdiIcons.restore),
@@ -320,6 +302,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                 ),
               ]
             : <Widget>[],
+        */
       ),
       body: _status == -1
           ? Center(
@@ -409,8 +392,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                         .defaultPadding(),
                                                     child: SmashUI.smallText(
                                                         IEL
-                                                            .of(context)
-                                                            .gttExport_dataUploadedUponSync, //"The following data will be uploaded upon sync."
+                                                          .of(context)
+                                                          .gttExport_dataUploadedSelectedProject, //"The following data will be uploaded upon sync."
                                                         color: Colors.grey),
                                                   ),
                                                   Expanded(
@@ -485,35 +468,6 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                             child: ListTile(
                                                               leading: Icon(
                                                                 SmashIcons
-                                                                    .formNotesIcon,
-                                                                color: SmashColors
-                                                                    .mainDecorations,
-                                                              ),
-                                                              title: SmashUI
-                                                                  .normalText(
-                                                                      "${IEL.of(context).gttExport_formNotes}: $_formNotesCount"), //
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding: SmashUI
-                                                                .defaultPadding(),
-                                                            child:
-                                                                DropdownButton(
-                                                              items: _projects,
-                                                              value:
-                                                                  _selectedProj,
-                                                              onChanged: (s) =>
-                                                                  setState(() =>
-                                                                      _selectedProj =
-                                                                          s),
-                                                            ),
-                                                          ),
-                                                        ]),
-                                                        Row(children: [
-                                                          Flexible(
-                                                            child: ListTile(
-                                                              leading: Icon(
-                                                                SmashIcons
                                                                     .imagesNotesIcon,
                                                                 color: SmashColors
                                                                     .mainDecorations,
@@ -539,6 +493,19 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                             ),
                                                           ),
                                                         ]),
+                                                        Flexible(
+                                                          child: ListTile(
+                                                            leading: Icon(
+                                                              SmashIcons
+                                                                  .formNotesIcon,
+                                                              color: SmashColors
+                                                                  .mainDecorations,
+                                                            ),
+                                                            title: SmashUI
+                                                                .normalText(
+                                                                    "${IEL.of(context).gttExport_formNotes}: $_formNotesCount"), //
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
