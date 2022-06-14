@@ -9,8 +9,8 @@ part of smash_import_export_plugins;
 const TITLE_GPX = "GPX";
 
 class GpxExportPlugin extends AExportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -48,14 +48,14 @@ class GpxExportPlugin extends AExportPlugin {
   }
 
   @override
-  Widget getSettingsPage() {
+  Widget? getSettingsPage() {
     return null;
   }
 }
 
 class GpxExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
-  GpxExportWidget({Key key, this.projectDb}) : super(key: key);
+  GpxExportWidget({Key? key, required this.projectDb}) : super(key: key);
 
   @override
   State<GpxExportWidget> createState() => _GpxExportWidgetState();
@@ -64,7 +64,7 @@ class GpxExportWidget extends StatefulWidget {
 class _GpxExportWidgetState extends State<GpxExportWidget>
     with AfterLayoutMixin {
   bool building = true;
-  String outFilePath;
+  late String outFilePath;
 
   @override
   void afterFirstLayout(BuildContext context) {

@@ -17,9 +17,9 @@ class GpxExporter {
     var gpx = Gpx();
     gpx.creator = "SMASH - http://www.geopaparazzi.eu using dart-gpx library.";
     gpx.metadata = Metadata();
-    gpx.metadata.keywords = "SMASH, export, notes, gps, log";
-    gpx.metadata.name = "SMASH GPX of project: $dbName";
-    gpx.metadata.time = DateTime.now();
+    gpx.metadata?.keywords = "SMASH, export, notes, gps, log";
+    gpx.metadata?.name = "SMASH GPX of project: $dbName";
+    gpx.metadata?.time = DateTime.now();
     List<Wpt> wpts = [];
     gpx.wpts = wpts;
 
@@ -28,7 +28,7 @@ class GpxExporter {
       var nameStr = note.text;
       var descrStr = note.description;
       if (note.hasForm()) {
-        nameStr = FormUtilities.getFormItemLabel(note.form, nameStr);
+        nameStr = FormUtilities.getFormItemLabel(note.form!, nameStr);
         descrStr = note.text;
       }
 
@@ -62,14 +62,14 @@ class GpxExporter {
     var logs = db.getLogs();
     logs.forEach((log) {
       List<Wpt> segmentPts = [];
-      List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id);
+      List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id!);
       logDataPoints.forEach((logPoint) {
         var wpt = Wpt(
           lat: useFiltered ? logPoint.filtered_lat : logPoint.lat,
           lon: useFiltered ? logPoint.filtered_lon : logPoint.lon,
           ele: logPoint.altim,
           name: logPoint.id.toString(),
-          time: DateTime.fromMillisecondsSinceEpoch(logPoint.ts),
+          time: DateTime.fromMillisecondsSinceEpoch(logPoint.ts!),
           cmt: logPoint.accuracy != null ? "acc: ${logPoint.accuracy}m" : null,
         );
         segmentPts.add(wpt);
@@ -81,7 +81,7 @@ class GpxExporter {
           number: log.id,
           trksegs: segments,
           cmt:
-              "${HU.TimeUtilities.ISO8601_TS_FORMATTER.format(DateTime.fromMillisecondsSinceEpoch(log.startTime))} - ${HU.TimeUtilities.ISO8601_TS_FORMATTER.format(DateTime.fromMillisecondsSinceEpoch(log.endTime))}");
+              "${HU.TimeUtilities.ISO8601_TS_FORMATTER.format(DateTime.fromMillisecondsSinceEpoch(log.startTime!))} - ${HU.TimeUtilities.ISO8601_TS_FORMATTER.format(DateTime.fromMillisecondsSinceEpoch(log.endTime!))}");
       trks.add(t);
     });
 
@@ -102,14 +102,14 @@ class GpxExporter {
 
     Log log = db.getLogById(logId);
     if (log != null) {
-      var logName = log.text;
+      var logName = log.text ?? "no name log";
       var gpx = Gpx();
       gpx.creator =
           "SMASH - http://www.geopaparazzi.eu using dart-gpx library.";
       gpx.metadata = Metadata();
-      gpx.metadata.keywords = "SMASH, export, log";
-      gpx.metadata.name = "$logName";
-      gpx.metadata.time = DateTime.now();
+      gpx.metadata?.keywords = "SMASH, export, log";
+      gpx.metadata?.name = "$logName";
+      gpx.metadata?.time = DateTime.now();
       List<Wpt> wpts = [];
       gpx.wpts = wpts;
 
@@ -117,14 +117,14 @@ class GpxExporter {
       gpx.trks = trks;
 
       List<Wpt> segmentPts = [];
-      List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id);
+      List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id!);
       logDataPoints.forEach((logPoint) {
         var wpt = Wpt(
           lat: useFiltered ? logPoint.filtered_lat : logPoint.lat,
           lon: useFiltered ? logPoint.filtered_lon : logPoint.lon,
           ele: logPoint.altim,
           name: logPoint.id.toString(),
-          time: DateTime.fromMillisecondsSinceEpoch(logPoint.ts),
+          time: DateTime.fromMillisecondsSinceEpoch(logPoint.ts!),
         );
         segmentPts.add(wpt);
       });

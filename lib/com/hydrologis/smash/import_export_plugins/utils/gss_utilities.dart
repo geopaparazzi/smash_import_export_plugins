@@ -34,8 +34,8 @@ class GssUtilities {
   static final String YES = "Yes";
   static final String NO = "No";
 
-  static Future<String> getAuthHeader(String password) async {
-    String deviceId =
+  static Future<String?> getAuthHeader(String? password) async {
+    String? deviceId =
         GpPreferences().getStringSync(SmashPreferencesKeys.DEVICE_ID_OVERRIDE);
     deviceId ??= GpPreferences().getStringSync(
         SmashPreferencesKeys.DEVICE_ID, await Device().getDeviceId());
@@ -61,15 +61,15 @@ class GssUtilities {
 class ProjectDataUploadListTileProgressWidget extends StatefulWidget {
   final String _uploadUrl;
   final dynamic _item;
-  final String authHeader;
+  final String? authHeader;
   final ProjectDb _projectDb;
   final Dio _dio;
-  final ValueNotifier orderNotifier;
+  final ValueNotifier? orderNotifier;
   final int order;
 
   ProjectDataUploadListTileProgressWidget(
       this._dio, this._projectDb, this._uploadUrl, this._item,
-      {this.authHeader, this.orderNotifier, this.order});
+      {this.authHeader, this.orderNotifier, required this.order});
 
   @override
   State<StatefulWidget> createState() {
@@ -94,11 +94,11 @@ class ProjectDataUploadListTileProgressWidgetState
       // if no order notifier is available, start the upload directly
       upload();
     } else {
-      if (widget.orderNotifier.value == widget.order) {
+      if (widget.orderNotifier?.value == widget.order) {
         upload();
       } else {
-        widget.orderNotifier.addListener(() {
-          if (widget.orderNotifier.value == widget.order) {
+        widget.orderNotifier?.addListener(() {
+          if (widget.orderNotifier?.value == widget.order) {
             upload();
           }
         });
@@ -107,12 +107,16 @@ class ProjectDataUploadListTileProgressWidgetState
   }
 
   Future<void> upload() async {
-    Options options;
+    bool hasError = false;
+    Options? options;
     if (widget.authHeader != null) {
       options = Options(headers: {"Authorization": widget.authHeader});
+    } else {
+      hasError = true;
+      handleError("Auth header missing!");
+      return;
     }
 
-    bool hasError = false;
     var dbPath = widget._projectDb.getPath();
     var projectName = FileUtilities.nameFromFile(dbPath, false);
     try {
@@ -140,7 +144,7 @@ class ProjectDataUploadListTileProgressWidgetState
           ? IEL.of(context).network_cancelledByUser //"Cancelled by user."
           : IEL.of(context).network_completed; //"Completed."
       if (!hasError) {
-        widget.orderNotifier.value = widget.orderNotifier.value + 1;
+        widget.orderNotifier?.value = widget.orderNotifier?.value + 1;
       } else {
         setState(() {});
       }
@@ -149,8 +153,8 @@ class ProjectDataUploadListTileProgressWidgetState
 
   @override
   Widget build(BuildContext context) {
-    String name;
-    String description;
+    String name = "no name";
+    String description = "no description";
     if (_item is Note) {
       name = _item.form == null || _item.form.length == 0
           ? "simple note"
@@ -166,8 +170,8 @@ class ProjectDataUploadListTileProgressWidgetState
     if (widget.orderNotifier == null) {
       return getTile(name, description);
     } else {
-      return ValueListenableBuilder(
-        valueListenable: widget.orderNotifier,
+      return ValueListenableBuilder<dynamic>(
+        valueListenable: widget.orderNotifier!,
         builder: (context, value, child) {
           return getTile(name, description);
         },
@@ -204,21 +208,21 @@ class ProjectDataUploadListTileProgressWidgetState
   Future<bool> handleLog(
       Options options, String projectName, bool hasError) async {
     Log log = _item;
-    LogProperty props = widget._projectDb.getLogProperties(log.id);
+    LogProperty props = widget._projectDb.getLogProperties(log.id!);
 
     var formData = FormData();
     formData.fields
       ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.LOG_OBJID))
       ..add(MapEntry(PROJECT_NAME, projectName))
       ..add(MapEntry(LOGS_COLUMN_ID, "${log.id}"))
-      ..add(MapEntry(LOGS_COLUMN_TEXT, log.text))
+      ..add(MapEntry(LOGS_COLUMN_TEXT, log.text ?? ""))
       ..add(MapEntry(LOGS_COLUMN_STARTTS, "${log.startTime}"))
       ..add(MapEntry(LOGS_COLUMN_ENDTS, "${log.endTime}"))
       ..add(MapEntry(LOGSPROP_COLUMN_WIDTH, "${props.width ?? 3}"))
       ..add(MapEntry(LOGSPROP_COLUMN_VISIBLE, "${props.isVisible ?? 1}"))
       ..add(MapEntry(LOGSPROP_COLUMN_COLOR, "${props.color ?? "#FF0000"}"));
 
-    List<LogDataPoint> logPoints = widget._projectDb.getLogDataPoints(log.id);
+    List<LogDataPoint> logPoints = widget._projectDb.getLogDataPoints(log.id!);
     List<Map<String, dynamic>> logPointsList = [];
     for (var logPoint in logPoints) {
       logPointsList.add(logPoint.toMap());
@@ -250,7 +254,7 @@ class ProjectDataUploadListTileProgressWidgetState
     });
     if (!cancelToken.isCancelled && !hasError) {
       log.isDirty = 0;
-      widget._projectDb.updateLogDirty(log.id, false);
+      widget._projectDb.updateLogDirty(log.id!, false);
     }
     return hasError;
   }
@@ -272,13 +276,13 @@ class ProjectDataUploadListTileProgressWidgetState
     if (image.noteId != null) {
       formData.fields..add(MapEntry(IMAGES_COLUMN_NOTE_ID, "${image.noteId}"));
     }
-    var imageBytes = widget._projectDb.getImageDataBytes(image.imageDataId);
+    var imageBytes = widget._projectDb.getImageDataBytes(image.imageDataId!);
     formData.files.add(MapEntry(
       TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_IMAGE,
       MultipartFile.fromBytes(imageBytes, filename: image.text),
     ));
 
-    var thumbBytes = widget._projectDb.getThumbnailBytes(image.imageDataId);
+    var thumbBytes = widget._projectDb.getThumbnailBytes(image.imageDataId!);
     formData.files.add(MapEntry(
       TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_THUMBNAIL,
       MultipartFile.fromBytes(thumbBytes, filename: image.text),
@@ -309,7 +313,7 @@ class ProjectDataUploadListTileProgressWidgetState
     });
     if (!cancelToken.isCancelled && !hasError) {
       image.isDirty = 0;
-      widget._projectDb.updateImageDirty(image.id, false);
+      widget._projectDb.updateImageDirty(image.id!, false);
     }
     return hasError;
   }
@@ -323,13 +327,13 @@ class ProjectDataUploadListTileProgressWidgetState
       ..add(MapEntry(PROJECT_NAME, projectName))
       ..add(MapEntry(NOTES_COLUMN_ID, "${note.id}"))
       ..add(MapEntry(NOTES_COLUMN_TEXT, note.text))
-      ..add(MapEntry(NOTES_COLUMN_DESCRIPTION, note.description))
+      ..add(MapEntry(NOTES_COLUMN_DESCRIPTION, note.description ?? ""))
       ..add(MapEntry(NOTES_COLUMN_TS, "${note.timeStamp}"))
       ..add(MapEntry(NOTES_COLUMN_LON, "${note.lon}"))
       ..add(MapEntry(NOTES_COLUMN_LAT, "${note.lat}"))
       ..add(MapEntry(NOTES_COLUMN_ALTIM, "${note.altim}"));
     if (note.form != null) {
-      formData.fields.add(MapEntry(NOTES_COLUMN_FORM, note.form));
+      formData.fields.add(MapEntry(NOTES_COLUMN_FORM, note.form!));
 
       List<String> imageIds = FormUtilities.getImageIds(note.form);
 
@@ -337,9 +341,9 @@ class ProjectDataUploadListTileProgressWidgetState
         for (var imageId in imageIds) {
           var dbImage = widget._projectDb.getImageById(int.parse(imageId));
           var imageBytes =
-              widget._projectDb.getImageDataBytes(dbImage.imageDataId);
+              widget._projectDb.getImageDataBytes(dbImage.imageDataId!);
           var thumbBytes =
-              widget._projectDb.getThumbnailBytes(dbImage.imageDataId);
+              widget._projectDb.getThumbnailBytes(dbImage.imageDataId!);
           var key =
               "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_IMAGE}_${dbImage.id}";
           formData.files.add(MapEntry(
@@ -356,7 +360,7 @@ class ProjectDataUploadListTileProgressWidgetState
       }
     }
 
-    NoteExt noteExt = note.noteExt;
+    NoteExt? noteExt = note.noteExt;
     if (noteExt != null) {
       formData.fields
         ..add(MapEntry(NOTESEXT_COLUMN_MARKER, noteExt.marker))
@@ -393,7 +397,7 @@ class ProjectDataUploadListTileProgressWidgetState
       handleError(err);
     });
     if (!cancelToken.isCancelled && !hasError) {
-      widget._projectDb.updateNoteDirty(note.id, false);
+      widget._projectDb.updateNoteDirty(note.id!, false);
     }
     return hasError;
   }
@@ -429,10 +433,10 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
   //static final subtitle = "Geopaparazzi Survey Server";
   static final iconData = MdiIcons.cloudLock;
 
-  String _gssUrl;
-  String _gssUser; // Rigth now unused, since the deviceid is the user
-  String _gssPwd;
-  bool _allowSelfCert;
+  String? _gssUrl;
+  String? _gssUser; // Rigth now unused, since the deviceid is the user
+  String? _gssPwd;
+  bool? _allowSelfCert;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -440,13 +444,13 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
   }
 
   Future<void> getData() async {
-    String gssUrl = await GpPreferences()
+    String? gssUrl = await GpPreferences()
         .getString(SmashPreferencesKeys.KEY_GSS_SERVER_URL, "");
-    String gssUser = await GpPreferences()
+    String? gssUser = await GpPreferences()
         .getString(SmashPreferencesKeys.KEY_GSS_SERVER_USER, "");
-    String gssPwd = await GpPreferences()
+    String? gssPwd = await GpPreferences()
         .getString(SmashPreferencesKeys.KEY_GSS_SERVER_PWD, "dummy");
-    bool allowSelfCert = await GpPreferences().getBoolean(
+    bool? allowSelfCert = await GpPreferences().getBoolean(
         SmashPreferencesKeys.KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE, true);
 
     setState(() {
@@ -502,7 +506,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                 IEL
                                     .of(context)
                                     .settings_serverUrl, //"server url"
-                                _gssUrl,
+                                _gssUrl!,
                                 (res) async {
                                   if (res == null || res.trim().length == 0) {
                                     res = _gssUrl;
@@ -551,7 +555,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                 IEL
                                     .of(context)
                                     .settings_serverPassword, //"server password",
-                                _gssPwd,
+                                _gssPwd!,
                                 (res) async {
                                   if (res == null || res.trim().length == 0) {
                                     res = _gssPwd;
@@ -602,7 +606,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                   await GpPreferences().setBoolean(
                                       SmashPreferencesKeys
                                           .KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE,
-                                      newValue);
+                                      newValue!);
                                   await getData();
                                 },
                               )),

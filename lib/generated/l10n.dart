@@ -10,28 +10,43 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class IEL {
   IEL();
-  
-  static IEL current;
-  
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+
+  static IEL? _current;
+
+  static IEL get current {
+    assert(_current != null,
+        'No instance of IEL was loaded. Try to initialize the IEL delegate before accessing IEL.current.');
+    return _current!;
+  }
+
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<IEL> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name); 
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      IEL.current = IEL();
-      
-      return IEL.current;
+      final instance = IEL();
+      IEL._current = instance;
+
+      return instance;
     });
-  } 
+  }
 
   static IEL of(BuildContext context) {
+    final instance = IEL.maybeOf(context);
+    assert(instance != null,
+        'No instance of IEL present in the widget tree. Did you add IEL.delegate in localizationsDelegates?');
+    return instance!;
+  }
+
+  static IEL? maybeOf(BuildContext context) {
     return Localizations.of<IEL>(context, IEL);
   }
 
@@ -1399,11 +1414,9 @@ class AppLocalizationDelegate extends LocalizationsDelegate<IEL> {
   bool shouldReload(AppLocalizationDelegate old) => false;
 
   bool _isSupported(Locale locale) {
-    if (locale != null) {
-      for (var supportedLocale in supportedLocales) {
-        if (supportedLocale.languageCode == locale.languageCode) {
-          return true;
-        }
+    for (var supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
       }
     }
     return false;

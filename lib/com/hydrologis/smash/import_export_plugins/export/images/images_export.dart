@@ -7,8 +7,8 @@ part of smash_import_export_plugins;
  */
 
 class ImagesExportPlugin extends AExportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -46,14 +46,14 @@ class ImagesExportPlugin extends AExportPlugin {
   }
 
   @override
-  Widget getSettingsPage() {
+  Widget? getSettingsPage() {
     return null;
   }
 }
 
 class ImagesExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
-  ImagesExportWidget({Key key, this.projectDb}) : super(key: key);
+  ImagesExportWidget({Key? key, required this.projectDb}) : super(key: key);
 
   @override
   State<ImagesExportWidget> createState() => _ImagesExportWidgetState();
@@ -62,7 +62,7 @@ class ImagesExportWidget extends StatefulWidget {
 class _ImagesExportWidgetState extends State<ImagesExportWidget>
     with AfterLayoutMixin {
   bool building = true;
-  String outFilePath;
+  late String outFilePath;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -109,7 +109,7 @@ class _ImagesExportWidgetState extends State<ImagesExportWidget>
       images.forEach((image) {
         var dataId = image.imageDataId;
         var name = image.text;
-        var imageDataBytes = widget.projectDb.getImageDataBytes(dataId);
+        var imageDataBytes = widget.projectDb.getImageDataBytes(dataId!);
         var imagePath = FileUtilities.joinPaths(outFilePath, name);
         var imageFile = File(imagePath);
         imageFile.writeAsBytes(imageDataBytes);

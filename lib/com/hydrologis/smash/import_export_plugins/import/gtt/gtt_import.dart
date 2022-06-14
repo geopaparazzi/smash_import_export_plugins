@@ -9,8 +9,8 @@
 part of smash_import_export_plugins;
 
 class GttImportPlugin extends AImportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -46,13 +46,13 @@ class GttImportPlugin extends AImportPlugin {
   }
 
   @override
-  Widget getSettingsPage() {
+  Widget? getSettingsPage() {
     return GttSettings();
   }
 }
 
 class GttImportWidget extends StatefulWidget {
-  GttImportWidget({Key key}) : super(key: key);
+  GttImportWidget({Key? key}) : super(key: key);
 
   @override
   _GttImportWidgetState createState() => new _GttImportWidgetState();
@@ -72,7 +72,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
    * 12 = upload error
    */
   int _status = 0;
-  String _serverUrl;
+  String? _serverUrl;
 
   bool _importCompleted = false;
 
@@ -80,7 +80,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
   List<DropdownMenuItem> _projects = [];
   List<bool> _projectSelected = [true, false];
 
-  String _selectedProj;
+  late String _selectedProj;
 
   @override
   void initState() {
@@ -99,7 +99,8 @@ class _GttImportWidgetState extends State<GttImportWidget> {
       return;
     }
 
-    String pwd = GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_PWD);
+    String? pwd =
+        GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_PWD);
 
     if (pwd == null || pwd.trim().isEmpty) {
       setState(() {
@@ -108,7 +109,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
       return;
     }
 
-    String usr =
+    String? usr =
         GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_USER);
 
     if (usr == null || usr.trim().isEmpty) {
@@ -121,10 +122,11 @@ class _GttImportWidgetState extends State<GttImportWidget> {
     /**
      * Getting GTT API Key
      */
-    String key = GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_KEY);
+    String? key =
+        GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_KEY);
 
     if (key == null || key.trim().isEmpty) {
-      String apiKey = await GttUtilities.getApiKey();
+      String? apiKey = await GttUtilities.getApiKey();
 
       if (apiKey == null || apiKey.trim().isEmpty) {
         setState(() {
@@ -199,7 +201,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
               bold: true,
               color: Colors.blue,
             ),
-            DropdownButton(
+            DropdownButton<dynamic>(
               items: _projects,
               value: _selectedProj,
               onChanged: _projectSelected[0]
@@ -358,8 +360,10 @@ class _GttImportWidgetState extends State<GttImportWidget> {
   }
 
   importProjectForm() async {
-    String selProj = _projectSelected[0] ? _selectedProj : null;
-
+    String? selProj = _projectSelected[0] ? _selectedProj : null;
+    if (selProj == null) {
+      return;
+    }
     String form = await GttUtilities.getProjectForm(selProj);
     debugPrint("Project Form: $form");
 

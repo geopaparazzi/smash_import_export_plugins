@@ -7,8 +7,8 @@
 part of smash_import_export_plugins;
 
 class GttExportPlugin extends AExportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -54,7 +54,7 @@ class GttExportPlugin extends AExportPlugin {
 class GttExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
 
-  GttExportWidget(this.projectDb, {Key key}) : super(key: key);
+  GttExportWidget(this.projectDb, {Key? key}) : super(key: key);
 
   @override
   _GttExportWidgetState createState() => new _GttExportWidgetState();
@@ -75,17 +75,17 @@ class _GttExportWidgetState extends State<GttExportWidget> {
    */
   int _status = 0;
 
-  String _serverUrl;
+  String? _serverUrl;
 
-  int _gpsLogCount;
-  int _simpleNotesCount;
-  int _formNotesCount;
-  int _imagesCount;
+  late int _gpsLogCount;
+  late int _simpleNotesCount;
+  late int _formNotesCount;
+  late int _imagesCount;
 
   bool _uploadCompleted = false;
-  List<Widget> _uploadTiles;
+  List<Widget> _uploadTiles = [];
   List<DropdownMenuItem> _projects = [];
-  String _selectedProj;
+  late String _selectedProj;
 
   @override
   void initState() {
@@ -104,7 +104,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       return;
     }
 
-    String pwd = GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_PWD);
+    String? pwd =
+        GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_PWD);
 
     if (pwd == null || pwd.trim().isEmpty) {
       setState(() {
@@ -113,7 +114,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       return;
     }
 
-    String usr =
+    String? usr =
         GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_USER);
 
     if (usr == null || usr.trim().isEmpty) {
@@ -126,10 +127,11 @@ class _GttExportWidgetState extends State<GttExportWidget> {
     /**
      * Getting GTT API Key
      */
-    String key = GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_KEY);
+    String? key =
+        GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_KEY);
 
     if (key == null || key.trim().isEmpty) {
-      String apiKey = await GttUtilities.getApiKey();
+      String? apiKey = await GttUtilities.getApiKey();
 
       if (apiKey == null || apiKey.trim().isEmpty) {
         setState(() {
@@ -202,10 +204,12 @@ class _GttExportWidgetState extends State<GttExportWidget> {
               bold: true,
               color: Colors.blue,
             ),
-            DropdownButton(
+            DropdownButton<dynamic>(
                 items: _projects,
                 value: _selectedProj,
-                onChanged: (s) => setState(() => _selectedProj = s)),
+                onChanged: (s) {
+                  setState(() => _selectedProj = s);
+                }),
           ],
         ),
       ),
@@ -220,13 +224,15 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                   icon: Icon(MdiIcons.restore),
                   onPressed: () async {
                     var doIt = await SmashDialogs.showConfirmDialog(
-                        context,
-                        IEL
-                            .of(context)
-                            .gttExport_setProjectDirty, //"Set project to DIRTY?"
-                        IEL
-                            .of(context)
-                            .gttExport_thisCantBeUndone); //"This can't be undone!"
+                            context,
+                            IEL
+                                .of(context)
+                                .gttExport_setProjectDirty, //"Set project to DIRTY?"
+                            IEL
+                                .of(context)
+                                .gttExport_thisCantBeUndone) //"This can't be undone!"
+                        ??
+                        false;
                     if (doIt) {
                       widget.projectDb.updateDirty(true);
                       setState(() {
@@ -243,13 +249,15 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                   icon: Icon(MdiIcons.wiperWash),
                   onPressed: () async {
                     var doIt = await SmashDialogs.showConfirmDialog(
-                        context,
-                        IEL
-                            .of(context)
-                            .gttExport_setProjectToClean, //"Set project to CLEAN?"
-                        IEL
-                            .of(context)
-                            .gttExport_thisCantBeUndone); //"This can't be undone!"
+                            context,
+                            IEL
+                                .of(context)
+                                .gttExport_setProjectToClean, //"Set project to CLEAN?"
+                            IEL
+                                .of(context)
+                                .gttExport_thisCantBeUndone) //"This can't be undone!"
+                        ??
+                        false;
                     if (doIt) {
                       widget.projectDb.updateDirty(false);
                       setState(() {
@@ -456,7 +464,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
           continue;
         }
 
-        Uint8List imageBytes = db.getImageDataBytes(dbImage.imageDataId);
+        Uint8List imageBytes = db.getImageDataBytes(dbImage.imageDataId!);
 
         String imageName = "img_$imageId.jpg";
 
@@ -477,7 +485,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
             "content_type": "image/jpg",
           };
 
-          await db.updateImageDirty(int.parse(imageId), false);
+          db.updateImageDirty(int.parse(imageId), false);
           retVal.add(r);
         }
       }
@@ -493,7 +501,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
     List<Note> formNotes = db.getNotes(doSimple: false, onlyDirty: true);
 
     for (Note note in formNotes) {
-      Map<String, dynamic> form = jsonDecode(note.form);
+      Map<String, dynamic> form = jsonDecode(note.form!);
       String sectionDesc = form["sectiondescription"];
 
       if (sectionDesc != null && sectionDesc.contains("GTT")) {
@@ -516,7 +524,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
     List<Note> formNotes = db.getNotes(doSimple: false, onlyDirty: true);
 
     for (Note note in formNotes) {
-      Map<String, dynamic> form = jsonDecode(note.form);
+      Map<String, dynamic> form = jsonDecode(note.form!);
       String sectionDesc = form["sectiondescription"];
 
       if (sectionDesc != null && !sectionDesc.contains("GTT")) {
@@ -537,7 +545,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
         ///
         /// Inserting GTT Issue ID into the Note Form
         ///
-        Map<String, dynamic> noteForm = jsonDecode(note.form);
+        Map<String, dynamic> noteForm = jsonDecode(note.form!);
 
         try {
           Map<String, dynamic> retIss = ret["status_data"];
@@ -564,7 +572,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       if (ret["status_code"] == 201 || ret["status_code"] == 204) {
         uploadCount++;
         note.isDirty = 0;
-        await db.updateNoteDirty(note.id, false);
+        db.updateNoteDirty(note.id!, false);
       }
     }
 

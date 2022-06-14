@@ -9,8 +9,8 @@ part of smash_import_export_plugins;
 const TITLE_GPKG = "Geopackage";
 
 class GeopackageExportPlugin extends AExportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -48,14 +48,14 @@ class GeopackageExportPlugin extends AExportPlugin {
   }
 
   @override
-  Widget getSettingsPage() {
+  Widget? getSettingsPage() {
     return null;
   }
 }
 
 class GeopackageExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
-  GeopackageExportWidget({Key key, this.projectDb}) : super(key: key);
+  GeopackageExportWidget({Key? key, required this.projectDb}) : super(key: key);
 
   @override
   State<GeopackageExportWidget> createState() => _GeopackageExportWidgetState();
@@ -64,8 +64,8 @@ class GeopackageExportWidget extends StatefulWidget {
 class _GeopackageExportWidgetState extends State<GeopackageExportWidget>
     with AfterLayoutMixin {
   bool building = true;
-  String error;
-  String outFilePath;
+  String? error;
+  late String outFilePath;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -81,7 +81,7 @@ class _GeopackageExportWidgetState extends State<GeopackageExportWidget>
                 child: SmashCircularProgress(),
               )
             : error != null
-                ? SmashUI.errorWidget(error)
+                ? SmashUI.errorWidget(error!)
                 : Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -103,7 +103,7 @@ class _GeopackageExportWidgetState extends State<GeopackageExportWidget>
     var ts = HU.TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
     outFilePath =
         HU.FileUtilities.joinPaths(exportsFolder.path, "smash_export_$ts.gpkg");
-    String errorString =
+    String? errorString =
         await GeopackageExporter.exportDb(widget.projectDb, File(outFilePath));
 
     if (errorString != null) {
@@ -120,7 +120,7 @@ class _GeopackageExportWidgetState extends State<GeopackageExportWidget>
 }
 
 class GeopackageExporter {
-  static Future<String> exportDb(ProjectDb db, File outputFile) async {
+  static Future<String?> exportDb(ProjectDb db, File outputFile) async {
     if (await outputFile.exists()) {
       return "Not writing over existing file.";
     }
@@ -190,14 +190,14 @@ class GeopackageExporter {
         note.form,
         note.style,
         note.isDirty,
-        note.noteExt.marker,
-        note.noteExt.size,
-        note.noteExt.rotation,
-        note.noteExt.color,
-        note.noteExt.accuracy,
-        note.noteExt.heading,
-        note.noteExt.speed,
-        note.noteExt.speedaccuracy,
+        note.noteExt?.marker,
+        note.noteExt?.size,
+        note.noteExt?.rotation,
+        note.noteExt?.color,
+        note.noteExt?.accuracy,
+        note.noteExt?.heading,
+        note.noteExt?.speed,
+        note.noteExt?.speedaccuracy,
       ]);
     }
   }
@@ -232,24 +232,26 @@ class GeopackageExporter {
     var gf = GeometryFactory.defaultPrecision();
     var images = gpDb.getImages();
     for (var img in images) {
-      var point = gf.createPoint(Coordinate(img.lon, img.lat));
-      var geomBytes = GeoPkgGeomWriter().write(point);
+      if (img.id != null) {
+        var point = gf.createPoint(Coordinate(img.lon, img.lat));
+        var geomBytes = GeoPkgGeomWriter().write(point);
 
-      var imageDataBytes = gpDb.getImageDataBytes(img.id);
-      var thumbnailBytes = gpDb.getThumbnailBytes(img.id);
+        var imageDataBytes = gpDb.getImageDataBytes(img.id!);
+        var thumbnailBytes = gpDb.getThumbnailBytes(img.id!);
 
-      newDb.execute(sql, arguments: [
-        geomBytes,
-        img.id,
-        img.altim,
-        img.azim,
-        HU.TimeUtilities.ISO8601_TS_FORMATTER
-            .format(DateTime.fromMillisecondsSinceEpoch(img.timeStamp)),
-        img.text,
-        img.isDirty,
-        imageDataBytes,
-        thumbnailBytes,
-      ]);
+        newDb.execute(sql, arguments: [
+          geomBytes,
+          img.id,
+          img.altim,
+          img.azim,
+          HU.TimeUtilities.ISO8601_TS_FORMATTER
+              .format(DateTime.fromMillisecondsSinceEpoch(img.timeStamp)),
+          img.text,
+          img.isDirty,
+          imageDataBytes,
+          thumbnailBytes,
+        ]);
+      }
     }
   }
 
@@ -303,12 +305,16 @@ class GeopackageExporter {
     var gf = GeometryFactory.defaultPrecision();
     var logs = db.getLogs();
     for (var log in logs) {
+      if (log.id == null) {
+        continue;
+      }
       List<Coordinate> coordinates = [];
-      List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id);
+      List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id!);
       for (var logPoint in logDataPoints) {
         Coordinate coordinate;
         if (useFiltered) {
-          coordinate = Coordinate(logPoint.filtered_lon, logPoint.filtered_lat);
+          coordinate =
+              Coordinate(logPoint.filtered_lon!, logPoint.filtered_lat!);
         } else {
           coordinate = Coordinate(logPoint.lon, logPoint.lat);
         }
@@ -321,12 +327,12 @@ class GeopackageExporter {
           logPoint.id,
           logPoint.altim,
           HU.TimeUtilities.ISO8601_TS_FORMATTER
-              .format(DateTime.fromMillisecondsSinceEpoch(logPoint.ts)),
+              .format(DateTime.fromMillisecondsSinceEpoch(logPoint.ts!)),
           logPoint.logid,
         ]);
       }
 
-      var logProperties = db.getLogProperties(log.id);
+      var logProperties = db.getLogProperties(log.id!);
 
       var line = gf.createLineString(coordinates);
       var geomBytes = GeoPkgGeomWriter().write(line);
@@ -334,9 +340,9 @@ class GeopackageExporter {
         geomBytes,
         log.id,
         HU.TimeUtilities.ISO8601_TS_FORMATTER
-            .format(DateTime.fromMillisecondsSinceEpoch(log.startTime)),
+            .format(DateTime.fromMillisecondsSinceEpoch(log.startTime!)),
         HU.TimeUtilities.ISO8601_TS_FORMATTER
-            .format(DateTime.fromMillisecondsSinceEpoch(log.endTime)),
+            .format(DateTime.fromMillisecondsSinceEpoch(log.endTime!)),
         log.lengthm,
         log.isDirty,
         log.text,
