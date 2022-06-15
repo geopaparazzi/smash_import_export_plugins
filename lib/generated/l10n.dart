@@ -1025,6 +1025,15 @@ class IEL {
         args: []);
   }
 
+  /// `No Available Project, Contact your Admin`
+  String get gttExport_contactAdmin {
+    return Intl.message(
+        'No Available Project, Contact your Admin',
+        name: 'gttExport_contactAdmin',
+        desc: '',
+        args: []);
+  }
+
   /// `Gps Logs`
   String get gttExport_gpsLogs {
     return Intl.message(

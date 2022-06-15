@@ -410,6 +410,15 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                             .gttExport_dataUploadedSelectedProject, //"The following data will be uploaded upon sync."
                                                         color: Colors.grey),
                                                   ),
+                                                  Padding(
+                                                    padding: SmashUI
+                                                        .defaultPadding(),
+                                                    child: SmashUI.smallText(
+                                                        IEL
+                                                            .of(context)
+                                                            .gttExport_contactAdmin, //"The following data will be uploaded upon sync."
+                                                        color: Colors.grey),
+                                                  ),
                                                   Expanded(
                                                     child: ListView(
                                                       children: <Widget>[
