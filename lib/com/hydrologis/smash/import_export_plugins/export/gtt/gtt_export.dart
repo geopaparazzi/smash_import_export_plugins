@@ -688,6 +688,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
         uploadCount++;
         note.isDirty = 0;
         await db.updateNoteDirty(note.id, false);
+      } else {
+        await db.updateNoteDirty(note.id, true);
       }
     }
 
@@ -723,11 +725,13 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       debugPrint("SimpleNote status_code: ${ret["status_code"]}, "
           "status_message: ${ret["status_message"]}");
 
-      if (ret["status_code"] == 201 || ret["status_code"] == 204) {
+      if ((ret["status_code"] == 201 || ret["status_code"] == 204) && _selectedSimpleNotesProj != 'none') {
         uploadCount++;
-
+  
         note.isDirty = 0;
         await db.updateNoteDirty(note.id, false);
+      } else {
+        await db.updateNoteDirty(note.id, true);
       }
     }
 
@@ -752,11 +756,13 @@ class _GttExportWidgetState extends State<GttExportWidget> {
           GttUtilities.createIssue(
               note, _selectedImagesProj, uploads, _photoTracker));
 
-      if (ret["status_code"] == 201) {
+      if (ret["status_code"] == 201 && _selectedImagesProj != 'none') {
         uploadCount++;
 
         note.isDirty = 0;
         await db.updateImageDirty(image.imageDataId, false);
+      } else {
+        await db.updateImageDirty(image.imageDataId, true);
       }
     }
 
@@ -777,11 +783,13 @@ class _GttExportWidgetState extends State<GttExportWidget> {
           GttUtilities.createLogIssue(
               log, points, _selectedGpsLogProj, _gpsTracker));
 
-      if (ret["status_code"] == 201) {
+      if (ret["status_code"] == 201 && _selectedGpsLogProj != 'none') {
         uploadCount++;
 
         log.isDirty = 0;
         await db.updateLogDirty(log.id, false);
+      } else {
+        await db.updateLogDirty(log.id, true);
       }
     }
 
