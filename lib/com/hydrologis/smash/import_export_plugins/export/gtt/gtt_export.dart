@@ -211,9 +211,15 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       _selectedGpsLogProj = "none";
       _defaultSubject = dp["defaults"]["subject"];
 
-      _simpleTracker = dp["notes"]["simple"]["tracker"]["id"];
-      _photoTracker = dp["notes"]["photo"]["tracker"]["id"];
-      _gpsTracker = dp["notes"]["gps"]["tracker"]["id"];
+      _simpleTracker = dp["notes"]["simple"]["tracker"].length > 0
+          ? dp["notes"]["simple"]["tracker"]["id"]
+          : "1000000";
+      _photoTracker = dp["notes"]["photo"]["tracker"].length > 0
+          ? dp["notes"]["photo"]["tracker"]["id"]
+          : "1000000";
+      _gpsTracker = dp["notes"]["gps"]["tracker"].length > 0
+          ? dp["notes"]["gps"]["tracker"]["id"]
+          : "1000000";
     }
 
     for (Map<String, dynamic> p in projects) {
@@ -644,7 +650,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       List<Map<String, dynamic>> uploads = await uploadImageData(imageIds, db);
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createIssue(note, _selectedProj, uploads, _formDefaultTracker));
+          GttUtilities.createIssue(
+              note, _selectedProj, uploads, _formDefaultTracker));
 
       debugPrint("FormNote status_code: ${ret["status_code"]}, "
           "status_message: ${ret["status_message"]}");
@@ -710,7 +717,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       List<Map<String, dynamic>> uploads = await uploadImageData(imageIds, db);
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createIssue(note, _selectedSimpleNotesProj, uploads, _simpleTracker));
+          GttUtilities.createIssue(
+              note, _selectedSimpleNotesProj, uploads, _simpleTracker));
 
       debugPrint("SimpleNote status_code: ${ret["status_code"]}, "
           "status_message: ${ret["status_message"]}");
@@ -741,7 +749,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       note.description = "POI";
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createIssue(note, _selectedImagesProj, uploads, _photoTracker));
+          GttUtilities.createIssue(
+              note, _selectedImagesProj, uploads, _photoTracker));
 
       if (ret["status_code"] == 201) {
         uploadCount++;
@@ -765,7 +774,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       List<LogDataPoint> points = db.getLogDataPointsById(log.id);
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createLogIssue(log, points, _selectedGpsLogProj, _gpsTracker));
+          GttUtilities.createLogIssue(
+              log, points, _selectedGpsLogProj, _gpsTracker));
 
       if (ret["status_code"] == 201) {
         uploadCount++;
