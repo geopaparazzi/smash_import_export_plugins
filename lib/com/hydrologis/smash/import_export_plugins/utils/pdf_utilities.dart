@@ -136,10 +136,10 @@ class PdfExporter {
                       text: image.text, textAlign: pw.TextAlign.center);
                   formWidgetList.add(p);
 
-                  Uint8List imageDataBytes =
+                  Uint8List? imageDataBytes =
                       db.getImageDataBytes(image.imageDataId!);
                   List<int> resizeImage = HU.ImageUtilities.resizeImage(
-                      imageDataBytes,
+                      imageDataBytes!,
                       longestSizeTo: EXPORT_IMG_LONGSIZE);
 
                   final pdfImage = pw.MemoryImage(resizeImage as Uint8List);
@@ -207,8 +207,8 @@ class PdfExporter {
                 text:
                     "timestamp: ${HU.TimeUtilities.ISO8601_TS_FORMATTER.format(DateTime.fromMillisecondsSinceEpoch(image.timeStamp))}"),
           ]);
-          Uint8List imageDataBytes = db.getImageDataBytes(image.imageDataId!);
-          List<int> resizeImage = HU.ImageUtilities.resizeImage(imageDataBytes,
+          Uint8List? imageDataBytes = db.getImageDataBytes(image.imageDataId!);
+          List<int> resizeImage = HU.ImageUtilities.resizeImage(imageDataBytes!,
               longestSizeTo: EXPORT_IMG_LONGSIZE);
 
           final pdfImage = pw.MemoryImage(resizeImage as Uint8List);

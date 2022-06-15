@@ -100,7 +100,7 @@ class GpxExporter {
     bool useFiltered = GpPreferences().getBooleanSync(
         SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, false);
 
-    Log log = db.getLogById(logId);
+    Log? log = db.getLogById(logId);
     if (log != null) {
       var logName = log.text ?? "no name log";
       var gpx = Gpx();

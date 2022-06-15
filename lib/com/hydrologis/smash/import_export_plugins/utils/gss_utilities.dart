@@ -208,7 +208,7 @@ class ProjectDataUploadListTileProgressWidgetState
   Future<bool> handleLog(
       Options options, String projectName, bool hasError) async {
     Log log = _item;
-    LogProperty props = widget._projectDb.getLogProperties(log.id!);
+    LogProperty? props = widget._projectDb.getLogProperties(log.id!);
 
     var formData = FormData();
     formData.fields
@@ -218,7 +218,7 @@ class ProjectDataUploadListTileProgressWidgetState
       ..add(MapEntry(LOGS_COLUMN_TEXT, log.text ?? ""))
       ..add(MapEntry(LOGS_COLUMN_STARTTS, "${log.startTime}"))
       ..add(MapEntry(LOGS_COLUMN_ENDTS, "${log.endTime}"))
-      ..add(MapEntry(LOGSPROP_COLUMN_WIDTH, "${props.width ?? 3}"))
+      ..add(MapEntry(LOGSPROP_COLUMN_WIDTH, "${props!.width ?? 3}"))
       ..add(MapEntry(LOGSPROP_COLUMN_VISIBLE, "${props.isVisible ?? 1}"))
       ..add(MapEntry(LOGSPROP_COLUMN_COLOR, "${props.color ?? "#FF0000"}"));
 
@@ -279,13 +279,13 @@ class ProjectDataUploadListTileProgressWidgetState
     var imageBytes = widget._projectDb.getImageDataBytes(image.imageDataId!);
     formData.files.add(MapEntry(
       TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_IMAGE,
-      MultipartFile.fromBytes(imageBytes, filename: image.text),
+      MultipartFile.fromBytes(imageBytes!, filename: image.text),
     ));
 
     var thumbBytes = widget._projectDb.getThumbnailBytes(image.imageDataId!);
     formData.files.add(MapEntry(
       TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_THUMBNAIL,
-      MultipartFile.fromBytes(thumbBytes, filename: image.text),
+      MultipartFile.fromBytes(thumbBytes!, filename: image.text),
     ));
 
     await widget._dio.post(
@@ -348,13 +348,13 @@ class ProjectDataUploadListTileProgressWidgetState
               "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_IMAGE}_${dbImage.id}";
           formData.files.add(MapEntry(
             key,
-            MultipartFile.fromBytes(imageBytes, filename: dbImage.text),
+            MultipartFile.fromBytes(imageBytes!, filename: dbImage.text),
           ));
           key =
               "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_THUMBNAIL}_${dbImage.id}";
           formData.files.add(MapEntry(
             key,
-            MultipartFile.fromBytes(thumbBytes, filename: dbImage.text),
+            MultipartFile.fromBytes(thumbBytes!, filename: dbImage.text),
           ));
         }
       }

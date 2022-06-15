@@ -346,7 +346,7 @@ class GeopackageExporter {
         log.lengthm,
         log.isDirty,
         log.text,
-        logProperties.color,
+        logProperties!.color,
         logProperties.width,
       ]);
     }

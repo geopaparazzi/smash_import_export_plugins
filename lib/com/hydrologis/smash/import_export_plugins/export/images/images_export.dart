@@ -112,7 +112,7 @@ class _ImagesExportWidgetState extends State<ImagesExportWidget>
         var imageDataBytes = widget.projectDb.getImageDataBytes(dataId!);
         var imagePath = FileUtilities.joinPaths(outFilePath, name);
         var imageFile = File(imagePath);
-        imageFile.writeAsBytes(imageDataBytes);
+        imageFile.writeAsBytes(imageDataBytes!);
       });
     } else {
       outFilePath = "No images found in project.";

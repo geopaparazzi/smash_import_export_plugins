@@ -464,12 +464,12 @@ class _GttExportWidgetState extends State<GttExportWidget> {
           continue;
         }
 
-        Uint8List imageBytes = db.getImageDataBytes(dbImage.imageDataId!);
+        Uint8List? imageBytes = db.getImageDataBytes(dbImage.imageDataId!);
 
         String imageName = "img_$imageId.jpg";
 
         Map<String, dynamic> ret =
-            await GttUtilities.postImage(imageBytes, imageName);
+            await GttUtilities.postImage(imageBytes!, imageName);
 
         if (ret["status_code"] == 201) {
           Map<String, dynamic> retData = ret["status_data"];
