@@ -85,16 +85,16 @@ class _GttExportWidgetState extends State<GttExportWidget> {
   bool _uploadCompleted = false;
   List<Widget> _uploadTiles;
   List<DropdownMenuItem> _projects = [
-    DropdownMenuItem(child: Text("Select Project"), value: "none")
+    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
   List<DropdownMenuItem> _gpsLogsProj = [
-    DropdownMenuItem(child: Text("Select Project"), value: "none")
+    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
   List<DropdownMenuItem> _simpleNotesProj = [
-    DropdownMenuItem(child: Text("Select Project"), value: "none")
+    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
   List<DropdownMenuItem> _imagesProj = [
-    DropdownMenuItem(child: Text("Select Project"), value: "none")
+    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
   String _selectedProj;
   String _selectedGpsLogProj;

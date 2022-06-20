@@ -1019,7 +1019,7 @@ class IEL {
   /// `The following data will be uploaded only if the project is selected`
   String get gttExport_dataUploadedSelectedProject {
     return Intl.message(
-        'The following data will be uploaded only if the project is selected',
+        'The following data will be uploaded only if the project is selected.',
         name: 'gttExport_dataUploadedSelectedProject',
         desc: '',
         args: []);
@@ -1028,11 +1028,21 @@ class IEL {
   /// `No Available Project, Contact your Admin`
   String get gttExport_contactAdmin {
     return Intl.message(
-        'No Available Project, Contact your Admin',
+        'No Available Project, Contact your Admin.',
         name: 'gttExport_contactAdmin',
         desc: '',
         args: []);
   }
+
+  /// `Select Project`
+  String get gttExport_selectProject {
+    return Intl.message(
+      'Select Project',
+      name: 'gttExport_selectProject',
+      desc: '',
+      args: [],
+    );
+  }  
 
   /// `Gps Logs`
   String get gttExport_gpsLogs {
