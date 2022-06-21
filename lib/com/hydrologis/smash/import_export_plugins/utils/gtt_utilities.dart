@@ -86,6 +86,37 @@ class GttUtilities {
     return retVal;
   }
 
+  static Future<Set<Map<String, dynamic>>> getDefaultConfigProjects() async {
+    Set<Map<String, dynamic>> retVal = {};
+
+    String url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
+        "/smash/settings.json";
+
+    String apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
+
+    try {
+      Dio dio = NetworkHelper.getNewDioInstance();
+
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            "X-Redmine-API-Key": apiKey,
+            "Content-Type": "application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        retVal.add(response.data);
+      }
+    } catch (exception) {
+      debugPrint("default project errors: $exception");
+    }
+
+    return retVal;
+  }
+
   static Future<String> getProjectForm(String projectId) async {
     String retVal = "";
 
@@ -233,7 +264,7 @@ class GttUtilities {
   static final DEFAULT_PRIORITY_ID = 2;
 
   static Map<String, dynamic> createLogIssue(
-      Log log, List<LogDataPoint> points, String selectedProj) {
+      Log log, List<LogDataPoint> points, String selectedProj, String defaultTrackerID) {
     String geoJson = "{\"type\": \"Feature\",\"properties\": {},"
         "\"geometry\": {\"type\": \"LineString\",\"coordinates\": [";
 
@@ -253,7 +284,7 @@ class GttUtilities {
     List<Map<String, dynamic>> customFields = [];
     List<Map<String, dynamic>> uploads = [];
 
-    int trackerId = DEFAULT_TRACKER_ID;
+    int trackerId = int.parse(defaultTrackerID);
     int priorityId = DEFAULT_PRIORITY_ID;
     String isPrivate = "false";
     String startDate = "";
@@ -276,6 +307,7 @@ class GttUtilities {
       "custom_fields": customFields,
       "geojson": geoJson,
       "uploads": uploads,
+      "issue_id": -99,
     };
 
     Map<String, dynamic> issue = {
@@ -313,7 +345,7 @@ class GttUtilities {
   }
 
   static Map<String, dynamic> createIssue(
-      Note note, String selectedProj, List<Map<String, dynamic>> uploads) {
+      Note note, String selectedProj, List<Map<String, dynamic>> uploads, String defaultTrackerID) {
     String geoJson = "{\"type\": \"Feature\",\"properties\": {},"
         "\"geometry\": {\"type\": \"Point\",\"coordinates\": "
         "[${note.lon}, ${note.lat}]}}";
@@ -323,7 +355,7 @@ class GttUtilities {
     String description =
         note.description.isEmpty ? "SMASH issue" : note.description;
 
-    int trackerId = DEFAULT_TRACKER_ID;
+    int trackerId = int.parse(defaultTrackerID);
     int priorityId = DEFAULT_PRIORITY_ID;
     int issueId = -999;
     String doneRatio = "0";
