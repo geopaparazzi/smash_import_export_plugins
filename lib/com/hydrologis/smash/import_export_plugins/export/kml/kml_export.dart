@@ -9,8 +9,8 @@ part of smash_import_export_plugins;
 const TITLE_KML = "KML";
 
 class KmlExportPlugin extends AExportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -48,14 +48,14 @@ class KmlExportPlugin extends AExportPlugin {
   }
 
   @override
-  Widget getSettingsPage() {
+  Widget? getSettingsPage() {
     return null;
   }
 }
 
 class KmlExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
-  KmlExportWidget({Key key, this.projectDb}) : super(key: key);
+  KmlExportWidget({Key? key, required this.projectDb}) : super(key: key);
 
   @override
   State<KmlExportWidget> createState() => _KmlExportWidgetState();
@@ -64,7 +64,7 @@ class KmlExportWidget extends StatefulWidget {
 class _KmlExportWidgetState extends State<KmlExportWidget>
     with AfterLayoutMixin {
   bool building = true;
-  String outFilePath;
+  late String outFilePath;
 
   @override
   void afterFirstLayout(BuildContext context) {

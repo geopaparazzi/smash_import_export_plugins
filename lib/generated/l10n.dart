@@ -10,12 +10,18 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class IEL {
   IEL();
 
-  static IEL current;
+  static IEL? _current;
+
+  static IEL get current {
+    assert(_current != null,
+        'No instance of IEL was loaded. Try to initialize the IEL delegate before accessing IEL.current.');
+    return _current!;
+  }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
@@ -26,13 +32,21 @@ class IEL {
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      IEL.current = IEL();
+      final instance = IEL();
+      IEL._current = instance;
 
-      return IEL.current;
+      return instance;
     });
   }
 
   static IEL of(BuildContext context) {
+    final instance = IEL.maybeOf(context);
+    assert(instance != null,
+        'No instance of IEL present in the widget tree. Did you add IEL.delegate in localizationsDelegates?');
+    return instance!;
+  }
+
+  static IEL? maybeOf(BuildContext context) {
     return Localizations.of<IEL>(context, IEL);
   }
 
@@ -1016,34 +1030,6 @@ class IEL {
     );
   }
 
-  /// `The following data will be uploaded only if the project is selected`
-  String get gttExport_dataUploadedSelectedProject {
-    return Intl.message(
-        'The following data will be uploaded only if the project is selected.',
-        name: 'gttExport_dataUploadedSelectedProject',
-        desc: '',
-        args: []);
-  }
-
-  /// `No Available Project, Contact your Admin`
-  String get gttExport_contactAdmin {
-    return Intl.message(
-        'No Available Project, Contact your Admin.',
-        name: 'gttExport_contactAdmin',
-        desc: '',
-        args: []);
-  }
-
-  /// `Select Project`
-  String get gttExport_selectProject {
-    return Intl.message(
-      'Select Project',
-      name: 'gttExport_selectProject',
-      desc: '',
-      args: [],
-    );
-  }  
-
   /// `Gps Logs`
   String get gttExport_gpsLogs {
     return Intl.message(
@@ -1284,12 +1270,6 @@ class IEL {
     );
   }
 
-  /// `All GTT Server Projects will be imported`
-  String get gttImport_GTTServerProjectsWillBeImported {
-    return Intl.message('All GTT Server Projects will be imported',
-        name: 'gttImport_GTTServerProjectsWillBeImported', desc: '', args: []);
-  }
-
   /// `Importing Forms`
   String get gttImport_importingForms {
     return Intl.message(
@@ -1434,11 +1414,9 @@ class AppLocalizationDelegate extends LocalizationsDelegate<IEL> {
   bool shouldReload(AppLocalizationDelegate old) => false;
 
   bool _isSupported(Locale locale) {
-    if (locale != null) {
-      for (var supportedLocale in supportedLocales) {
-        if (supportedLocale.languageCode == locale.languageCode) {
-          return true;
-        }
+    for (var supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
       }
     }
     return false;

@@ -20,12 +20,12 @@ abstract class AImportPlugin {
   Widget getImportPage();
 
   /// Get the optional settings page to present to the user.
-  Widget getSettingsPage();
+  Widget? getSettingsPage();
 }
 
 class ImportWidget extends StatefulWidget {
   final ProjectDb projectDb;
-  ImportWidget({Key key, this.projectDb}) : super(key: key);
+  ImportWidget({Key? key, required this.projectDb}) : super(key: key);
 
   @override
   _ImportWidgetState createState() => _ImportWidgetState();
@@ -38,12 +38,12 @@ class _ImportWidgetState extends State<ImportWidget> {
       ip.setContext(context);
       ip.setProjectDatabase(widget.projectDb);
 
-      Widget settingsButton;
+      Widget? settingsButton;
       if (ip.getSettingsPage() != null) {
         settingsButton = IconButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ip.getSettingsPage()));
+                MaterialPageRoute(builder: (context) => ip.getSettingsPage()!));
           },
           icon: const Icon(
             MdiIcons.cog,

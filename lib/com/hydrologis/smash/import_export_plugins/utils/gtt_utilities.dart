@@ -6,11 +6,11 @@ class GttUtilities {
   static final String KEY_GTT_SERVER_PWD = "key_gtt_server_pwd";
   static final String KEY_GTT_SERVER_KEY = "key_gtt_server_apiKey";
 
-  static Future<String> getApiKey() async {
-    String retVal;
+  static Future<String?> getApiKey() async {
+    String? retVal;
 
-    String pwd = GpPreferences().getStringSync(KEY_GTT_SERVER_PWD);
-    String usr = GpPreferences().getStringSync(KEY_GTT_SERVER_USER);
+    String? pwd = GpPreferences().getStringSync(KEY_GTT_SERVER_PWD);
+    String? usr = GpPreferences().getStringSync(KEY_GTT_SERVER_USER);
     String url =
         "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}/my/account.json";
 
@@ -48,7 +48,7 @@ class GttUtilities {
     String url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
         "/projects.json?limit=100000000&include=enabled_modules";
 
-    String apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
+    String? apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
 
     try {
       Dio dio = NetworkHelper.getNewDioInstance();
@@ -132,7 +132,7 @@ class GttUtilities {
 
     debugPrint("Import URL: $url ");
 
-    String apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
+    String? apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
 
     try {
       Dio dio = NetworkHelper.getNewDioInstance();
@@ -165,7 +165,7 @@ class GttUtilities {
     String url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
         "/uploads.json?filename=$imageName";
 
-    String apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
+    String? apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
 
     try {
       Dio dio = NetworkHelper.getNewDioInstance();
@@ -203,7 +203,7 @@ class GttUtilities {
     String url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
         "$iUrl";
 
-    String apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
+    String? apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
 
     try {
       Dio dio = NetworkHelper.getNewDioInstance();
@@ -269,17 +269,19 @@ class GttUtilities {
         "\"geometry\": {\"type\": \"LineString\",\"coordinates\": [";
 
     int len = points.length;
-    double maxElev = points.first.altim;
-    double minElev = points.first.altim;
+    double maxElev = points.first.altim!;
+    double minElev = points.first.altim!;
 
     for (int i = 0; i < len - 1; i++) {
       geoJson = geoJson + "[${points[i].lon}, ${points[i].lat}],";
-      maxElev = points[i].altim > maxElev ? points[i].altim : maxElev;
-      minElev = points[i].altim < minElev ? points[i].altim : minElev;
+      maxElev = points[i].altim! > maxElev ? points[i].altim! : maxElev;
+      minElev = points[i].altim! < minElev ? points[i].altim! : minElev;
     }
     geoJson = geoJson + "[${points[len - 1].lon}, ${points[len - 1].lat}]]}}";
-    maxElev = points[len - 1].altim > maxElev ? points[len - 1].altim : maxElev;
-    minElev = points[len - 1].altim < minElev ? points[len - 1].altim : minElev;
+    maxElev =
+        points[len - 1].altim! > maxElev ? points[len - 1].altim! : maxElev;
+    minElev =
+        points[len - 1].altim! < minElev ? points[len - 1].altim! : minElev;
 
     List<Map<String, dynamic>> customFields = [];
     List<Map<String, dynamic>> uploads = [];
@@ -352,8 +354,12 @@ class GttUtilities {
 
     String projectId = selectedProj;
     String subject = note.text.isEmpty ? "SMASH issue" : note.text;
-    String description =
-        note.description.isEmpty ? "SMASH issue" : note.description;
+    String description;
+    if (note.description == null || note.description!.isEmpty) {
+      description = "SMASH issue";
+    } else {
+      description = note.description!;
+    }
 
     int trackerId = int.parse(defaultTrackerID);
     int priorityId = DEFAULT_PRIORITY_ID;
@@ -366,7 +372,7 @@ class GttUtilities {
     List<Map<String, dynamic>> customFields = [];
 
     if (note.hasForm()) {
-      final Map<String, dynamic> form = json.decode(note.form);
+      final Map<String, dynamic> form = json.decode(note.form!);
 
       String sectionName = form["sectionname"];
       String sectionDesc = form["sectiondescription"];
@@ -481,10 +487,10 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
   static final subtitle = "GeoTaskTracker";
   static final iconData = MdiIcons.cloudLock;
 
-  String _gttUrl;
-  String _gttUser;
-  String _gttPwd;
-  bool _allowSelfCert;
+  String? _gttUrl;
+  String? _gttUser;
+  String? _gttPwd;
+  bool? _allowSelfCert;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -492,14 +498,14 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
   }
 
   Future<void> getData() async {
-    String gssUrl =
+    String? gssUrl =
         await GpPreferences().getString(GttUtilities.KEY_GTT_SERVER_URL, "");
-    String gssUser =
+    String? gssUser =
         await GpPreferences().getString(GttUtilities.KEY_GTT_SERVER_USER, "");
-    String gssPwd = await GpPreferences()
+    String? gssPwd = await GpPreferences()
         .getString(GttUtilities.KEY_GTT_SERVER_PWD, "dummy");
 
-    bool allowSelfCert = await GpPreferences().getBoolean(
+    bool? allowSelfCert = await GpPreferences().getBoolean(
         SmashPreferencesKeys.KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE, true);
 
     setState(() {
@@ -557,7 +563,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                 IEL
                                     .of(context)
                                     .settings_serverUrl, //"server url"
-                                _gttUrl,
+                                _gttUrl!,
                                 (res) async {
                                   if (res == null || res.trim().length == 0) {
                                     res = _gttUrl;
@@ -607,7 +613,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                 IEL
                                     .of(context)
                                     .settings_serverUsername, //"server username"
-                                _gttUser,
+                                _gttUser!,
                                 (res) async {
                                   if (res == null || res.trim().length == 0) {
                                     res = _gttUser;
@@ -657,7 +663,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                 IEL
                                     .of(context)
                                     .settings_serverPassword, //"server password"
-                                _gttPwd,
+                                _gttPwd!,
                                 (res) async {
                                   if (res == null || res.trim().length == 0) {
                                     res = _gttPwd;
