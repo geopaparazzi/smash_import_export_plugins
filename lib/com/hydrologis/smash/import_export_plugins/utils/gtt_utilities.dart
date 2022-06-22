@@ -92,7 +92,7 @@ class GttUtilities {
     String url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
         "/smash/settings.json";
 
-    String apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
+    String? apiKey = GpPreferences().getStringSync(KEY_GTT_SERVER_KEY);
 
     try {
       Dio dio = NetworkHelper.getNewDioInstance();
@@ -122,7 +122,7 @@ class GttUtilities {
 
     String url;
 
-    if (projectId == null) {
+    if (projectId.isEmpty) {
       url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
           "/smash/tags.json";
     } else {
@@ -263,8 +263,8 @@ class GttUtilities {
   static final DEFAULT_TRACKER_ID = 1000000;
   static final DEFAULT_PRIORITY_ID = 2;
 
-  static Map<String, dynamic> createLogIssue(
-      Log log, List<LogDataPoint> points, String selectedProj, String defaultTrackerID) {
+  static Map<String, dynamic> createLogIssue(Log log, List<LogDataPoint> points,
+      String selectedProj, String defaultTrackerID) {
     String geoJson = "{\"type\": \"Feature\",\"properties\": {},"
         "\"geometry\": {\"type\": \"LineString\",\"coordinates\": [";
 
@@ -346,8 +346,8 @@ class GttUtilities {
     return formItems;
   }
 
-  static Map<String, dynamic> createIssue(
-      Note note, String selectedProj, List<Map<String, dynamic>> uploads, String defaultTrackerID) {
+  static Map<String, dynamic> createIssue(Note note, String selectedProj,
+      List<Map<String, dynamic>> uploads, String defaultTrackerID) {
     String geoJson = "{\"type\": \"Feature\",\"properties\": {},"
         "\"geometry\": {\"type\": \"Point\",\"coordinates\": "
         "[${note.lon}, ${note.lat}]}}";
@@ -377,7 +377,7 @@ class GttUtilities {
       String sectionName = form["sectionname"];
       String sectionDesc = form["sectiondescription"];
 
-      if (sectionName != null && sectionName.toLowerCase() == "text note") {
+      if (sectionName.isNotEmpty && sectionName.toLowerCase() == "text note") {
         for (var f in form["forms"][0]["formitems"]) {
           if (f["key"] == "title") {
             subject = f["value"];
@@ -386,7 +386,7 @@ class GttUtilities {
             description = f["value"];
           }
         }
-      } else if (sectionDesc != null && sectionDesc.contains("GTT")) {
+      } else if (sectionDesc.isNotEmpty && sectionDesc.contains("GTT")) {
         for (var f in form["forms"][0]["formitems"]) {
           String fKey = f["key"];
 

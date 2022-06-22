@@ -7,8 +7,7 @@
 // ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
-// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
+// ignore_for_file:unused_import, file_names
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -21,19 +20,15 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "exportWidget_export": MessageLookupByLibrary.simpleMessage("Экспорт"),
-        "exportWidget_exportImagesToFolderTitle":
-            MessageLookupByLibrary.simpleMessage("Изображения"),
-        "gssExport_gssExport":
-            MessageLookupByLibrary.simpleMessage("Экспорт GSS"),
-        "gssExport_images":
-            MessageLookupByLibrary.simpleMessage("Изображения:"),
-        "gssImport_data": MessageLookupByLibrary.simpleMessage("Данные"),
-        "gssImport_gssImport":
-            MessageLookupByLibrary.simpleMessage("Импорт GSS"),
-        "gssImport_projects": MessageLookupByLibrary.simpleMessage("Проекты"),
-        "importWidget_import": MessageLookupByLibrary.simpleMessage("Импорт"),
-        "network_completed": MessageLookupByLibrary.simpleMessage("Завершено.")
-      };
+  static _notInlinedMessages(_) => <String, Function> {
+    "exportWidget_export" : MessageLookupByLibrary.simpleMessage("Экспорт"),
+    "exportWidget_exportImagesToFolderTitle" : MessageLookupByLibrary.simpleMessage("Изображения"),
+    "gssExport_gssExport" : MessageLookupByLibrary.simpleMessage("Экспорт GSS"),
+    "gssExport_images" : MessageLookupByLibrary.simpleMessage("Изображения:"),
+    "gssImport_data" : MessageLookupByLibrary.simpleMessage("Данные"),
+    "gssImport_gssImport" : MessageLookupByLibrary.simpleMessage("Импорт GSS"),
+    "gssImport_projects" : MessageLookupByLibrary.simpleMessage("Проекты"),
+    "importWidget_import" : MessageLookupByLibrary.simpleMessage("Импорт"),
+    "network_completed" : MessageLookupByLibrary.simpleMessage("Завершено.")
+  };
 }

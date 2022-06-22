@@ -175,7 +175,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
             });
             SMLogger().e(msg, e, s);
           }
-        } else if (e.message != null) {
+        } else if (e.message.isNotEmpty) {
           setState(() {
             _genericErrorMessage = e.message;
             _status = 100;

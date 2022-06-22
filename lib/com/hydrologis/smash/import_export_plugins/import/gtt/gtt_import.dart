@@ -77,7 +77,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
   bool _importCompleted = false;
 
   List<Widget> _uploadTiles = [];
-  List<DropdownMenuItem> _projects = [];
+  List<DropdownMenuItem<String>> _projects = [];
   List<bool> _projectSelected = [true, false];
 
   late String _selectedProj;
@@ -184,11 +184,13 @@ class _GttImportWidgetState extends State<GttImportWidget> {
               bold: true,
               color: Colors.blue,
             ),
-            DropdownButton(
+            DropdownButton<String>(
               items: _projects,
               value: _selectedProj,
               onChanged: _projectSelected[0]
-                  ? (s) => setState(() => _selectedProj = s)
+                  ? (s) => setState(() {
+                        _selectedProj = s.toString();
+                      })
                   : null,
             )
           ],

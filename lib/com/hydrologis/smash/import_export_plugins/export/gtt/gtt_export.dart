@@ -87,20 +87,20 @@ class _GttExportWidgetState extends State<GttExportWidget> {
   List<DropdownMenuItem> _projects = [
     DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
-  List<DropdownMenuItem> _gpsLogsProj = [
+  List<DropdownMenuItem<String>> _gpsLogsProj = [
     DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
-  List<DropdownMenuItem> _simpleNotesProj = [
+  List<DropdownMenuItem<String>> _simpleNotesProj = [
     DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
-  List<DropdownMenuItem> _imagesProj = [
+  List<DropdownMenuItem<String>> _imagesProj = [
     DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
   ];
   late String _selectedProj;
-  String _selectedGpsLogProj;
-  String _selectedSimpleNotesProj;
-  String _selectedImagesProj;
-  String _defaultSubject;
+  String _selectedGpsLogProj = "";
+  String _selectedSimpleNotesProj = "";
+  String _selectedImagesProj = "";
+  String _defaultSubject = "";
 
   String _simpleTracker = "1000000";
   String _photoTracker = "1000000";
@@ -447,7 +447,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                               padding: SmashUI
                                                                   .defaultPadding(),
                                                               child:
-                                                                  DropdownButton(
+                                                                  DropdownButton<
+                                                                      String>(
                                                                 items:
                                                                     _gpsLogsProj,
                                                                 value:
@@ -455,7 +456,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                                 onChanged: (s) =>
                                                                     setState(() =>
                                                                         _selectedGpsLogProj =
-                                                                            s),
+                                                                            s.toString()),
                                                               ),
                                                             ),
                                                           ],
@@ -478,7 +479,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                             padding: SmashUI
                                                                 .defaultPadding(),
                                                             child:
-                                                                DropdownButton(
+                                                                DropdownButton<
+                                                                    String>(
                                                               items:
                                                                   _simpleNotesProj,
                                                               value:
@@ -486,7 +488,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                               onChanged: (s) =>
                                                                   setState(() =>
                                                                       _selectedSimpleNotesProj =
-                                                                          s),
+                                                                          s.toString()),
                                                             ),
                                                           ),
                                                         ]),
@@ -508,7 +510,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                             padding: SmashUI
                                                                 .defaultPadding(),
                                                             child:
-                                                                DropdownButton(
+                                                                DropdownButton<
+                                                                    String>(
                                                               items:
                                                                   _imagesProj,
                                                               value:
@@ -516,7 +519,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                               onChanged: (s) =>
                                                                   setState(() =>
                                                                       _selectedImagesProj =
-                                                                          s),
+                                                                          s.toString()),
                                                             ),
                                                           ),
                                                         ]),
@@ -629,7 +632,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       Map<String, dynamic> form = jsonDecode(note.form!);
       String sectionDesc = form["sectiondescription"];
 
-      if (sectionDesc != null && sectionDesc.contains("GTT")) {
+      if (sectionDesc.isNotEmpty && sectionDesc.contains("GTT")) {
         retVal++;
       }
     }
@@ -652,7 +655,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       Map<String, dynamic> form = jsonDecode(note.form!);
       String sectionDesc = form["sectiondescription"];
 
-      if (sectionDesc != null && !sectionDesc.contains("GTT")) {
+      if (sectionDesc.isNotEmpty && !sectionDesc.contains("GTT")) {
         continue;
       }
 
@@ -734,13 +737,12 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       debugPrint("SimpleNote status_code: ${ret["status_code"]}, "
           "status_message: ${ret["status_message"]}");
 
-      if ((ret["status_code"] == 201 || ret["status_code"] == 204) && _selectedSimpleNotesProj != 'none') {
+      if ((ret["status_code"] == 201 || ret["status_code"] == 204) &&
+          _selectedSimpleNotesProj != 'none') {
         uploadCount++;
 
         note.isDirty = 0;
-        await db.updateNoteDirty(note.id, false);
-      } else {
-        await db.updateNoteDirty(note.id, true);
+         db.updateNoteDirty(note.id?.toInt() ?? 0, false);
       }
     }
 
@@ -769,9 +771,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
         uploadCount++;
 
         note.isDirty = 0;
-        await db.updateImageDirty(image.imageDataId, false);
-      } else {
-        await db.updateImageDirty(image.imageDataId, true);
+         db.updateImageDirty(image.imageDataId?.toInt() ?? 0, false);
       }
     }
 
@@ -786,7 +786,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
     List<Log> logsList = db.getLogs(onlyDirty: true);
 
     for (Log log in logsList) {
-      List<LogDataPoint> points = db.getLogDataPointsById(log.id);
+      List<LogDataPoint> points = db.getLogDataPointsById(log.id?.toInt() ?? 0);
 
       Map<String, dynamic> ret = await GttUtilities.postIssue(
           GttUtilities.createLogIssue(
@@ -796,9 +796,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
         uploadCount++;
 
         log.isDirty = 0;
-        await db.updateLogDirty(log.id, false);
-      } else {
-        await db.updateLogDirty(log.id, true);
+         db.updateLogDirty(log.id?.toInt() ?? 0, false);
       }
     }
 
