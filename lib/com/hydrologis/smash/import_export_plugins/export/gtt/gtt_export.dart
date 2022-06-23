@@ -659,11 +659,16 @@ class _GttExportWidgetState extends State<GttExportWidget> {
       }
     }
 
+    _uploadTiles.add(GttUtilities.getResultTile(
+        IEL.of(context).gttExport_simpleNotesUpload, //"Simple Notes Upload "
+        "$uploadCount ${IEL.of(context).gttExport_notesUploadedToGttServer}")); //"Notes uploaded to GTT Server"
+
     /**
      * Simple Note Image Upload
      */
 
     List<DbImage> imagesList = db.getImages(onlyDirty: true);
+    uploadCount = 0;
 
     for (var image in imagesList) {
       List<Map<String, dynamic>> uploads =
@@ -688,7 +693,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
     }
 
     _uploadTiles.add(GttUtilities.getResultTile(
-        IEL.of(context).gttExport_simpleNotesUpload, //"Simple Notes Upload "
+        IEL.of(context).gttExport_images, //"Imsges "
         "$uploadCount ${IEL.of(context).gttExport_notesUploadedToGttServer}")); //"Notes uploaded to GTT Server"
 
     /**
