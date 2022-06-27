@@ -706,14 +706,17 @@ class _GttExportWidgetState extends State<GttExportWidget> {
     for (Log log in logsList) {
       List<LogDataPoint> points = db.getLogDataPointsById(log.id?.toInt() ?? 0);
 
-      Map<String, dynamic> ret = await GttUtilities.postIssue(
-          GttUtilities.createLogIssue(
-              log, points, _selectedGpsLogProj, _gpsTracker));
+      if (points.length > 0) {
+        Map<String, dynamic> ret = await GttUtilities.postIssue(
+            GttUtilities.createLogIssue(
+                log, points, _selectedGpsLogProj, _gpsTracker));
+        if (ret["status_code"] == 201 && _selectedGpsLogProj != 'none') {
+          uploadCount++;
 
-      if (ret["status_code"] == 201 && _selectedGpsLogProj != 'none') {
-        uploadCount++;
-
-        log.isDirty = 0;
+          log.isDirty = 0;
+          db.updateLogDirty(log.id?.toInt() ?? 0, false);
+        }
+      } else {
         db.updateLogDirty(log.id?.toInt() ?? 0, false);
       }
     }

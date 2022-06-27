@@ -123,7 +123,6 @@ class GttUtilities {
     String url;
 
     if (projectId == null || projectId.isEmpty) {
-      log('in project id null');
       url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
           "/smash/tags.json";
     } else {
