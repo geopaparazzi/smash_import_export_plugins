@@ -78,7 +78,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
 
   List<Widget> _uploadTiles = [];
   List<DropdownMenuItem<String>> _projects = [];
-  List<bool> _projectSelected = [true, false];
+  List<bool> _projectSelected = [false, true];
 
   late String _selectedProj;
 
@@ -168,8 +168,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _projectSelected = [false, true]; // For importing all projects
+  Widget build(BuildContext context) { // For importing all projects
 
     Widget projWidget = Container(
       padding: EdgeInsets.all(10),
@@ -178,27 +177,14 @@ class _GttImportWidgetState extends State<GttImportWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SmashUI.normalText(
-              IEL
-                  .of(context)
-                  .gttImport_chooseGttProject, //"Choose GTT Project:"
-              bold: true,
-              color: Colors.blue,
-            ),
-            DropdownButton<String>(
-              items: _projects,
-              value: _selectedProj,
-              onChanged: _projectSelected[0]
-                  ? (s) => setState(() {
-                        _selectedProj = s.toString();
-                      })
-                  : null,
-            )
+                IEL.of(context).gttImport_GTTServerProjectsWillBeImported,
+                bold: true,
+                color: Colors.blue,
+                textAlign: TextAlign.center)
           ],
         ),
       ),
     );
-
-    log('status.....: $_status');
 
     return new Scaffold(
       appBar: new AppBar(
@@ -348,9 +334,7 @@ class _GttImportWidgetState extends State<GttImportWidget> {
 
   importProjectForm() async {
     String? selProj = _projectSelected[0] ? _selectedProj : null;
-    if (selProj == null) {
-      return;
-    }
+
     String form = await GttUtilities.getProjectForm(selProj);
     debugPrint("Project Form: $form");
 

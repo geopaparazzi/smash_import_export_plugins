@@ -117,12 +117,13 @@ class GttUtilities {
     return retVal;
   }
 
-  static Future<String> getProjectForm(String projectId) async {
+  static Future<String> getProjectForm(String? projectId) async {
     String retVal = "";
 
     String url;
 
-    if (projectId.isEmpty) {
+    if (projectId == null || projectId.isEmpty) {
+      log('in project id null');
       url = "${GpPreferences().getStringSync(KEY_GTT_SERVER_URL)}"
           "/smash/tags.json";
     } else {
