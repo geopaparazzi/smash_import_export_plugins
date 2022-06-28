@@ -57,7 +57,7 @@ class PdfExporter {
         row.add(note.id.toString());
         row.add(note.lon.toStringAsFixed(6));
         row.add(note.lat.toStringAsFixed(6));
-        row.add("${note.altim.toInt()}m");
+        row.add("${note.altim?.toInt()}m");
         row.add(note.text);
         row.add(HU.TimeUtilities.ISO8601_TS_FORMATTER
             .format(DateTime.fromMillisecondsSinceEpoch(note.timeStamp)));
@@ -65,17 +65,17 @@ class PdfExporter {
 
         if (noteExt != null) {
           if (noteExt.accuracy != null) {
-            row.add("${noteExt.accuracy.toInt()}m");
+            row.add("${noteExt.accuracy?.toInt()}m");
           } else {
             row.add(novalue);
           }
           if (noteExt.heading != null) {
-            row.add("${noteExt.heading.toInt()}");
+            row.add("${noteExt.heading?.toInt()}");
           } else {
             row.add(novalue);
           }
           if (noteExt.speed != null) {
-            row.add("${noteExt.speed.toStringAsFixed(1)}m/s");
+            row.add("${noteExt.speed?.toStringAsFixed(1)}m/s");
           } else {
             row.add(novalue);
           }
@@ -98,7 +98,7 @@ class PdfExporter {
         Note note = formNotesList[i];
         formWidgetList.add(pw.Header(level: 2, text: note.text));
 
-        String formJson = note.form;
+        String formJson = note.form!;
         Map<String, dynamic> sectionMap = jsonDecode(formJson);
 //      var sectionName = sectionMap[ATTR_SECTIONNAME];
         List<String> formNames = TagsManager.getFormNames4Section(sectionMap);
@@ -136,13 +136,13 @@ class PdfExporter {
                       text: image.text, textAlign: pw.TextAlign.center);
                   formWidgetList.add(p);
 
-                  Uint8List imageDataBytes =
-                      db.getImageDataBytes(image.imageDataId);
+                  Uint8List? imageDataBytes =
+                      db.getImageDataBytes(image.imageDataId!);
                   List<int> resizeImage = HU.ImageUtilities.resizeImage(
-                      imageDataBytes,
+                      imageDataBytes!,
                       longestSizeTo: EXPORT_IMG_LONGSIZE);
 
-                  final pdfImage = pw.MemoryImage(resizeImage);
+                  final pdfImage = pw.MemoryImage(resizeImage as Uint8List);
 
                   var c = pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -207,11 +207,11 @@ class PdfExporter {
                 text:
                     "timestamp: ${HU.TimeUtilities.ISO8601_TS_FORMATTER.format(DateTime.fromMillisecondsSinceEpoch(image.timeStamp))}"),
           ]);
-          Uint8List imageDataBytes = db.getImageDataBytes(image.imageDataId);
-          List<int> resizeImage = HU.ImageUtilities.resizeImage(imageDataBytes,
+          Uint8List? imageDataBytes = db.getImageDataBytes(image.imageDataId!);
+          List<int> resizeImage = HU.ImageUtilities.resizeImage(imageDataBytes!,
               longestSizeTo: EXPORT_IMG_LONGSIZE);
 
-          final pdfImage = pw.MemoryImage(resizeImage);
+          final pdfImage = pw.MemoryImage(resizeImage as Uint8List);
           var c = pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: <pw.Widget>[
@@ -232,7 +232,7 @@ class PdfExporter {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         header: (pw.Context context) {
           if (context.pageNumber == 1) {
-            return null;
+            return pw.Container();
           }
           return pw.Container(
               alignment: pw.Alignment.centerRight,

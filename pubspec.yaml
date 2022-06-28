@@ -5,7 +5,8 @@ version: 0.0.1
 publish_to: none
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:
@@ -23,9 +24,10 @@ dependencies:
     # path: ../smashlibs/
     git:
       url: https://github.com/moovida/smashlibs.git
-      ref: 879a910
+      #ref: 2c27b2c
+      ref: 399f9c3
 
-  
+
   # apache 2
   flutter_geopackage: ^0.5.1
 

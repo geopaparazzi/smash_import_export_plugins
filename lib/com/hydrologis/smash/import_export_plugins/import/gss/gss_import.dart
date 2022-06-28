@@ -7,8 +7,8 @@ part of smash_import_export_plugins;
  */
 
 class GssImportPlugin extends AImportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -50,7 +50,7 @@ class GssImportPlugin extends AImportPlugin {
 }
 
 class GssImportWidget extends StatefulWidget {
-  const GssImportWidget({Key key}) : super(key: key);
+  const GssImportWidget({Key? key}) : super(key: key);
 
   @override
   _GssImportWidgetState createState() => _GssImportWidgetState();
@@ -70,13 +70,13 @@ class _GssImportWidgetState extends State<GssImportWidget>
    * 100 = generic error
    */
   int _status = 0;
-  String _genericErrorMessage;
+  late String _genericErrorMessage;
 
-  String _mapsFolderPath;
-  String _projectsFolderPath;
-  String _formsFolderPath;
-  String _serverUrl;
-  String _authHeader;
+  late String _mapsFolderPath;
+  late String _projectsFolderPath;
+  late String _formsFolderPath;
+  String? _serverUrl;
+  String? _authHeader;
   final List<String> _baseMapsList = [];
   final List<String> _projectsList = [];
   final List<String> _tagsList = [];
@@ -102,13 +102,13 @@ class _GssImportWidgetState extends State<GssImportWidget>
       });
       return;
     }
-    if (_serverUrl.endsWith("/")) {
-      _serverUrl = _serverUrl.substring(0, _serverUrl.length - 1);
+    if (_serverUrl!.endsWith("/")) {
+      _serverUrl = _serverUrl!.substring(0, _serverUrl!.length - 1);
     }
-    String downloadDataListUrl = _serverUrl + GssUtilities.DATA_DOWNLOAD_PATH;
-    String downloadTagsListUrl = _serverUrl + GssUtilities.TAGS_DOWNLOAD_PATH;
+    String downloadDataListUrl = _serverUrl! + GssUtilities.DATA_DOWNLOAD_PATH;
+    String downloadTagsListUrl = _serverUrl! + GssUtilities.TAGS_DOWNLOAD_PATH;
 
-    String pwd =
+    String? pwd =
         GpPreferences().getStringSync(SmashPreferencesKeys.KEY_GSS_SERVER_PWD);
     if (pwd == null || pwd.trim().isEmpty) {
       setState(() {
@@ -162,8 +162,8 @@ class _GssImportWidgetState extends State<GssImportWidget>
     } on Exception catch (e, s) {
       if (e is DioError) {
         if (e.response != null) {
-          var code = e.response.statusCode;
-          var msg = e.response.statusMessage;
+          var code = e.response?.statusCode;
+          var msg = e.response?.statusMessage ?? "no message";
           if (code == 403) {
             setState(() {
               _status = 13;
@@ -175,7 +175,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
             });
             SMLogger().e(msg, e, s);
           }
-        } else if (e.message != null) {
+        } else if (e.message.isNotEmpty) {
           setState(() {
             _genericErrorMessage = e.message;
             _status = 100;
@@ -310,7 +310,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
                                                                 index];
 
                                                         String downloadUrl =
-                                                            _serverUrl +
+                                                            _serverUrl! +
                                                                 GssUtilities
                                                                     .DATA_DOWNLOAD_PATH +
                                                                 "?" +
@@ -378,7 +378,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
                                                                 index];
 
                                                         String downloadUrl =
-                                                            _serverUrl +
+                                                            _serverUrl! +
                                                                 GssUtilities
                                                                     .DATA_DOWNLOAD_PATH +
                                                                 "?" +
@@ -444,7 +444,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
                                                             _tagsList[index];
 
                                                         String downloadUrl =
-                                                            _serverUrl +
+                                                            _serverUrl! +
                                                                 GssUtilities
                                                                     .TAGS_DOWNLOAD_PATH +
                                                                 // "/" +

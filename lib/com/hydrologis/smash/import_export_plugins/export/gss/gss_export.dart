@@ -7,8 +7,8 @@ part of smash_import_export_plugins;
  */
 
 class GssExportPlugin extends AExportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -54,7 +54,7 @@ class GssExportPlugin extends AExportPlugin {
 class GssExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
 
-  GssExportWidget(this.projectDb, {Key key}) : super(key: key);
+  GssExportWidget(this.projectDb, {Key? key}) : super(key: key);
 
   @override
   _GssExportWidgetState createState() => new _GssExportWidgetState();
@@ -72,16 +72,16 @@ class _GssExportWidgetState extends State<GssExportWidget> {
    */
   int _status = 0;
 
-  String _serverUrl;
-  String _authHeader;
-  String _uploadDataUrl;
+  String? _serverUrl;
+  String? _authHeader;
+  late String _uploadDataUrl;
 
-  int _gpsLogCount;
-  int _simpleNotesCount;
-  int _formNotesCount;
-  int _imagesCount;
+  late int _gpsLogCount;
+  late int _simpleNotesCount;
+  late int _formNotesCount;
+  late int _imagesCount;
 
-  List<Widget> _uploadTiles;
+  List<Widget> _uploadTiles = [];
 
   @override
   void initState() {
@@ -99,11 +99,11 @@ class _GssExportWidgetState extends State<GssExportWidget> {
       });
       return;
     }
-    if (_serverUrl.endsWith("/")) {
-      _serverUrl = _serverUrl.substring(0, _serverUrl.length - 1);
+    if (_serverUrl!.endsWith("/")) {
+      _serverUrl = _serverUrl!.substring(0, _serverUrl!.length - 1);
     }
 
-    String pwd =
+    String? pwd =
         GpPreferences().getStringSync(SmashPreferencesKeys.KEY_GSS_SERVER_PWD);
     if (pwd == null || pwd.trim().isEmpty) {
       setState(() {
@@ -112,7 +112,7 @@ class _GssExportWidgetState extends State<GssExportWidget> {
       return;
     }
 
-    _uploadDataUrl = _serverUrl + GssUtilities.SYNCH_PATH;
+    _uploadDataUrl = _serverUrl! + GssUtilities.SYNCH_PATH;
     _authHeader = await GssUtilities.getAuthHeader(pwd);
 
     /*
@@ -149,11 +149,10 @@ class _GssExportWidgetState extends State<GssExportWidget> {
                   icon: Icon(MdiIcons.restore),
                   onPressed: () async {
                     var doIt = await SmashDialogs.showConfirmDialog(
-                        context,
-                        IEL.of(context).gssExport_setProjectDirty,
-                        IEL
-                            .of(context)
-                            .gssExport_thisCantBeUndone); //"Set project to DIRTY?" //"This can't be undone!"
+                            context,
+                            IEL.of(context).gssExport_setProjectDirty,
+                            IEL.of(context).gssExport_thisCantBeUndone) ??
+                        false; //"Set project to DIRTY?" //"This can't be undone!"
                     if (doIt) {
                       widget.projectDb.updateDirty(true);
                       setState(() {
@@ -170,11 +169,10 @@ class _GssExportWidgetState extends State<GssExportWidget> {
                   icon: Icon(MdiIcons.wiperWash),
                   onPressed: () async {
                     var doIt = await SmashDialogs.showConfirmDialog(
-                        context,
-                        IEL.of(context).gssExport_setProjectClean,
-                        IEL
-                            .of(context)
-                            .gssExport_thisCantBeUndone); //"Set project to CLEAN?" //"This can't be undone!"
+                            context,
+                            IEL.of(context).gssExport_setProjectClean,
+                            IEL.of(context).gssExport_thisCantBeUndone) ??
+                        false; //"Set project to CLEAN?" //"This can't be undone!"
                     if (doIt) {
                       widget.projectDb.updateDirty(false);
                       setState(() {

@@ -9,8 +9,8 @@ part of smash_import_export_plugins;
 const TITLE_PDF = "PDF";
 
 class PdfExportPlugin extends AExportPlugin {
-  ProjectDb projectDb;
-  BuildContext context;
+  late ProjectDb projectDb;
+  late BuildContext context;
 
   @override
   void setContext(BuildContext context) {
@@ -48,14 +48,14 @@ class PdfExportPlugin extends AExportPlugin {
   }
 
   @override
-  Widget getSettingsPage() {
+  Widget? getSettingsPage() {
     return null;
   }
 }
 
 class PdfExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
-  PdfExportWidget({Key key, this.projectDb}) : super(key: key);
+  PdfExportWidget({Key? key, required this.projectDb}) : super(key: key);
 
   @override
   State<PdfExportWidget> createState() => _PdfExportWidgetState();
@@ -64,7 +64,7 @@ class PdfExportWidget extends StatefulWidget {
 class _PdfExportWidgetState extends State<PdfExportWidget>
     with AfterLayoutMixin {
   bool building = true;
-  String outFilePath;
+  late String outFilePath;
 
   @override
   void afterFirstLayout(BuildContext context) {

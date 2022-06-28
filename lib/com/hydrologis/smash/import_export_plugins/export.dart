@@ -20,12 +20,12 @@ abstract class AExportPlugin {
   Widget getExportPage();
 
   /// Get the optional settings page to present to the user.
-  Widget getSettingsPage();
+  Widget? getSettingsPage();
 }
 
 class ExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
-  ExportWidget({Key key, this.projectDb}) : super(key: key);
+  ExportWidget({Key? key, required this.projectDb}) : super(key: key);
 
   @override
   _ExportWidgetState createState() => _ExportWidgetState();
@@ -38,12 +38,14 @@ class _ExportWidgetState extends State<ExportWidget> {
       ep.setContext(context);
       ep.setProjectDatabase(widget.projectDb);
 
-      Widget settingsButton;
+      Widget? settingsButton;
       if (ep.getSettingsPage() != null) {
         settingsButton = IconButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ep.getSettingsPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              var settingsPage = ep.getSettingsPage();
+              return settingsPage!;
+            }));
           },
           icon: const Icon(
             MdiIcons.cog,
