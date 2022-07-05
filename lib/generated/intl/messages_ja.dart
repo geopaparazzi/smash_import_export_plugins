@@ -112,6 +112,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("GTTプロジェクトを選択してください:"),
         "gttExport_collectingSyncStats":
             MessageLookupByLibrary.simpleMessage("同期統計を収集しています..."),
+        "gttExport_contactAdmin": MessageLookupByLibrary.simpleMessage(
+            "利用可能なプロジェクトがありません。システム管理者に確認してください。"),
         "gttExport_dataUploadedUponSync":
             MessageLookupByLibrary.simpleMessage("同期時に次のデータがアップロードされます。"),
         "gttExport_formNotes": MessageLookupByLibrary.simpleMessage("フォームノート"),
@@ -139,6 +141,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("プロジェクトをすべてクリーンな状態に復元します。"),
         "gttExport_restoreProjectAsDirty":
             MessageLookupByLibrary.simpleMessage("プロジェクトをすべてダーティとして復元します。"),
+        "gttExport_selectProject":
+            MessageLookupByLibrary.simpleMessage("プロジェクトを選択"),
         "gttExport_setProjectDirty":
             MessageLookupByLibrary.simpleMessage("プロジェクトをDIRTYに設定しますか？"),
         "gttExport_setProjectToClean":
@@ -148,9 +152,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "gttExport_simpleLogsUpload":
             MessageLookupByLibrary.simpleMessage("GPSログのアップロード"),
         "gttExport_simpleNotes":
-            MessageLookupByLibrary.simpleMessage("Simple Notes"),
+            MessageLookupByLibrary.simpleMessage("シンプルノート"),
         "gttExport_simpleNotesUpload":
-            MessageLookupByLibrary.simpleMessage("Simple Notes Upload"),
+            MessageLookupByLibrary.simpleMessage("シンプルノートのアップロード"),
         "gttExport_syncStats": MessageLookupByLibrary.simpleMessage("同期統計"),
         "gttExport_thisCantBeUndone":
             MessageLookupByLibrary.simpleMessage("これは元に戻せません！"),
