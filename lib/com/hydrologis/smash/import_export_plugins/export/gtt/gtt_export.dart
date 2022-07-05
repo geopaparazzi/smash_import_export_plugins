@@ -689,6 +689,8 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
         note.isDirty = 0;
         db.updateImageDirty(image.imageDataId?.toInt() ?? 0, false);
+      } else {
+        db.updateImageDirty(image.imageDataId?.toInt() ?? 0, true);
       }
     }
 
