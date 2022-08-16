@@ -143,6 +143,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose GTT Project:"),
         "gttExport_collectingSyncStats":
             MessageLookupByLibrary.simpleMessage("Collecting sync stats..."),
+        "gttExport_contactAdmin": MessageLookupByLibrary.simpleMessage(
+            "No Available Project, Contact your Admin."),
+        "gttExport_dataUploadedSelectedProject":
+            MessageLookupByLibrary.simpleMessage(
+                "The following data will be uploaded only if the project is selected."),
         "gttExport_dataUploadedUponSync": MessageLookupByLibrary.simpleMessage(
             "The following data will be uploaded upon sync."),
         "gttExport_formNotes":
@@ -173,6 +178,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Restore project as all clean."),
         "gttExport_restoreProjectAsDirty": MessageLookupByLibrary.simpleMessage(
             "Restore project as all dirty."),
+        "gttExport_selectProject":
+            MessageLookupByLibrary.simpleMessage("Select Project"),
         "gttExport_setProjectDirty":
             MessageLookupByLibrary.simpleMessage("Set project to DIRTY?"),
         "gttExport_setProjectToClean":
@@ -201,6 +208,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "gttExport_upload": MessageLookupByLibrary.simpleMessage("Upload"),
         "gttExport_uploadingData":
             MessageLookupByLibrary.simpleMessage("Uploading data"),
+        "gttImport_GTTServerProjectsWillBeImported":
+            MessageLookupByLibrary.simpleMessage(
+                "All GTT Server Projects will be imported"),
         "gttImport_allProjects":
             MessageLookupByLibrary.simpleMessage("All Projects"),
         "gttImport_chooseGttProject":

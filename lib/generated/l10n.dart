@@ -1030,6 +1030,36 @@ class IEL {
     );
   }
 
+  /// `The following data will be uploaded only if the project is selected.`
+  String get gttExport_dataUploadedSelectedProject {
+    return Intl.message(
+      'The following data will be uploaded only if the project is selected.',
+      name: 'gttExport_dataUploadedSelectedProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Available Project, Contact your Admin.`
+  String get gttExport_contactAdmin {
+    return Intl.message(
+      'No Available Project, Contact your Admin.',
+      name: 'gttExport_contactAdmin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Project`
+  String get gttExport_selectProject {
+    return Intl.message(
+      'Select Project',
+      name: 'gttExport_selectProject',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Gps Logs`
   String get gttExport_gpsLogs {
     return Intl.message(
@@ -1265,6 +1295,16 @@ class IEL {
     return Intl.message(
       'Import Forms from GTT Server Projects',
       name: 'gttImport_importFormsFromGttServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All GTT Server Projects will be imported`
+  String get gttImport_GTTServerProjectsWillBeImported {
+    return Intl.message(
+      'All GTT Server Projects will be imported',
+      name: 'gttImport_GTTServerProjectsWillBeImported',
       desc: '',
       args: [],
     );
