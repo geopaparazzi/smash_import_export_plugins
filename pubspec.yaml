@@ -26,6 +26,7 @@ dependencies:
       url: https://github.com/moovida/smashlibs.git
       ref: 399f9c3
 
+  
   # apache 2
   flutter_geopackage: ^0.5.1
 
