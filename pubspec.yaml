@@ -24,7 +24,7 @@ dependencies:
     # path: ../smashlibs/
     git:
       url: https://github.com/moovida/smashlibs.git
-      ref: 351222c
+      # ref: d273d6f
 
   
   # apache 2
