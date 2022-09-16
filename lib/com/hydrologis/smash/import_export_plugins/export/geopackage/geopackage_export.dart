@@ -141,7 +141,7 @@ class GeopackageExporter {
 
   static void exportNotesTable(GeopackageDb newDb, ProjectDb gpDb) {
     newDb.createSpatialTable(
-      SqlName(TABLE_NOTES),
+      TableName(TABLE_NOTES, schemaSupported: false),
       4326,
       "the_geom POINT",
       [
@@ -204,7 +204,7 @@ class GeopackageExporter {
 
   static void exportImagesTable(GeopackageDb newDb, ProjectDb gpDb) {
     newDb.createSpatialTable(
-      SqlName(TABLE_IMAGES),
+      TableName(TABLE_IMAGES, schemaSupported: false),
       4326,
       "the_geom POINT",
       [
@@ -258,7 +258,7 @@ class GeopackageExporter {
   static void exportLogsTable(
       GeopackageDb newDb, ProjectDb db, bool useFiltered) {
     newDb.createSpatialTable(
-      SqlName(TABLE_GPSLOGS),
+      TableName(TABLE_GPSLOGS, schemaSupported: false),
       4326,
       "the_geom LINESTRING",
       [
@@ -276,7 +276,7 @@ class GeopackageExporter {
     );
     // also export as points
     newDb.createSpatialTable(
-      SqlName(TABLE_GPSLOG_DATA),
+      TableName(TABLE_GPSLOG_DATA, schemaSupported: false),
       4326,
       "the_geom POINT",
       [
