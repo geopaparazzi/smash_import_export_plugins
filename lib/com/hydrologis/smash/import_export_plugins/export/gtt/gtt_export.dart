@@ -60,7 +60,7 @@ class GttExportWidget extends StatefulWidget {
   _GttExportWidgetState createState() => new _GttExportWidgetState();
 }
 
-class _GttExportWidgetState extends State<GttExportWidget> {
+class _GttExportWidgetState extends State<GttExportWidget> with Localization {
   /*
    * 0 = loading data stats
    * 1 = show data stats
@@ -84,18 +84,10 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
   bool _uploadCompleted = false;
   List<Widget> _uploadTiles = [];
-  List<DropdownMenuItem> _projects = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
-  List<DropdownMenuItem<String>> _gpsLogsProj = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
-  List<DropdownMenuItem<String>> _simpleNotesProj = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
-  List<DropdownMenuItem<String>> _imagesProj = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
+  late List<DropdownMenuItem> _projects;
+  late List<DropdownMenuItem<String>> _gpsLogsProj;
+  late List<DropdownMenuItem<String>> _simpleNotesProj;
+  late List<DropdownMenuItem<String>> _imagesProj;
   late String _selectedProj;
   String _selectedGpsLogProj = "";
   String _selectedSimpleNotesProj = "";
@@ -115,6 +107,19 @@ class _GttExportWidgetState extends State<GttExportWidget> {
   }
 
   Future<void> init() async {
+    _projects = [
+      DropdownMenuItem(child: Text(loc.gttExport_selectProject), value: "none")
+    ];
+    _gpsLogsProj = [
+      DropdownMenuItem(child: Text(loc.gttExport_selectProject), value: "none")
+    ];
+    _simpleNotesProj = [
+      DropdownMenuItem(child: Text(loc.gttExport_selectProject), value: "none")
+    ];
+    _imagesProj = [
+      DropdownMenuItem(child: Text(loc.gttExport_selectProject), value: "none")
+    ];
+
     _serverUrl = GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_URL);
 
     if (_serverUrl == null) {

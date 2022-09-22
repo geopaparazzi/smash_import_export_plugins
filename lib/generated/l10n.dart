@@ -1,1465 +1,983 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'intl/messages_all.dart';
+import 'dart:async';
 
-// **************************************************************************
-// Generator: Flutter Intl IDE plugin
-// Made by Localizely
-// **************************************************************************
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
 
-// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
-// ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+import 'l10n_cs.dart';
+import 'l10n_de.dart';
+import 'l10n_en.dart';
+import 'l10n_fr.dart';
+import 'l10n_it.dart';
+import 'l10n_ja.dart';
+import 'l10n_nb.dart';
+import 'l10n_ru.dart';
 
-class IEL {
-  IEL();
+/// Callers can lookup localized strings with an instance of IEL
+/// returned by `IEL.of(context)`.
+///
+/// Applications need to include `IEL.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'generated/l10n.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: IEL.localizationsDelegates,
+///   supportedLocales: IEL.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the IEL.supportedLocales
+/// property.
+abstract class IEL {
+  IEL(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
-  static IEL? _current;
-
-  static IEL get current {
-    assert(_current != null,
-        'No instance of IEL was loaded. Try to initialize the IEL delegate before accessing IEL.current.');
-    return _current!;
-  }
-
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
-
-  static Future<IEL> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
-    return initializeMessages(localeName).then((_) {
-      Intl.defaultLocale = localeName;
-      final instance = IEL();
-      IEL._current = instance;
-
-      return instance;
-    });
-  }
+  final String localeName;
 
   static IEL of(BuildContext context) {
-    final instance = IEL.maybeOf(context);
-    assert(instance != null,
-        'No instance of IEL present in the widget tree. Did you add IEL.delegate in localizationsDelegates?');
-    return instance!;
-  }
-
-  static IEL? maybeOf(BuildContext context) {
-    return Localizations.of<IEL>(context, IEL);
-  }
-
-  /// `Export`
-  String get exportWidget_export {
-    return Intl.message(
-      'Export',
-      name: 'exportWidget_export',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `PDF exported`
-  String get exportWidget_pdfExported {
-    return Intl.message(
-      'PDF exported',
-      name: 'exportWidget_pdfExported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export project to Portable Document Format`
-  String get exportWidget_exportToPortableDocumentFormat {
-    return Intl.message(
-      'Export project to Portable Document Format',
-      name: 'exportWidget_exportToPortableDocumentFormat',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GPX exported`
-  String get exportWidget_gpxExported {
-    return Intl.message(
-      'GPX exported',
-      name: 'exportWidget_gpxExported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export project to GPX`
-  String get exportWidget_exportToGpx {
-    return Intl.message(
-      'Export project to GPX',
-      name: 'exportWidget_exportToGpx',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `KML exported`
-  String get exportWidget_kmlExported {
-    return Intl.message(
-      'KML exported',
-      name: 'exportWidget_kmlExported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export project to KML`
-  String get exportWidget_exportToKml {
-    return Intl.message(
-      'Export project to KML',
-      name: 'exportWidget_exportToKml',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Images exported`
-  String get exportWidget_imagesToFolderExported {
-    return Intl.message(
-      'Images exported',
-      name: 'exportWidget_imagesToFolderExported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export project images to folder`
-  String get exportWidget_exportImagesToFolder {
-    return Intl.message(
-      'Export project images to folder',
-      name: 'exportWidget_exportImagesToFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Images`
-  String get exportWidget_exportImagesToFolderTitle {
-    return Intl.message(
-      'Images',
-      name: 'exportWidget_exportImagesToFolderTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Geopackage exported`
-  String get exportWidget_geopackageExported {
-    return Intl.message(
-      'Geopackage exported',
-      name: 'exportWidget_geopackageExported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export project to Geopackage`
-  String get exportWidget_exportToGeopackage {
-    return Intl.message(
-      'Export project to Geopackage',
-      name: 'exportWidget_exportToGeopackage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export to Geopaparazzi Survey Server`
-  String get exportWidget_exportToGSS {
-    return Intl.message(
-      'Export to Geopaparazzi Survey Server',
-      name: 'exportWidget_exportToGSS',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GSS Export`
-  String get gssExport_gssExport {
-    return Intl.message(
-      'GSS Export',
-      name: 'gssExport_gssExport',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Set project to DIRTY?`
-  String get gssExport_setProjectDirty {
-    return Intl.message(
-      'Set project to DIRTY?',
-      name: 'gssExport_setProjectDirty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This can't be undone!`
-  String get gssExport_thisCantBeUndone {
-    return Intl.message(
-      'This can\'t be undone!',
-      name: 'gssExport_thisCantBeUndone',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Restore project as all dirty.`
-  String get gssExport_restoreProjectAsDirty {
-    return Intl.message(
-      'Restore project as all dirty.',
-      name: 'gssExport_restoreProjectAsDirty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Set project to CLEAN?`
-  String get gssExport_setProjectClean {
-    return Intl.message(
-      'Set project to CLEAN?',
-      name: 'gssExport_setProjectClean',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Restore project as all clean.`
-  String get gssExport_restoreProjectAsClean {
-    return Intl.message(
-      'Restore project as all clean.',
-      name: 'gssExport_restoreProjectAsClean',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Nothing to sync.`
-  String get gssExport_nothingToSync {
-    return Intl.message(
-      'Nothing to sync.',
-      name: 'gssExport_nothingToSync',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Collecting sync stats…`
-  String get gssExport_collectingSyncStats {
-    return Intl.message(
-      'Collecting sync stats…',
-      name: 'gssExport_collectingSyncStats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to sync due to an error, check diagnostics.`
-  String get gssExport_unableToSyncDueToError {
-    return Intl.message(
-      'Unable to sync due to an error, check diagnostics.',
-      name: 'gssExport_unableToSyncDueToError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GSS server URL has been set. Check your settings.`
-  String get gssExport_noGssUrlSet {
-    return Intl.message(
-      'No GSS server URL has been set. Check your settings.',
-      name: 'gssExport_noGssUrlSet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GSS server password has been set. Check your settings.`
-  String get gssExport_noGssPasswordSet {
-    return Intl.message(
-      'No GSS server password has been set. Check your settings.',
-      name: 'gssExport_noGssPasswordSet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sync Stats`
-  String get gssExport_synStats {
-    return Intl.message(
-      'Sync Stats',
-      name: 'gssExport_synStats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The following data will be uploaded upon sync.`
-  String get gssExport_followingDataWillBeUploaded {
-    return Intl.message(
-      'The following data will be uploaded upon sync.',
-      name: 'gssExport_followingDataWillBeUploaded',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GPS Logs:`
-  String get gssExport_gpsLogs {
-    return Intl.message(
-      'GPS Logs:',
-      name: 'gssExport_gpsLogs',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Simple Notes:`
-  String get gssExport_simpleNotes {
-    return Intl.message(
-      'Simple Notes:',
-      name: 'gssExport_simpleNotes',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Form Notes:`
-  String get gssExport_formNotes {
-    return Intl.message(
-      'Form Notes:',
-      name: 'gssExport_formNotes',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Images:`
-  String get gssExport_images {
-    return Intl.message(
-      'Images:',
-      name: 'gssExport_images',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Should not happen`
-  String get gssExport_shouldNotHappen {
-    return Intl.message(
-      'Should not happen',
-      name: 'gssExport_shouldNotHappen',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Upload`
-  String get gssExport_upload {
-    return Intl.message(
-      'Upload',
-      name: 'gssExport_upload',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GSS Import`
-  String get gssImport_gssImport {
-    return Intl.message(
-      'GSS Import',
-      name: 'gssImport_gssImport',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Downloading data list…`
-  String get gssImport_downloadingDataList {
-    return Intl.message(
-      'Downloading data list…',
-      name: 'gssImport_downloadingDataList',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to download data list due to an error. Check your settings and the log.`
-  String get gssImport_unableDownloadDataList {
-    return Intl.message(
-      'Unable to download data list due to an error. Check your settings and the log.',
-      name: 'gssImport_unableDownloadDataList',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GSS server URL has been set. Check your settings.`
-  String get gssImport_noGssUrlSet {
-    return Intl.message(
-      'No GSS server URL has been set. Check your settings.',
-      name: 'gssImport_noGssUrlSet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GSS server password has been set. Check your settings.`
-  String get gssImport_noGssPasswordSet {
-    return Intl.message(
-      'No GSS server password has been set. Check your settings.',
-      name: 'gssImport_noGssPasswordSet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No permission to access the server. Check your credentials.`
-  String get gssImport_noPermToAccessServer {
-    return Intl.message(
-      'No permission to access the server. Check your credentials.',
-      name: 'gssImport_noPermToAccessServer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Data`
-  String get gssImport_data {
-    return Intl.message(
-      'Data',
-      name: 'gssImport_data',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Datasets are downloaded into the maps folder.`
-  String get gssImport_dataSetsDownloadedMapsFolder {
-    return Intl.message(
-      'Datasets are downloaded into the maps folder.',
-      name: 'gssImport_dataSetsDownloadedMapsFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No data available.`
-  String get gssImport_noDataAvailable {
-    return Intl.message(
-      'No data available.',
-      name: 'gssImport_noDataAvailable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Projects`
-  String get gssImport_projects {
-    return Intl.message(
-      'Projects',
-      name: 'gssImport_projects',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Projects are downloaded into the projects folder.`
-  String get gssImport_projectsDownloadedProjectFolder {
-    return Intl.message(
-      'Projects are downloaded into the projects folder.',
-      name: 'gssImport_projectsDownloadedProjectFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No projects available.`
-  String get gssImport_noProjectsAvailable {
-    return Intl.message(
-      'No projects available.',
-      name: 'gssImport_noProjectsAvailable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Forms`
-  String get gssImport_forms {
-    return Intl.message(
-      'Forms',
-      name: 'gssImport_forms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Tags files are downloaded into the forms folder.`
-  String get gssImport_tagsDownloadedFormsFolder {
-    return Intl.message(
-      'Tags files are downloaded into the forms folder.',
-      name: 'gssImport_tagsDownloadedFormsFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No tags available.`
-  String get gssImport_noTagsAvailable {
-    return Intl.message(
-      'No tags available.',
-      name: 'gssImport_noTagsAvailable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Import`
-  String get importWidget_import {
-    return Intl.message(
-      'Import',
-      name: 'importWidget_import',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Import from Geopaparazzi Survey Server`
-  String get importWidget_importFromGeopaparazzi {
-    return Intl.message(
-      'Import from Geopaparazzi Survey Server',
-      name: 'importWidget_importFromGeopaparazzi',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please enter a valid server password.`
-  String get settings_pleaseEnterValidPassword {
-    return Intl.message(
-      'Please enter a valid server password.',
-      name: 'settings_pleaseEnterValidPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GSS`
-  String get settings_gss {
-    return Intl.message(
-      'GSS',
-      name: 'settings_gss',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Geopaparazzi Survey Server`
-  String get settings_geopaparazziSurveyServer {
-    return Intl.message(
-      'Geopaparazzi Survey Server',
-      name: 'settings_geopaparazziSurveyServer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Server URL`
-  String get settings_serverUrl {
-    return Intl.message(
-      'Server URL',
-      name: 'settings_serverUrl',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The server URL needs to start with HTTP or HTTPS.`
-  String get settings_serverUrlStartWithHttp {
-    return Intl.message(
-      'The server URL needs to start with HTTP or HTTPS.',
-      name: 'settings_serverUrlStartWithHttp',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Server Password`
-  String get settings_serverPassword {
-    return Intl.message(
-      'Server Password',
-      name: 'settings_serverPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Allow self signed certificates`
-  String get settings_allowSelfSignedCert {
-    return Intl.message(
-      'Allow self signed certificates',
-      name: 'settings_allowSelfSignedCert',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Cancelled by user.`
-  String get network_cancelledByUser {
-    return Intl.message(
-      'Cancelled by user.',
-      name: 'network_cancelledByUser',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Completed.`
-  String get network_completed {
-    return Intl.message(
-      'Completed.',
-      name: 'network_completed',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Building base cache for improved performance (might take a while)…`
-  String get network_buildingBaseCachePerformance {
-    return Intl.message(
-      'Building base cache for improved performance (might take a while)…',
-      name: 'network_buildingBaseCachePerformance',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This file is already being downloaded.`
-  String get network_thisFIleAlreadyBeingDownloaded {
-    return Intl.message(
-      'This file is already being downloaded.',
-      name: 'network_thisFIleAlreadyBeingDownloaded',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Download`
-  String get network_download {
-    return Intl.message(
-      'Download',
-      name: 'network_download',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Download file`
-  String get network_downloadFile {
-    return Intl.message(
-      'Download file',
-      name: 'network_downloadFile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `to the device? This can take a while.`
-  String get network_toTheDeviceTakeTime {
-    return Intl.message(
-      'to the device? This can take a while.',
-      name: 'network_toTheDeviceTakeTime',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Available maps`
-  String get network_availableMaps {
-    return Intl.message(
-      'Available maps',
-      name: 'network_availableMaps',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Search map by name`
-  String get network_searchMapByName {
-    return Intl.message(
-      'Search map by name',
-      name: 'network_searchMapByName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Uploading`
-  String get network_uploading {
-    return Intl.message(
-      'Uploading',
-      name: 'network_uploading',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `please wait…`
-  String get network_pleaseWait {
-    return Intl.message(
-      'please wait…',
-      name: 'network_pleaseWait',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Permission on server denied.`
-  String get network_permissionOnServerDenied {
-    return Intl.message(
-      'Permission on server denied.',
-      name: 'network_permissionOnServerDenied',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Could not connect to the server. Is it online? Check your address.`
-  String get network_couldNotConnectToServer {
-    return Intl.message(
-      'Could not connect to the server. Is it online? Check your address.',
-      name: 'network_couldNotConnectToServer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `New Sketch`
-  String get form_sketch_newSketch {
-    return Intl.message(
-      'New Sketch',
-      name: 'form_sketch_newSketch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Undo`
-  String get form_sketch_undo {
-    return Intl.message(
-      'Undo',
-      name: 'form_sketch_undo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Nothing to undo`
-  String get form_sketch_noUndo {
-    return Intl.message(
-      'Nothing to undo',
-      name: 'form_sketch_noUndo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Clear`
-  String get form_sketch_clear {
-    return Intl.message(
-      'Clear',
-      name: 'form_sketch_clear',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Save`
-  String get form_sketch_save {
-    return Intl.message(
-      'Save',
-      name: 'form_sketch_save',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sketcher`
-  String get form_sketch_sketcher {
-    return Intl.message(
-      'Sketcher',
-      name: 'form_sketch_sketcher',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Turn on drawing`
-  String get form_sketch_enableDrawing {
-    return Intl.message(
-      'Turn on drawing',
-      name: 'form_sketch_enableDrawing',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Turn on eraser`
-  String get form_sketch_enableEraser {
-    return Intl.message(
-      'Turn on eraser',
-      name: 'form_sketch_enableEraser',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Background color`
-  String get form_sketch_backColor {
-    return Intl.message(
-      'Background color',
-      name: 'form_sketch_backColor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Stroke color`
-  String get form_sketch_strokeColor {
-    return Intl.message(
-      'Stroke color',
-      name: 'form_sketch_strokeColor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Pick color`
-  String get form_sketch_pickColor {
-    return Intl.message(
-      'Pick color',
-      name: 'form_sketch_pickColor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Could not save image in database.`
-  String get form_smash_cantSaveImageDb {
-    return Intl.message(
-      'Could not save image in database.',
-      name: 'form_smash_cantSaveImageDb',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose GTT Project:`
-  String get gttExport_chooseGttProject {
-    return Intl.message(
-      'Choose GTT Project:',
-      name: 'gttExport_chooseGttProject',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GTT Export`
-  String get gttExport_gttExport {
-    return Intl.message(
-      'GTT Export',
-      name: 'gttExport_gttExport',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Set project to DIRTY?`
-  String get gttExport_setProjectDirty {
-    return Intl.message(
-      'Set project to DIRTY?',
-      name: 'gttExport_setProjectDirty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This can't be undone!`
-  String get gttExport_thisCantBeUndone {
-    return Intl.message(
-      'This can\'t be undone!',
-      name: 'gttExport_thisCantBeUndone',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Restore project as all dirty.`
-  String get gttExport_restoreProjectAsDirty {
-    return Intl.message(
-      'Restore project as all dirty.',
-      name: 'gttExport_restoreProjectAsDirty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Set project to CLEAN?`
-  String get gttExport_setProjectToClean {
-    return Intl.message(
-      'Set project to CLEAN?',
-      name: 'gttExport_setProjectToClean',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Restore project as all clean.`
-  String get gttExport_restoreProjectAsClean {
-    return Intl.message(
-      'Restore project as all clean.',
-      name: 'gttExport_restoreProjectAsClean',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Nothing to sync.`
-  String get gttExport_nothingToSync {
-    return Intl.message(
-      'Nothing to sync.',
-      name: 'gttExport_nothingToSync',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Collecting sync stats...`
-  String get gttExport_collectingSyncStats {
-    return Intl.message(
-      'Collecting sync stats...',
-      name: 'gttExport_collectingSyncStats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to sync due to an error, check diagnostics.`
-  String get gttExport_unableToSyncDueToError {
-    return Intl.message(
-      'Unable to sync due to an error, check diagnostics.',
-      name: 'gttExport_unableToSyncDueToError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GTT server url has been set. Check your settings.`
-  String get gttExport_noGttServerUrlSet {
-    return Intl.message(
-      'No GTT server url has been set. Check your settings.',
-      name: 'gttExport_noGttServerUrlSet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GTT server password has been set. Check your settings.`
-  String get gttExport_noGttPasswordSet {
-    return Intl.message(
-      'No GTT server password has been set. Check your settings.',
-      name: 'gttExport_noGttPasswordSet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GTT server user has been set. Check your settings.`
-  String get gttExport_noGttUserSet {
-    return Intl.message(
-      'No GTT server user has been set. Check your settings.',
-      name: 'gttExport_noGttUserSet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to retrieve GTT Projects List. Check your settings.`
-  String get gttExport_unableToRetrieveProjects {
-    return Intl.message(
-      'Unable to retrieve GTT Projects List. Check your settings.',
-      name: 'gttExport_unableToRetrieveProjects',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to retrieve GTT Api Key. Check your settings.`
-  String get gttExport_unableToRetrieveApiKey {
-    return Intl.message(
-      'Unable to retrieve GTT Api Key. Check your settings.',
-      name: 'gttExport_unableToRetrieveApiKey',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sync Stats`
-  String get gttExport_syncStats {
-    return Intl.message(
-      'Sync Stats',
-      name: 'gttExport_syncStats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The following data will be uploaded upon sync.`
-  String get gttExport_dataUploadedUponSync {
-    return Intl.message(
-      'The following data will be uploaded upon sync.',
-      name: 'gttExport_dataUploadedUponSync',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The following data will be uploaded only if the project is selected.`
-  String get gttExport_dataUploadedSelectedProject {
-    return Intl.message(
-      'The following data will be uploaded only if the project is selected.',
-      name: 'gttExport_dataUploadedSelectedProject',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No Available Project, Contact your Admin.`
-  String get gttExport_contactAdmin {
-    return Intl.message(
-      'No Available Project, Contact your Admin.',
-      name: 'gttExport_contactAdmin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select Project`
-  String get gttExport_selectProject {
-    return Intl.message(
-      'Select Project',
-      name: 'gttExport_selectProject',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Gps Logs`
-  String get gttExport_gpsLogs {
-    return Intl.message(
-      'Gps Logs',
-      name: 'gttExport_gpsLogs',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Simple Notes`
-  String get gttExport_simpleNotes {
-    return Intl.message(
-      'Simple Notes',
-      name: 'gttExport_simpleNotes',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Form Notes`
-  String get gttExport_formNotes {
-    return Intl.message(
-      'Form Notes',
-      name: 'gttExport_formNotes',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Images`
-  String get gttExport_images {
-    return Intl.message(
-      'Images',
-      name: 'gttExport_images',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Uploading data`
-  String get gttExport_uploadingData {
-    return Intl.message(
-      'Uploading data',
-      name: 'gttExport_uploadingData',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Should not happen`
-  String get gttExport_shouldNotHappen {
-    return Intl.message(
-      'Should not happen',
-      name: 'gttExport_shouldNotHappen',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Upload`
-  String get gttExport_upload {
-    return Intl.message(
-      'Upload',
-      name: 'gttExport_upload',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Form Notes Upload`
-  String get gttExport_formNotesUpload {
-    return Intl.message(
-      'Form Notes Upload',
-      name: 'gttExport_formNotesUpload',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Forms uploaded to GTT Server`
-  String get gttExport_formsUploadedToGttServer {
-    return Intl.message(
-      'Forms uploaded to GTT Server',
-      name: 'gttExport_formsUploadedToGttServer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Simple Notes Upload `
-  String get gttExport_simpleNotesUpload {
-    return Intl.message(
-      'Simple Notes Upload ',
-      name: 'gttExport_simpleNotesUpload',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Notes uploaded to GTT Server`
-  String get gttExport_notesUploadedToGttServer {
-    return Intl.message(
-      'Notes uploaded to GTT Server',
-      name: 'gttExport_notesUploadedToGttServer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GPS Logs Upload `
-  String get gttExport_simpleLogsUpload {
-    return Intl.message(
-      'GPS Logs Upload ',
-      name: 'gttExport_simpleLogsUpload',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Logs uploaded to GTT Server`
-  String get gttExport_logsUploadedToGttServer {
-    return Intl.message(
-      'Logs uploaded to GTT Server',
-      name: 'gttExport_logsUploadedToGttServer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GTT Import`
-  String get gttImport_gttImport {
-    return Intl.message(
-      'GTT Import',
-      name: 'gttImport_gttImport',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Nothing to sync.`
-  String get gttImport_nothingToSync {
-    return Intl.message(
-      'Nothing to sync.',
-      name: 'gttImport_nothingToSync',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Collecting sync stats...`
-  String get gttImport_collectingSyncStats {
-    return Intl.message(
-      'Collecting sync stats...',
-      name: 'gttImport_collectingSyncStats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to sync due to an error, check diagnostics.`
-  String get gttImport_unableToSyncDueToError {
-    return Intl.message(
-      'Unable to sync due to an error, check diagnostics.',
-      name: 'gttImport_unableToSyncDueToError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GTT server url has been set. Check your settings.`
-  String get gttImport_noGttServerUrl {
-    return Intl.message(
-      'No GTT server url has been set. Check your settings.',
-      name: 'gttImport_noGttServerUrl',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GTT server password has been set. Check your settings.`
-  String get gttImport_noGttServerPassword {
-    return Intl.message(
-      'No GTT server password has been set. Check your settings.',
-      name: 'gttImport_noGttServerPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No GTT server user has been set. Check your settings.`
-  String get gttImport_noGttServerUser {
-    return Intl.message(
-      'No GTT server user has been set. Check your settings.',
-      name: 'gttImport_noGttServerUser',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to retrieve GTT Projects List. Check your settings.`
-  String get gttImport_unableToRetrieveProjects {
-    return Intl.message(
-      'Unable to retrieve GTT Projects List. Check your settings.',
-      name: 'gttImport_unableToRetrieveProjects',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to retrieve GTT Api Key. Check your settings.`
-  String get gttImport_unableToRetrieveApiKey {
-    return Intl.message(
-      'Unable to retrieve GTT Api Key. Check your settings.',
-      name: 'gttImport_unableToRetrieveApiKey',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Import Project Forms`
-  String get gttImport_importProjectForm {
-    return Intl.message(
-      'Import Project Forms',
-      name: 'gttImport_importProjectForm',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Import Forms from GTT Server Projects`
-  String get gttImport_importFormsFromGttServer {
-    return Intl.message(
-      'Import Forms from GTT Server Projects',
-      name: 'gttImport_importFormsFromGttServer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `All GTT Server Projects will be imported`
-  String get gttImport_GTTServerProjectsWillBeImported {
-    return Intl.message(
-      'All GTT Server Projects will be imported',
-      name: 'gttImport_GTTServerProjectsWillBeImported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Importing Forms`
-  String get gttImport_importingForms {
-    return Intl.message(
-      'Importing Forms',
-      name: 'gttImport_importingForms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Should not happen`
-  String get gttImport_shouldNotHappen {
-    return Intl.message(
-      'Should not happen',
-      name: 'gttImport_shouldNotHappen',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Import`
-  String get gttImport_import {
-    return Intl.message(
-      'Import',
-      name: 'gttImport_import',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Project Form Import `
-  String get gttImport_projectFormImport {
-    return Intl.message(
-      'Project Form Import ',
-      name: 'gttImport_projectFormImport',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Project Form imported from GTT Server`
-  String get gttImport_projectFormImported {
-    return Intl.message(
-      'Project Form imported from GTT Server',
-      name: 'gttImport_projectFormImported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Single Project`
-  String get gttImport_singleProject {
-    return Intl.message(
-      'Single Project',
-      name: 'gttImport_singleProject',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `All Projects`
-  String get gttImport_allProjects {
-    return Intl.message(
-      'All Projects',
-      name: 'gttImport_allProjects',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose GTT Project:`
-  String get gttImport_chooseGttProject {
-    return Intl.message(
-      'Choose GTT Project:',
-      name: 'gttImport_chooseGttProject',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export to GeoTaskTracker Server`
-  String get exportWidget_exportToGTT {
-    return Intl.message(
-      'Export to GeoTaskTracker Server',
-      name: 'exportWidget_exportToGTT',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Import from GeoTaskTracker Server`
-  String get importWidget_importFromGTT {
-    return Intl.message(
-      'Import from GeoTaskTracker Server',
-      name: 'importWidget_importFromGTT',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Server Username`
-  String get settings_serverUsername {
-    return Intl.message(
-      'Server Username',
-      name: 'settings_serverUsername',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please enter a valid server username.`
-  String get settings_pleaseEnterValidUsername {
-    return Intl.message(
-      'Please enter a valid server username.',
-      name: 'settings_pleaseEnterValidUsername',
-      desc: '',
-      args: [],
-    );
-  }
+    return Localizations.of<IEL>(context, IEL)!;
+  }
+
+  static const LocalizationsDelegate<IEL> delegate = _IELDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('cs'),
+    Locale('de'),
+    Locale('fr'),
+    Locale('it'),
+    Locale('ja'),
+    Locale('nb'),
+    Locale('nb', 'NO'),
+    Locale('ru')
+  ];
+
+  /// No description provided for @exportWidget_export.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get exportWidget_export;
+
+  /// No description provided for @exportWidget_pdfExported.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF exported'**
+  String get exportWidget_pdfExported;
+
+  /// No description provided for @exportWidget_exportToPortableDocumentFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Export project to Portable Document Format'**
+  String get exportWidget_exportToPortableDocumentFormat;
+
+  /// No description provided for @exportWidget_gpxExported.
+  ///
+  /// In en, this message translates to:
+  /// **'GPX exported'**
+  String get exportWidget_gpxExported;
+
+  /// No description provided for @exportWidget_exportToGpx.
+  ///
+  /// In en, this message translates to:
+  /// **'Export project to GPX'**
+  String get exportWidget_exportToGpx;
+
+  /// No description provided for @exportWidget_kmlExported.
+  ///
+  /// In en, this message translates to:
+  /// **'KML exported'**
+  String get exportWidget_kmlExported;
+
+  /// No description provided for @exportWidget_exportToKml.
+  ///
+  /// In en, this message translates to:
+  /// **'Export project to KML'**
+  String get exportWidget_exportToKml;
+
+  /// No description provided for @exportWidget_imagesToFolderExported.
+  ///
+  /// In en, this message translates to:
+  /// **'Images exported'**
+  String get exportWidget_imagesToFolderExported;
+
+  /// No description provided for @exportWidget_exportImagesToFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Export project images to folder'**
+  String get exportWidget_exportImagesToFolder;
+
+  /// No description provided for @exportWidget_exportImagesToFolderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get exportWidget_exportImagesToFolderTitle;
+
+  /// No description provided for @exportWidget_geopackageExported.
+  ///
+  /// In en, this message translates to:
+  /// **'Geopackage exported'**
+  String get exportWidget_geopackageExported;
+
+  /// No description provided for @exportWidget_exportToGeopackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Export project to Geopackage'**
+  String get exportWidget_exportToGeopackage;
+
+  /// No description provided for @exportWidget_exportToGSS.
+  ///
+  /// In en, this message translates to:
+  /// **'Export to Geopaparazzi Survey Server'**
+  String get exportWidget_exportToGSS;
+
+  /// No description provided for @gssExport_gssExport.
+  ///
+  /// In en, this message translates to:
+  /// **'GSS Export'**
+  String get gssExport_gssExport;
+
+  /// No description provided for @gssExport_setProjectDirty.
+  ///
+  /// In en, this message translates to:
+  /// **'Set project to DIRTY?'**
+  String get gssExport_setProjectDirty;
+
+  /// No description provided for @gssExport_thisCantBeUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'This can\'t be undone!'**
+  String get gssExport_thisCantBeUndone;
+
+  /// No description provided for @gssExport_restoreProjectAsDirty.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore project as all dirty.'**
+  String get gssExport_restoreProjectAsDirty;
+
+  /// No description provided for @gssExport_setProjectClean.
+  ///
+  /// In en, this message translates to:
+  /// **'Set project to CLEAN?'**
+  String get gssExport_setProjectClean;
+
+  /// No description provided for @gssExport_restoreProjectAsClean.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore project as all clean.'**
+  String get gssExport_restoreProjectAsClean;
+
+  /// No description provided for @gssExport_nothingToSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to sync.'**
+  String get gssExport_nothingToSync;
+
+  /// No description provided for @gssExport_collectingSyncStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Collecting sync stats…'**
+  String get gssExport_collectingSyncStats;
+
+  /// No description provided for @gssExport_unableToSyncDueToError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to sync due to an error, check diagnostics.'**
+  String get gssExport_unableToSyncDueToError;
+
+  /// No description provided for @gssExport_noGssUrlSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No GSS server URL has been set. Check your settings.'**
+  String get gssExport_noGssUrlSet;
+
+  /// No description provided for @gssExport_noGssPasswordSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No GSS server password has been set. Check your settings.'**
+  String get gssExport_noGssPasswordSet;
+
+  /// No description provided for @gssExport_synStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Stats'**
+  String get gssExport_synStats;
+
+  /// No description provided for @gssExport_followingDataWillBeUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'The following data will be uploaded upon sync.'**
+  String get gssExport_followingDataWillBeUploaded;
+
+  /// No description provided for @gssExport_gpsLogs.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS Logs:'**
+  String get gssExport_gpsLogs;
+
+  /// No description provided for @gssExport_simpleNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Simple Notes:'**
+  String get gssExport_simpleNotes;
+
+  /// No description provided for @gssExport_formNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Form Notes:'**
+  String get gssExport_formNotes;
+
+  /// No description provided for @gssExport_images.
+  ///
+  /// In en, this message translates to:
+  /// **'Images:'**
+  String get gssExport_images;
+
+  /// No description provided for @gssExport_shouldNotHappen.
+  ///
+  /// In en, this message translates to:
+  /// **'Should not happen'**
+  String get gssExport_shouldNotHappen;
+
+  /// No description provided for @gssExport_upload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get gssExport_upload;
+
+  /// No description provided for @gssImport_gssImport.
+  ///
+  /// In en, this message translates to:
+  /// **'GSS Import'**
+  String get gssImport_gssImport;
+
+  /// No description provided for @gssImport_downloadingDataList.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading data list…'**
+  String get gssImport_downloadingDataList;
+
+  /// No description provided for @gssImport_unableDownloadDataList.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to download data list due to an error. Check your settings and the log.'**
+  String get gssImport_unableDownloadDataList;
+
+  /// No description provided for @gssImport_noGssUrlSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No GSS server URL has been set. Check your settings.'**
+  String get gssImport_noGssUrlSet;
+
+  /// No description provided for @gssImport_noGssPasswordSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No GSS server password has been set. Check your settings.'**
+  String get gssImport_noGssPasswordSet;
+
+  /// No description provided for @gssImport_noPermToAccessServer.
+  ///
+  /// In en, this message translates to:
+  /// **'No permission to access the server. Check your credentials.'**
+  String get gssImport_noPermToAccessServer;
+
+  /// No description provided for @gssImport_data.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get gssImport_data;
+
+  /// No description provided for @gssImport_dataSetsDownloadedMapsFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Datasets are downloaded into the maps folder.'**
+  String get gssImport_dataSetsDownloadedMapsFolder;
+
+  /// No description provided for @gssImport_noDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available.'**
+  String get gssImport_noDataAvailable;
+
+  /// No description provided for @gssImport_projects.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects'**
+  String get gssImport_projects;
+
+  /// No description provided for @gssImport_projectsDownloadedProjectFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects are downloaded into the projects folder.'**
+  String get gssImport_projectsDownloadedProjectFolder;
+
+  /// No description provided for @gssImport_noProjectsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No projects available.'**
+  String get gssImport_noProjectsAvailable;
+
+  /// No description provided for @gssImport_forms.
+  ///
+  /// In en, this message translates to:
+  /// **'Forms'**
+  String get gssImport_forms;
+
+  /// No description provided for @gssImport_tagsDownloadedFormsFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags files are downloaded into the forms folder.'**
+  String get gssImport_tagsDownloadedFormsFolder;
+
+  /// No description provided for @gssImport_noTagsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tags available.'**
+  String get gssImport_noTagsAvailable;
+
+  /// No description provided for @importWidget_import.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get importWidget_import;
+
+  /// No description provided for @importWidget_importFromGeopaparazzi.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from Geopaparazzi Survey Server'**
+  String get importWidget_importFromGeopaparazzi;
+
+  /// No description provided for @settings_pleaseEnterValidPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid server password.'**
+  String get settings_pleaseEnterValidPassword;
+
+  /// No description provided for @settings_gss.
+  ///
+  /// In en, this message translates to:
+  /// **'GSS'**
+  String get settings_gss;
+
+  /// No description provided for @settings_geopaparazziSurveyServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Geopaparazzi Survey Server'**
+  String get settings_geopaparazziSurveyServer;
+
+  /// No description provided for @settings_serverUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Server URL'**
+  String get settings_serverUrl;
+
+  /// No description provided for @settings_serverUrlStartWithHttp.
+  ///
+  /// In en, this message translates to:
+  /// **'The server URL needs to start with HTTP or HTTPS.'**
+  String get settings_serverUrlStartWithHttp;
+
+  /// No description provided for @settings_serverPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Server Password'**
+  String get settings_serverPassword;
+
+  /// No description provided for @settings_allowSelfSignedCert.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow self signed certificates'**
+  String get settings_allowSelfSignedCert;
+
+  /// No description provided for @network_cancelledByUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled by user.'**
+  String get network_cancelledByUser;
+
+  /// No description provided for @network_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed.'**
+  String get network_completed;
+
+  /// No description provided for @network_buildingBaseCachePerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Building base cache for improved performance (might take a while)…'**
+  String get network_buildingBaseCachePerformance;
+
+  /// No description provided for @network_thisFIleAlreadyBeingDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is already being downloaded.'**
+  String get network_thisFIleAlreadyBeingDownloaded;
+
+  /// No description provided for @network_download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get network_download;
+
+  /// No description provided for @network_downloadFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Download file'**
+  String get network_downloadFile;
+
+  /// No description provided for @network_toTheDeviceTakeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'to the device? This can take a while.'**
+  String get network_toTheDeviceTakeTime;
+
+  /// No description provided for @network_availableMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Available maps'**
+  String get network_availableMaps;
+
+  /// No description provided for @network_searchMapByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search map by name'**
+  String get network_searchMapByName;
+
+  /// No description provided for @network_uploading.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading'**
+  String get network_uploading;
+
+  /// No description provided for @network_pleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'please wait…'**
+  String get network_pleaseWait;
+
+  /// No description provided for @network_permissionOnServerDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission on server denied.'**
+  String get network_permissionOnServerDenied;
+
+  /// No description provided for @network_couldNotConnectToServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect to the server. Is it online? Check your address.'**
+  String get network_couldNotConnectToServer;
+
+  /// No description provided for @form_sketch_newSketch.
+  ///
+  /// In en, this message translates to:
+  /// **'New Sketch'**
+  String get form_sketch_newSketch;
+
+  /// No description provided for @form_sketch_undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get form_sketch_undo;
+
+  /// No description provided for @form_sketch_noUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to undo'**
+  String get form_sketch_noUndo;
+
+  /// No description provided for @form_sketch_clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get form_sketch_clear;
+
+  /// No description provided for @form_sketch_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get form_sketch_save;
+
+  /// No description provided for @form_sketch_sketcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Sketcher'**
+  String get form_sketch_sketcher;
+
+  /// No description provided for @form_sketch_enableDrawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on drawing'**
+  String get form_sketch_enableDrawing;
+
+  /// No description provided for @form_sketch_enableEraser.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on eraser'**
+  String get form_sketch_enableEraser;
+
+  /// No description provided for @form_sketch_backColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Background color'**
+  String get form_sketch_backColor;
+
+  /// No description provided for @form_sketch_strokeColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Stroke color'**
+  String get form_sketch_strokeColor;
+
+  /// No description provided for @form_sketch_pickColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick color'**
+  String get form_sketch_pickColor;
+
+  /// No description provided for @form_smash_cantSaveImageDb.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save image in database.'**
+  String get form_smash_cantSaveImageDb;
+
+  /// No description provided for @gttExport_chooseGttProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose GTT Project:'**
+  String get gttExport_chooseGttProject;
+
+  /// No description provided for @gttExport_gttExport.
+  ///
+  /// In en, this message translates to:
+  /// **'GTT Export'**
+  String get gttExport_gttExport;
+
+  /// No description provided for @gttExport_setProjectDirty.
+  ///
+  /// In en, this message translates to:
+  /// **'Set project to DIRTY?'**
+  String get gttExport_setProjectDirty;
+
+  /// No description provided for @gttExport_thisCantBeUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'This can\'t be undone!'**
+  String get gttExport_thisCantBeUndone;
+
+  /// No description provided for @gttExport_restoreProjectAsDirty.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore project as all dirty.'**
+  String get gttExport_restoreProjectAsDirty;
+
+  /// No description provided for @gttExport_setProjectToClean.
+  ///
+  /// In en, this message translates to:
+  /// **'Set project to CLEAN?'**
+  String get gttExport_setProjectToClean;
+
+  /// No description provided for @gttExport_restoreProjectAsClean.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore project as all clean.'**
+  String get gttExport_restoreProjectAsClean;
+
+  /// No description provided for @gttExport_nothingToSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to sync.'**
+  String get gttExport_nothingToSync;
+
+  /// No description provided for @gttExport_collectingSyncStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Collecting sync stats...'**
+  String get gttExport_collectingSyncStats;
+
+  /// No description provided for @gttExport_unableToSyncDueToError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to sync due to an error, check diagnostics.'**
+  String get gttExport_unableToSyncDueToError;
+
+  /// No description provided for @gttExport_noGttServerUrlSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No GTT server url has been set. Check your settings.'**
+  String get gttExport_noGttServerUrlSet;
+
+  /// No description provided for @gttExport_noGttPasswordSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No GTT server password has been set. Check your settings.'**
+  String get gttExport_noGttPasswordSet;
+
+  /// No description provided for @gttExport_noGttUserSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No GTT server user has been set. Check your settings.'**
+  String get gttExport_noGttUserSet;
+
+  /// No description provided for @gttExport_unableToRetrieveProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to retrieve GTT Projects List. Check your settings.'**
+  String get gttExport_unableToRetrieveProjects;
+
+  /// No description provided for @gttExport_unableToRetrieveApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to retrieve GTT Api Key. Check your settings.'**
+  String get gttExport_unableToRetrieveApiKey;
+
+  /// No description provided for @gttExport_syncStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Stats'**
+  String get gttExport_syncStats;
+
+  /// No description provided for @gttExport_dataUploadedUponSync.
+  ///
+  /// In en, this message translates to:
+  /// **'The following data will be uploaded upon sync.'**
+  String get gttExport_dataUploadedUponSync;
+
+  /// No description provided for @gttExport_dataUploadedSelectedProject.
+  ///
+  /// In en, this message translates to:
+  /// **'The following data will be uploaded only if the project is selected.'**
+  String get gttExport_dataUploadedSelectedProject;
+
+  /// No description provided for @gttExport_contactAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'No Available Project, Contact your Admin.'**
+  String get gttExport_contactAdmin;
+
+  /// No description provided for @gttExport_selectProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Project'**
+  String get gttExport_selectProject;
+
+  /// No description provided for @gttExport_gpsLogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Gps Logs'**
+  String get gttExport_gpsLogs;
+
+  /// No description provided for @gttExport_simpleNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Simple Notes'**
+  String get gttExport_simpleNotes;
+
+  /// No description provided for @gttExport_formNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Form Notes'**
+  String get gttExport_formNotes;
+
+  /// No description provided for @gttExport_images.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get gttExport_images;
+
+  /// No description provided for @gttExport_uploadingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading data'**
+  String get gttExport_uploadingData;
+
+  /// No description provided for @gttExport_shouldNotHappen.
+  ///
+  /// In en, this message translates to:
+  /// **'Should not happen'**
+  String get gttExport_shouldNotHappen;
+
+  /// No description provided for @gttExport_upload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get gttExport_upload;
+
+  /// No description provided for @gttExport_formNotesUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Form Notes Upload'**
+  String get gttExport_formNotesUpload;
+
+  /// No description provided for @gttExport_formsUploadedToGttServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Forms uploaded to GTT Server'**
+  String get gttExport_formsUploadedToGttServer;
+
+  /// No description provided for @gttExport_simpleNotesUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Simple Notes Upload '**
+  String get gttExport_simpleNotesUpload;
+
+  /// No description provided for @gttExport_notesUploadedToGttServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes uploaded to GTT Server'**
+  String get gttExport_notesUploadedToGttServer;
+
+  /// No description provided for @gttExport_simpleLogsUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS Logs Upload '**
+  String get gttExport_simpleLogsUpload;
+
+  /// No description provided for @gttExport_logsUploadedToGttServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Logs uploaded to GTT Server'**
+  String get gttExport_logsUploadedToGttServer;
+
+  /// No description provided for @gttImport_gttImport.
+  ///
+  /// In en, this message translates to:
+  /// **'GTT Import'**
+  String get gttImport_gttImport;
+
+  /// No description provided for @gttImport_nothingToSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to sync.'**
+  String get gttImport_nothingToSync;
+
+  /// No description provided for @gttImport_collectingSyncStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Collecting sync stats...'**
+  String get gttImport_collectingSyncStats;
+
+  /// No description provided for @gttImport_unableToSyncDueToError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to sync due to an error, check diagnostics.'**
+  String get gttImport_unableToSyncDueToError;
+
+  /// No description provided for @gttImport_noGttServerUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'No GTT server url has been set. Check your settings.'**
+  String get gttImport_noGttServerUrl;
+
+  /// No description provided for @gttImport_noGttServerPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'No GTT server password has been set. Check your settings.'**
+  String get gttImport_noGttServerPassword;
+
+  /// No description provided for @gttImport_noGttServerUser.
+  ///
+  /// In en, this message translates to:
+  /// **'No GTT server user has been set. Check your settings.'**
+  String get gttImport_noGttServerUser;
+
+  /// No description provided for @gttImport_unableToRetrieveProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to retrieve GTT Projects List. Check your settings.'**
+  String get gttImport_unableToRetrieveProjects;
+
+  /// No description provided for @gttImport_unableToRetrieveApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to retrieve GTT Api Key. Check your settings.'**
+  String get gttImport_unableToRetrieveApiKey;
+
+  /// No description provided for @gttImport_importProjectForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Project Forms'**
+  String get gttImport_importProjectForm;
+
+  /// No description provided for @gttImport_importFormsFromGttServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Forms from GTT Server Projects'**
+  String get gttImport_importFormsFromGttServer;
+
+  /// No description provided for @gttImport_GTTServerProjectsWillBeImported.
+  ///
+  /// In en, this message translates to:
+  /// **'All GTT Server Projects will be imported'**
+  String get gttImport_GTTServerProjectsWillBeImported;
+
+  /// No description provided for @gttImport_importingForms.
+  ///
+  /// In en, this message translates to:
+  /// **'Importing Forms'**
+  String get gttImport_importingForms;
+
+  /// No description provided for @gttImport_shouldNotHappen.
+  ///
+  /// In en, this message translates to:
+  /// **'Should not happen'**
+  String get gttImport_shouldNotHappen;
+
+  /// No description provided for @gttImport_import.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get gttImport_import;
+
+  /// No description provided for @gttImport_projectFormImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Form Import '**
+  String get gttImport_projectFormImport;
+
+  /// No description provided for @gttImport_projectFormImported.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Form imported from GTT Server'**
+  String get gttImport_projectFormImported;
+
+  /// No description provided for @gttImport_singleProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Single Project'**
+  String get gttImport_singleProject;
+
+  /// No description provided for @gttImport_allProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'All Projects'**
+  String get gttImport_allProjects;
+
+  /// No description provided for @gttImport_chooseGttProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose GTT Project:'**
+  String get gttImport_chooseGttProject;
+
+  /// No description provided for @exportWidget_exportToGTT.
+  ///
+  /// In en, this message translates to:
+  /// **'Export to GeoTaskTracker Server'**
+  String get exportWidget_exportToGTT;
+
+  /// No description provided for @importWidget_importFromGTT.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from GeoTaskTracker Server'**
+  String get importWidget_importFromGTT;
+
+  /// No description provided for @settings_serverUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Server Username'**
+  String get settings_serverUsername;
+
+  /// No description provided for @settings_pleaseEnterValidUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid server username.'**
+  String get settings_pleaseEnterValidUsername;
 }
 
-class AppLocalizationDelegate extends LocalizationsDelegate<IEL> {
-  const AppLocalizationDelegate();
+class _IELDelegate extends LocalizationsDelegate<IEL> {
+  const _IELDelegate();
 
-  List<Locale> get supportedLocales {
-    return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'cs'),
-      Locale.fromSubtags(languageCode: 'de'),
-      Locale.fromSubtags(languageCode: 'fr'),
-      Locale.fromSubtags(languageCode: 'it'),
-      Locale.fromSubtags(languageCode: 'ja'),
-      Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
-      Locale.fromSubtags(languageCode: 'ru'),
-    ];
+  @override
+  Future<IEL> load(Locale locale) {
+    return SynchronousFuture<IEL>(lookupIEL(locale));
   }
 
   @override
-  bool isSupported(Locale locale) => _isSupported(locale);
-  @override
-  Future<IEL> load(Locale locale) => IEL.load(locale);
-  @override
-  bool shouldReload(AppLocalizationDelegate old) => false;
+  bool isSupported(Locale locale) => <String>['cs', 'de', 'en', 'fr', 'it', 'ja', 'nb', 'ru'].contains(locale.languageCode);
 
-  bool _isSupported(Locale locale) {
-    for (var supportedLocale in supportedLocales) {
-      if (supportedLocale.languageCode == locale.languageCode) {
-        return true;
-      }
-    }
-    return false;
+  @override
+  bool shouldReload(_IELDelegate old) => false;
+}
+
+IEL lookupIEL(Locale locale) {
+
+  // Lookup logic when language+country codes are specified.
+  switch (locale.languageCode) {
+    case 'nb': {
+  switch (locale.countryCode) {
+    case 'NO': return IELNbNo();
+   }
+  break;
+   }
   }
+
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'cs': return IELCs();
+    case 'de': return IELDe();
+    case 'en': return IELEn();
+    case 'fr': return IELFr();
+    case 'it': return IELIt();
+    case 'ja': return IELJa();
+    case 'nb': return IELNb();
+    case 'ru': return IELRu();
+  }
+
+  throw FlutterError(
+    'IEL.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.'
+  );
 }
