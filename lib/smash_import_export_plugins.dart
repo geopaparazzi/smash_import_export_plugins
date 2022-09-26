@@ -34,7 +34,6 @@ part 'com/hydrologis/smash/import_export_plugins/export/pdf/pdf_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/import.dart';
 part 'com/hydrologis/smash/import_export_plugins/import/gss/gss_import.dart';
 part 'com/hydrologis/smash/import_export_plugins/import/gtt/gtt_import.dart';
-part 'com/hydrologis/smash/import_export_plugins/l10n/localization.dart';
 part 'com/hydrologis/smash/import_export_plugins/plugins.dart';
 part 'com/hydrologis/smash/import_export_plugins/utils/gpx_kml_utilities.dart';
 part 'com/hydrologis/smash/import_export_plugins/utils/gss_utilities.dart';
