@@ -51,27 +51,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("KML exported"),
         "exportWidget_pdfExported":
             MessageLookupByLibrary.simpleMessage("PDF exported"),
-        "form_sketch_backColor":
-            MessageLookupByLibrary.simpleMessage("Background color"),
-        "form_sketch_clear": MessageLookupByLibrary.simpleMessage("Clear"),
-        "form_sketch_enableDrawing":
-            MessageLookupByLibrary.simpleMessage("Turn on drawing"),
-        "form_sketch_enableEraser":
-            MessageLookupByLibrary.simpleMessage("Turn on eraser"),
-        "form_sketch_newSketch":
-            MessageLookupByLibrary.simpleMessage("New Sketch"),
-        "form_sketch_noUndo":
-            MessageLookupByLibrary.simpleMessage("Nothing to undo"),
-        "form_sketch_pickColor":
-            MessageLookupByLibrary.simpleMessage("Pick color"),
-        "form_sketch_save": MessageLookupByLibrary.simpleMessage("Save"),
-        "form_sketch_sketcher":
-            MessageLookupByLibrary.simpleMessage("Sketcher"),
-        "form_sketch_strokeColor":
-            MessageLookupByLibrary.simpleMessage("Stroke color"),
-        "form_sketch_undo": MessageLookupByLibrary.simpleMessage("Undo"),
-        "form_smash_cantSaveImageDb": MessageLookupByLibrary.simpleMessage(
-            "Could not save image in database."),
         "gssExport_collectingSyncStats":
             MessageLookupByLibrary.simpleMessage("Collecting sync stats…"),
         "gssExport_followingDataWillBeUploaded":

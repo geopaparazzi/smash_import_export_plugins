@@ -51,26 +51,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("KML exportováno"),
         "exportWidget_pdfExported":
             MessageLookupByLibrary.simpleMessage("PDF exportováno"),
-        "form_sketch_backColor":
-            MessageLookupByLibrary.simpleMessage("Barva pozadí"),
-        "form_sketch_clear": MessageLookupByLibrary.simpleMessage("Vymazat"),
-        "form_sketch_enableDrawing":
-            MessageLookupByLibrary.simpleMessage("Zapnout kreslení"),
-        "form_sketch_enableEraser":
-            MessageLookupByLibrary.simpleMessage("Zapnout gumu"),
-        "form_sketch_newSketch":
-            MessageLookupByLibrary.simpleMessage("Nový náčrt"),
-        "form_sketch_noUndo":
-            MessageLookupByLibrary.simpleMessage("Nic, co by šlo vrátit zpět"),
-        "form_sketch_pickColor":
-            MessageLookupByLibrary.simpleMessage("Vyberte barvu"),
-        "form_sketch_save": MessageLookupByLibrary.simpleMessage("Uložit"),
-        "form_sketch_sketcher": MessageLookupByLibrary.simpleMessage("Skicák"),
-        "form_sketch_strokeColor":
-            MessageLookupByLibrary.simpleMessage("Barva tahu"),
-        "form_sketch_undo": MessageLookupByLibrary.simpleMessage("Vrátit"),
-        "form_smash_cantSaveImageDb": MessageLookupByLibrary.simpleMessage(
-            "Obrázek se nepodařilo uložit do databáze."),
         "gssExport_collectingSyncStats": MessageLookupByLibrary.simpleMessage(
             "Sbírání statistik synchronizace…"),
         "gssExport_followingDataWillBeUploaded":
