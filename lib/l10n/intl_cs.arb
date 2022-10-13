@@ -266,5 +266,13 @@
   "settings_serverUsername": "Uživatelské jméno serveru",
   "@settings_serverUsername": {},
   "gttExport_syncStats": "Statistiky synchronizace",
-  "@gttExport_syncStats": {}
+  "@gttExport_syncStats": {},
+  "gttExport_dataUploadedSelectedProject": "Následující údaje se nahrají pouze v případě, že je projekt vybrán.",
+  "@gttExport_dataUploadedSelectedProject": {},
+  "gttExport_contactAdmin": "Žádný dostupný projekt, kontaktujte správce.",
+  "@gttExport_contactAdmin": {},
+  "gttExport_selectProject": "Vybrat projekt",
+  "@gttExport_selectProject": {},
+  "gttImport_GTTServerProjectsWillBeImported": "Všechny projekty serveru GTT budou importovány",
+  "@gttImport_GTTServerProjectsWillBeImported": {}
 }

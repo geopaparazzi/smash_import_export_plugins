@@ -1,3 +1,9 @@
 {
-  "@@locale": "de"
+  "@@locale": "de",
+  "exportWidget_gpxExported": "GPX exportiert",
+  "@exportWidget_gpxExported": {},
+  "exportWidget_export": "Exportieren",
+  "@exportWidget_export": {},
+  "exportWidget_pdfExported": "PDF exportiert",
+  "@exportWidget_pdfExported": {}
 }
