@@ -212,42 +212,6 @@ class IELCs extends IEL {
   String get network_couldNotConnectToServer => 'Nepodařilo se připojit k serveru. Je online? Zkontrolujte svou adresu.';
 
   @override
-  String get form_sketch_newSketch => 'Nový náčrt';
-
-  @override
-  String get form_sketch_undo => 'Vrátit';
-
-  @override
-  String get form_sketch_noUndo => 'Nic, co by šlo vrátit zpět';
-
-  @override
-  String get form_sketch_clear => 'Vymazat';
-
-  @override
-  String get form_sketch_save => 'Uložit';
-
-  @override
-  String get form_sketch_sketcher => 'Skicák';
-
-  @override
-  String get form_sketch_enableDrawing => 'Zapnout kreslení';
-
-  @override
-  String get form_sketch_enableEraser => 'Zapnout gumu';
-
-  @override
-  String get form_sketch_backColor => 'Barva pozadí';
-
-  @override
-  String get form_sketch_strokeColor => 'Barva tahu';
-
-  @override
-  String get form_sketch_pickColor => 'Vyberte barvu';
-
-  @override
-  String get form_smash_cantSaveImageDb => 'Obrázek se nepodařilo uložit do databáze.';
-
-  @override
   String get gttExport_chooseGttProject => 'Zvolte projekt GTT:';
 
   @override
@@ -299,13 +263,13 @@ class IELCs extends IEL {
   String get gttExport_dataUploadedUponSync => 'Při synchronizaci se nahrají následující údaje.';
 
   @override
-  String get gttExport_dataUploadedSelectedProject => 'The following data will be uploaded only if the project is selected.';
+  String get gttExport_dataUploadedSelectedProject => 'Následující údaje se nahrají pouze v případě, že je projekt vybrán.';
 
   @override
-  String get gttExport_contactAdmin => 'No Available Project, Contact your Admin.';
+  String get gttExport_contactAdmin => 'Žádný dostupný projekt, kontaktujte správce.';
 
   @override
-  String get gttExport_selectProject => 'Select Project';
+  String get gttExport_selectProject => 'Vybrat projekt';
 
   @override
   String get gttExport_gpsLogs => 'Protokoly GPS';
@@ -380,7 +344,7 @@ class IELCs extends IEL {
   String get gttImport_importFormsFromGttServer => 'Import formulářů z projektů serveru GTT';
 
   @override
-  String get gttImport_GTTServerProjectsWillBeImported => 'All GTT Server Projects will be imported';
+  String get gttImport_GTTServerProjectsWillBeImported => 'Všechny projekty serveru GTT budou importovány';
 
   @override
   String get gttImport_importingForms => 'Importování formulářů';

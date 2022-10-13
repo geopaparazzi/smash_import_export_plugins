@@ -152,7 +152,7 @@ class IELIt extends IEL {
   String get importWidget_importFromGeopaparazzi => 'Importa da GSS (Geopaparazzi Survey Server)';
 
   @override
-  String get settings_pleaseEnterValidPassword => 'Please enter a valid server password.';
+  String get settings_pleaseEnterValidPassword => 'Si prega di inserire una password valida per il server.';
 
   @override
   String get settings_gss => 'GSS';
@@ -212,97 +212,61 @@ class IELIt extends IEL {
   String get network_couldNotConnectToServer => 'Impossibile connettersi al server. E\' online? Verifica l\'indirizzo.';
 
   @override
-  String get form_sketch_newSketch => 'New Sketch';
+  String get gttExport_chooseGttProject => 'Scegli un progetto GTT:';
 
   @override
-  String get form_sketch_undo => 'Undo';
+  String get gttExport_gttExport => 'Export GTT';
 
   @override
-  String get form_sketch_noUndo => 'Nothing to undo';
+  String get gttExport_setProjectDirty => 'Setta il progetto come sporco?';
 
   @override
-  String get form_sketch_clear => 'Clear';
+  String get gttExport_thisCantBeUndone => 'Non è possibile annullare!';
 
   @override
-  String get form_sketch_save => 'Save';
+  String get gttExport_restoreProjectAsDirty => 'Rigenera tutti i progetti come sporchi.';
 
   @override
-  String get form_sketch_sketcher => 'Sketcher';
+  String get gttExport_setProjectToClean => 'Impostare il progetto come pulito?';
 
   @override
-  String get form_sketch_enableDrawing => 'Turn on drawing';
+  String get gttExport_restoreProjectAsClean => 'Rigenera il progetto come pulito.';
 
   @override
-  String get form_sketch_enableEraser => 'Turn on eraser';
+  String get gttExport_nothingToSync => 'Niente da sincronizzare.';
 
   @override
-  String get form_sketch_backColor => 'Background color';
+  String get gttExport_collectingSyncStats => 'Recupero statistiche di sincronizzazione…';
 
   @override
-  String get form_sketch_strokeColor => 'Stroke color';
+  String get gttExport_unableToSyncDueToError => 'Impossibile sincronizzare per via di un errore, controllare la diagnostica.';
 
   @override
-  String get form_sketch_pickColor => 'Pick color';
+  String get gttExport_noGttServerUrlSet => 'Non è stato settato il url GTT, controllare le impostazioni.';
 
   @override
-  String get form_smash_cantSaveImageDb => 'Could not save image in database.';
+  String get gttExport_noGttPasswordSet => 'Non è stata settata la password del server. Controllare le impostazioni.';
 
   @override
-  String get gttExport_chooseGttProject => 'Choose GTT Project:';
+  String get gttExport_noGttUserSet => 'Non è stato settato un utente per il server GTT, controllare le impostazioni.';
 
   @override
-  String get gttExport_gttExport => 'GTT Export';
+  String get gttExport_unableToRetrieveProjects => 'Impossibile recuperare la lista progetti GTT. Controllare le impostazioni.';
 
   @override
-  String get gttExport_setProjectDirty => 'Set project to DIRTY?';
+  String get gttExport_unableToRetrieveApiKey => 'Impossibile recuperare la Api Key GTT. Controllare le impostazioni.';
 
   @override
-  String get gttExport_thisCantBeUndone => 'This can\'t be undone!';
+  String get gttExport_syncStats => 'Statistiche di Sincronizzazione';
 
   @override
-  String get gttExport_restoreProjectAsDirty => 'Restore project as all dirty.';
+  String get gttExport_dataUploadedUponSync => 'I seguenti dati verranno caricati durante la sincronizzazione.';
 
   @override
-  String get gttExport_setProjectToClean => 'Set project to CLEAN?';
+  String get gttExport_dataUploadedSelectedProject => 'I seguenti dati verranno caricati solo se il progetto è selezionato.';
 
   @override
-  String get gttExport_restoreProjectAsClean => 'Restore project as all clean.';
-
-  @override
-  String get gttExport_nothingToSync => 'Nothing to sync.';
-
-  @override
-  String get gttExport_collectingSyncStats => 'Collecting sync stats...';
-
-  @override
-  String get gttExport_unableToSyncDueToError => 'Unable to sync due to an error, check diagnostics.';
-
-  @override
-  String get gttExport_noGttServerUrlSet => 'No GTT server url has been set. Check your settings.';
-
-  @override
-  String get gttExport_noGttPasswordSet => 'No GTT server password has been set. Check your settings.';
-
-  @override
-  String get gttExport_noGttUserSet => 'No GTT server user has been set. Check your settings.';
-
-  @override
-  String get gttExport_unableToRetrieveProjects => 'Unable to retrieve GTT Projects List. Check your settings.';
-
-  @override
-  String get gttExport_unableToRetrieveApiKey => 'Unable to retrieve GTT Api Key. Check your settings.';
-
-  @override
-  String get gttExport_syncStats => 'Sync Stats';
-
-  @override
-  String get gttExport_dataUploadedUponSync => 'The following data will be uploaded upon sync.';
-
-  @override
-  String get gttExport_dataUploadedSelectedProject => 'The following data will be uploaded only if the project is selected.';
-
-  @override
-  String get gttExport_contactAdmin => 'No Available Project, Contact your Admin.';
+  String get gttExport_contactAdmin => 'Nessun progetto disponibile, contattare l\'amministratore.';
 
   @override
   String get gttExport_selectProject => 'Select Project';
