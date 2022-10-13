@@ -84,18 +84,10 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
   bool _uploadCompleted = false;
   List<Widget> _uploadTiles = [];
-  List<DropdownMenuItem> _projects = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
-  List<DropdownMenuItem<String>> _gpsLogsProj = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
-  List<DropdownMenuItem<String>> _simpleNotesProj = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
-  List<DropdownMenuItem<String>> _imagesProj = [
-    DropdownMenuItem(child: Text(IEL().gttExport_selectProject), value: "none")
-  ];
+  late List<DropdownMenuItem> _projects;
+  late List<DropdownMenuItem<String>> _gpsLogsProj;
+  late List<DropdownMenuItem<String>> _simpleNotesProj;
+  late List<DropdownMenuItem<String>> _imagesProj;
   late String _selectedProj;
   String _selectedGpsLogProj = "";
   String _selectedSimpleNotesProj = "";
@@ -109,12 +101,29 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
   @override
   void initState() {
-    init();
-
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    init();
+  }
+
   Future<void> init() async {
+    _projects = [
+      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+    ];
+    _gpsLogsProj = [
+      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+    ];
+    _simpleNotesProj = [
+      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+    ];
+    _imagesProj = [
+      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+    ];
+
     _serverUrl = GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_URL);
 
     if (_serverUrl == null) {
