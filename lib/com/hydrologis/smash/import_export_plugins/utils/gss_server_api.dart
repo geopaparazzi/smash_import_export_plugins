@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-import 'package:smashlibs/com/hydrologis/flutterlibs/utils/logging.dart';
 import 'package:smashlibs/smashlibs.dart';
 
 const NETWORKERROR_PREFIX = "ERROR:";
