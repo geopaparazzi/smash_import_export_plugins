@@ -6,7 +6,7 @@ part of smash_import_export_plugins;
  */
 
 /// @author hydrologis
-class GssUtilities {
+class Gss2022Utilities {
   static final int DEFAULT_BYTE_ARRAY_READ = 8192;
 
   static final String MASTER_GSS_PASSWORD = "gss_Master_Survey_Forever_2018";
@@ -43,7 +43,7 @@ class GssUtilities {
       return null;
     }
     String authCode =
-        deviceId + ":" + (password ?? GssUtilities.MASTER_GSS_PASSWORD);
+        deviceId + ":" + (password ?? Gss2022Utilities.MASTER_GSS_PASSWORD);
     String authHeader =
         "Basic " + const Base64Encoder().convert(authCode.codeUnits);
     return authHeader;
@@ -58,7 +58,7 @@ class GssUtilities {
 /// Widget to trace upload of geopaparazzi items upload.
 ///
 /// These can be notes, images or gpslogs.
-class ProjectDataUploadListTileProgressWidget extends StatefulWidget {
+class ProjectDataUploadListTileProgressWidget2022 extends StatefulWidget {
   final String _uploadUrl;
   final dynamic _item;
   final String? authHeader;
@@ -67,18 +67,18 @@ class ProjectDataUploadListTileProgressWidget extends StatefulWidget {
   final ValueNotifier? orderNotifier;
   final int order;
 
-  ProjectDataUploadListTileProgressWidget(
+  ProjectDataUploadListTileProgressWidget2022(
       this._dio, this._projectDb, this._uploadUrl, this._item,
       {this.authHeader, this.orderNotifier, required this.order});
 
   @override
   State<StatefulWidget> createState() {
-    return ProjectDataUploadListTileProgressWidgetState();
+    return ProjectDataUploadListTileProgressWidgetState2022();
   }
 }
 
-class ProjectDataUploadListTileProgressWidgetState
-    extends State<ProjectDataUploadListTileProgressWidget> {
+class ProjectDataUploadListTileProgressWidgetState2022
+    extends State<ProjectDataUploadListTileProgressWidget2022> {
   bool _uploading = true;
   dynamic _item;
   String _progressString = "";
@@ -212,7 +212,8 @@ class ProjectDataUploadListTileProgressWidgetState
 
     var formData = FormData();
     formData.fields
-      ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.LOG_OBJID))
+      ..add(
+          MapEntry(Gss2022Utilities.OBJID_TYPE_KEY, Gss2022Utilities.LOG_OBJID))
       ..add(MapEntry(PROJECT_NAME, projectName))
       ..add(MapEntry(LOGS_COLUMN_ID, "${log.id}"))
       ..add(MapEntry(LOGS_COLUMN_TEXT, log.text ?? ""))
@@ -264,7 +265,8 @@ class ProjectDataUploadListTileProgressWidgetState
     DbImage image = _item;
     var formData = FormData();
     formData.fields
-      ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.IMAGE_OBJID))
+      ..add(MapEntry(
+          Gss2022Utilities.OBJID_TYPE_KEY, Gss2022Utilities.IMAGE_OBJID))
       ..add(MapEntry(PROJECT_NAME, projectName))
       ..add(MapEntry(IMAGES_COLUMN_ID, "${image.id}"))
       ..add(MapEntry(IMAGES_COLUMN_TEXT, image.text))
@@ -323,7 +325,8 @@ class ProjectDataUploadListTileProgressWidgetState
     Note note = _item;
     var formData = FormData();
     formData.fields
-      ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.NOTE_OBJID))
+      ..add(MapEntry(
+          Gss2022Utilities.OBJID_TYPE_KEY, Gss2022Utilities.NOTE_OBJID))
       ..add(MapEntry(PROJECT_NAME, projectName))
       ..add(MapEntry(NOTES_COLUMN_ID, "${note.id}"))
       ..add(MapEntry(NOTES_COLUMN_TEXT, note.text))
@@ -421,25 +424,23 @@ class ProjectDataUploadListTileProgressWidgetState
   }
 }
 
-class GssSettings extends StatefulWidget {
+class Gss2022Settings extends StatefulWidget {
   @override
-  GssSettingsState createState() {
-    return GssSettingsState();
+  Gss2022SettingsState createState() {
+    return Gss2022SettingsState();
   }
 }
 
-class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
+class Gss2022SettingsState extends State<Gss2022Settings>
+    with AfterLayoutMixin {
   //static final title = "GSS";
   //static final subtitle = "Geopaparazzi Survey Server";
   static final iconData = MdiIcons.cloudLock;
 
   String? _gssUrl;
-  String? _gssUser;
+  String? _gssUser; // Rigth now unused, since the deviceid is the user
   String? _gssPwd;
   bool? _allowSelfCert;
-  List<String> _projectsList = [];
-  String? _selectedProject;
-  String? serverTokenError;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -448,27 +449,19 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
 
   Future<void> getData() async {
     String? gssUrl = await GpPreferences()
-        .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_URL, "");
+        .getString(SmashPreferencesKeys.KEY_GSS_SERVER_URL, "");
     String? gssUser = await GpPreferences()
-        .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_USER, "");
+        .getString(SmashPreferencesKeys.KEY_GSS_SERVER_USER, "");
     String? gssPwd = await GpPreferences()
-        .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PWD, "dummy");
-    String? selectedProject = await GpPreferences()
-        .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT, "");
-    List<String>? projectsList = await GpPreferences().getStringList(
-        SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT_LIST, []);
+        .getString(SmashPreferencesKeys.KEY_GSS_SERVER_PWD, "dummy");
     bool? allowSelfCert = await GpPreferences().getBoolean(
-        SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_ALLOW_SELFCERTIFICATE, true);
+        SmashPreferencesKeys.KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE, true);
 
     setState(() {
       _gssUrl = gssUrl;
       _gssUser = gssUser;
       _gssPwd = gssPwd;
       _allowSelfCert = allowSelfCert;
-      _selectedProject = selectedProject;
-      if (projectsList != null) {
-        _projectsList = projectsList;
-      }
     });
   }
 
@@ -523,8 +516,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                     res = _gssUrl;
                                   }
                                   await GpPreferences().setString(
-                                      SmashPreferencesKeys
-                                          .KEY_GSS_DJANGO_SERVER_URL,
+                                      SmashPreferencesKeys.KEY_GSS_SERVER_URL,
                                       res);
                                   setState(() {
                                     _gssUrl = res;
@@ -538,130 +530,6 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                     return IEL
                                         .of(context)
                                         .settings_serverUrlStartWithHttp; //"Server url needs to start with http or https."
-                                  }
-                                },
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Card(
-                      margin: SmashUI.defaultMargin(),
-                      color: SmashColors.mainBackground,
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: SmashUI.defaultPadding(),
-                            child:
-                                SmashUI.normalText("GSS Project", bold: true),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  top: p, bottom: p, right: p, left: 2 * p),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    height: 50.0,
-                                    width:
-                                        ScreenUtilities.getWidth(context) * 0.9,
-                                    child: DropdownButton<String>(
-                                      isExpanded: true,
-                                      items: _projectsList.map((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                      value: _selectedProject,
-                                      onChanged: (newProject) async {
-                                        _selectedProject = newProject;
-                                        await GpPreferences().setString(
-                                            SmashPreferencesKeys
-                                                .KEY_GSS_DJANGO_SERVER_PROJECT,
-                                            _selectedProject!);
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: IconButton(
-                                      icon: Icon(
-                                        MdiIcons.refresh,
-                                        color: SmashColors.mainDecorations,
-                                      ),
-                                      onPressed: () async {
-                                        _projectsList =
-                                            await ServerApi.getProjectNames();
-                                        if (_projectsList.isNotEmpty) {
-                                          await GpPreferences().setStringList(
-                                              SmashPreferencesKeys
-                                                  .KEY_GSS_DJANGO_SERVER_PROJECT_LIST,
-                                              _projectsList);
-                                          if (_selectedProject == null ||
-                                              _selectedProject!.length == 0) {
-                                            _selectedProject = _projectsList[0];
-                                          }
-                                          await GpPreferences().setString(
-                                              SmashPreferencesKeys
-                                                  .KEY_GSS_DJANGO_SERVER_PROJECT,
-                                              _selectedProject!);
-                                        }
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Card(
-                      margin: SmashUI.defaultMargin(),
-                      color: SmashColors.mainBackground,
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: SmashUI.defaultPadding(),
-                            child: SmashUI.normalText(
-                                IEL
-                                    .of(context)
-                                    .settings_serverUsername, // "Server Username",
-                                bold: true),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  top: p, bottom: p, right: p, left: 2 * p),
-                              child: EditableTextField(
-                                IEL
-                                    .of(context)
-                                    .settings_serverUsername, //"server username",
-                                _gssUser!,
-                                (res) async {
-                                  if (res == null || res.trim().length == 0) {
-                                    res = _gssUser;
-                                  }
-                                  await GpPreferences().setString(
-                                      SmashPreferencesKeys
-                                          .KEY_GSS_DJANGO_SERVER_USER,
-                                      res);
-                                  setState(() {
-                                    _gssUser = res;
-                                  });
-                                },
-                                validationFunction: (text) {
-                                  if (text.toString().trim().isNotEmpty) {
-                                    return null;
-                                  } else {
-                                    return IEL
-                                        .of(context)
-                                        .settings_pleaseEnterValidUsername;
-                                    //"Please enter a valid server username.";
                                   }
                                 },
                               )),
@@ -697,8 +565,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                     res = _gssPwd;
                                   }
                                   await GpPreferences().setString(
-                                      SmashPreferencesKeys
-                                          .KEY_GSS_DJANGO_SERVER_PWD,
+                                      SmashPreferencesKeys.KEY_GSS_SERVER_PWD,
                                       res);
                                   setState(() {
                                     _gssPwd = res;
@@ -749,72 +616,6 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                               )),
                         ],
                       ),
-                    ),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                              color: SmashColors.mainDecorations, width: 3),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(16),
-                            ),
-                          ),
-                        ),
-                        onPressed: () async {
-                          try {
-                            serverTokenError = null;
-
-                            if (_gssPwd == null ||
-                                _gssUrl == null ||
-                                _gssUser == null ||
-                                _selectedProject == null) {
-                              serverTokenError =
-                                  "User, password, url and project are necessary to login";
-                            } else {
-                              var token = await ServerApi.login(
-                                  _gssUser!, _gssPwd!, _selectedProject!);
-                              if (token.startsWith(NETWORKERROR_PREFIX)) {
-                                var errorJson =
-                                    token.replaceFirst(NETWORKERROR_PREFIX, "");
-                                var errorMap = jsonDecode(errorJson);
-                                serverTokenError = errorMap['error'] ?? token;
-                                setState(() {});
-                              } else {
-                                await ServerApi.setGssToken(token);
-                              }
-                            }
-                            setState(() {});
-                          } catch (e) {
-                            setState(() {
-                              if (e is StateError) {
-                                serverTokenError = e.message;
-                              }
-                            });
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: SmashUI.titleText("Login"),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Center(
-                      child: serverTokenError != null
-                          ? SmashUI.titleText(serverTokenError!,
-                              bold: true, color: SmashColors.mainDanger)
-                          : ServerApi.getGssToken() == null
-                              ? SmashUI.titleText(
-                                  "No token available, please login.",
-                                  bold: true,
-                                  color: SmashColors.mainDanger)
-                              : SmashUI.titleText("Token is in store."),
                     ),
                   ),
                 ],
