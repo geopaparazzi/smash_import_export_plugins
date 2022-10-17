@@ -17,6 +17,7 @@ const API_LOGIN = "api/login/";
 const API_USERS = "api/users/";
 
 const API_PROJECTNAMES = "api/projectnames/";
+const API_PROJECTDATA = "api/projectdatas/";
 const API_RENDERNOTES = "api/rendernotes/";
 const API_LASTUSERPOSITIONS = "api/lastuserpositions/";
 const API_NOTES = "api/notes/";
@@ -37,7 +38,6 @@ const LOGMSG = "msg";
 const THUMBNAIL = "thumbnail";
 
 const KEY_GSS_TOKEN = "key_gss_token";
-const KEY_GSS_CURRENT_PROJECT = "key_gsscurrent_project";
 
 class ServerApi {
   static String getBaseUrl() {
@@ -99,7 +99,8 @@ class ServerApi {
   }
 
   static String? getCurrentGssProject() {
-    var currentProject = GpPreferences().getStringSync(KEY_GSS_CURRENT_PROJECT);
+    var currentProject = GpPreferences()
+        .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT);
     return currentProject;
   }
 
@@ -137,6 +138,23 @@ class ServerApi {
     if (response.statusCode == 200) {
       var notesList = jsonDecode(response.body);
       return notesList;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<dynamic>?> getProjectData() async {
+    var tokenHeader = getTokenHeader();
+    var projectName = getCurrentGssProject();
+    if (projectName == null) {
+      throw StateError("No project was selected.");
+    }
+    var uri = Uri.parse(
+        "${getBaseUrl()}$API_PROJECTDATA?$API_PROJECT_PARAM" + projectName);
+    var response = await get(uri, headers: tokenHeader);
+    if (response.statusCode == 200) {
+      var projectDataList = jsonDecode(response.body);
+      return projectDataList;
     } else {
       return null;
     }
