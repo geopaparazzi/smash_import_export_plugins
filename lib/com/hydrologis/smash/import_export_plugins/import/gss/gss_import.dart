@@ -114,20 +114,11 @@ class _GssImportWidgetState extends State<GssImportWidget>
     Directory formsFolder = await Workspace.getFormsFolder();
     _formsFolderPath = formsFolder.path;
 
-    _serverUrl =
-        GpPreferences().getStringSync(SmashPreferencesKeys.KEY_GSS_SERVER_URL);
+    _serverUrl = GpPreferences()
+        .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_URL);
     if (_serverUrl == null) {
       setState(() {
         _status = 11;
-      });
-      return;
-    }
-
-    String? pwd =
-        GpPreferences().getStringSync(SmashPreferencesKeys.KEY_GSS_SERVER_PWD);
-    if (pwd == null || pwd.trim().isEmpty) {
-      setState(() {
-        _status = 10;
       });
       return;
     }
@@ -317,10 +308,12 @@ class _GssImportWidgetState extends State<GssImportWidget>
                       var map = _baseMapsList[index];
                       var name = map['label'];
                       String downloadUrl = map['file'];
+                      var fileName =
+                          FileUtilities.nameFromFile(downloadUrl, true);
 
                       return FileDownloadListTileProgressWidget(
                         downloadUrl,
-                        FileUtilities.joinPaths(_mapsFolderPath, name),
+                        FileUtilities.joinPaths(_mapsFolderPath, fileName),
                         name,
                         tokenHeader: tokenHeader,
                       );
@@ -364,10 +357,12 @@ class _GssImportWidgetState extends State<GssImportWidget>
                       var name = map['label'];
 
                       String downloadUrl = map['file'];
+                      var fileName =
+                          FileUtilities.nameFromFile(downloadUrl, true);
 
                       return FileDownloadListTileProgressWidget(
                         downloadUrl,
-                        FileUtilities.joinPaths(_projectsFolderPath, name),
+                        FileUtilities.joinPaths(_projectsFolderPath, fileName),
                         name,
                         tokenHeader: tokenHeader,
                       );
@@ -411,10 +406,12 @@ class _GssImportWidgetState extends State<GssImportWidget>
                       var name = map['label'];
 
                       String downloadUrl = map['file'];
+                      var fileName =
+                          FileUtilities.nameFromFile(downloadUrl, true);
 
                       return FileDownloadListTileProgressWidget(
                         downloadUrl,
-                        FileUtilities.joinPaths(_formsFolderPath, name),
+                        FileUtilities.joinPaths(_formsFolderPath, fileName),
                         name,
                         tokenHeader: tokenHeader,
                       );

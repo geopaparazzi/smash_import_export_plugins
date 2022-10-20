@@ -188,7 +188,7 @@ class ServerApi {
           List<String>.from(list.map((projectMap) => projectMap['name']));
       return namesList;
     } else {
-      return [];
+      throw new StateError(response.body);
     }
   }
 }

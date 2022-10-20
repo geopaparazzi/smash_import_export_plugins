@@ -439,7 +439,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
   bool? _allowSelfCert;
   List<String> _projectsList = [];
   String? _selectedProject;
-  String? serverTokenError;
+  String? serverError;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -593,21 +593,26 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                         color: SmashColors.mainDecorations,
                                       ),
                                       onPressed: () async {
-                                        _projectsList =
-                                            await ServerApi.getProjectNames();
-                                        if (_projectsList.isNotEmpty) {
-                                          await GpPreferences().setStringList(
-                                              SmashPreferencesKeys
-                                                  .KEY_GSS_DJANGO_SERVER_PROJECT_LIST,
-                                              _projectsList);
-                                          if (_selectedProject == null ||
-                                              _selectedProject!.length == 0) {
-                                            _selectedProject = _projectsList[0];
+                                        try {
+                                          _projectsList =
+                                              await ServerApi.getProjectNames();
+                                          if (_projectsList.isNotEmpty) {
+                                            await GpPreferences().setStringList(
+                                                SmashPreferencesKeys
+                                                    .KEY_GSS_DJANGO_SERVER_PROJECT_LIST,
+                                                _projectsList);
+                                            if (_selectedProject == null ||
+                                                _selectedProject!.length == 0) {
+                                              _selectedProject =
+                                                  _projectsList[0];
+                                            }
+                                            await GpPreferences().setString(
+                                                SmashPreferencesKeys
+                                                    .KEY_GSS_DJANGO_SERVER_PROJECT,
+                                                _selectedProject!);
                                           }
-                                          await GpPreferences().setString(
-                                              SmashPreferencesKeys
-                                                  .KEY_GSS_DJANGO_SERVER_PROJECT,
-                                              _selectedProject!);
+                                        } catch (ex, st) {
+                                          serverError = ex.toString();
                                         }
                                         setState(() {});
                                       },
@@ -766,13 +771,13 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                         ),
                         onPressed: () async {
                           try {
-                            serverTokenError = null;
+                            serverError = null;
 
                             if (_gssPwd == null ||
                                 _gssUrl == null ||
                                 _gssUser == null ||
                                 _selectedProject == null) {
-                              serverTokenError =
+                              serverError =
                                   "User, password, url and project are necessary to login";
                             } else {
                               var token = await ServerApi.login(
@@ -781,7 +786,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                 var errorJson =
                                     token.replaceFirst(NETWORKERROR_PREFIX, "");
                                 var errorMap = jsonDecode(errorJson);
-                                serverTokenError = errorMap['error'] ?? token;
+                                serverError = errorMap['error'] ?? token;
                                 setState(() {});
                               } else {
                                 await ServerApi.setGssToken(token);
@@ -791,7 +796,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                           } catch (e) {
                             setState(() {
                               if (e is StateError) {
-                                serverTokenError = e.message;
+                                serverError = e.message;
                               }
                             });
                           }
@@ -806,8 +811,8 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Center(
-                      child: serverTokenError != null
-                          ? SmashUI.titleText(serverTokenError!,
+                      child: serverError != null
+                          ? SmashUI.titleText(serverError!,
                               bold: true, color: SmashColors.mainDanger)
                           : ServerApi.getGssToken() == null
                               ? SmashUI.titleText(
