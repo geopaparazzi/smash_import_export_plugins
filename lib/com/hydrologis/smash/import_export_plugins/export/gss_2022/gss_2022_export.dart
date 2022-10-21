@@ -6,7 +6,7 @@ part of smash_import_export_plugins;
  * found in the LICENSE file.
  */
 
-class GssExportPlugin extends AExportPlugin {
+class Gss2022ExportPlugin extends AExportPlugin {
   late ProjectDb projectDb;
   late BuildContext context;
 
@@ -25,7 +25,7 @@ class GssExportPlugin extends AExportPlugin {
 
   @override
   String getTitle() {
-    return "GSS";
+    return "GSS (until 2022)";
   }
 
   @override
@@ -40,47 +40,41 @@ class GssExportPlugin extends AExportPlugin {
 
   @override
   Widget getExportPage() {
-    return GssExportWidget(
+    return Gss2022ExportWidget(
       projectDb,
     );
   }
 
   @override
   Widget getSettingsPage() {
-    return GssSettings();
+    return Gss2022Settings();
   }
 }
 
-class GssExportWidget extends StatefulWidget {
+class Gss2022ExportWidget extends StatefulWidget {
   final ProjectDb projectDb;
 
-  GssExportWidget(this.projectDb, {Key? key}) : super(key: key);
+  Gss2022ExportWidget(this.projectDb, {Key? key}) : super(key: key);
 
   @override
-  _GssExportWidgetState createState() => new _GssExportWidgetState();
+  _Gss2022ExportWidgetState createState() => new _Gss2022ExportWidgetState();
 }
 
-class _GssExportWidgetState extends State<GssExportWidget> {
+class _Gss2022ExportWidgetState extends State<Gss2022ExportWidget> {
   /*
    * 0 = loading data stats
    * 1 = show data stats
    * 2 = uploading data
    *
-   * 10 = no no token available
+   * 10 = no server pwd available
    * 11 = no server url available
    * 12 = upload error
-   * 
-   * 15 = no project selected
-   * 100 = generic error
    */
   int _status = 0;
 
-  late String _genericErrorMessage;
-  late Map<String, String> tokenHeader;
-
-  String? _selectedProject;
-
   String? _serverUrl;
+  String? _authHeader;
+  late String _uploadDataUrl;
 
   late int _gpsLogCount;
   late int _simpleNotesCount;
@@ -97,26 +91,8 @@ class _GssExportWidgetState extends State<GssExportWidget> {
   }
 
   Future<void> init() async {
-    _selectedProject = GpPreferences()
-        .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT);
-    if (_selectedProject == null) {
-      setState(() {
-        _status = 15;
-      });
-      return;
-    }
-
-    var token = ServerApi.getGssToken();
-    if (token == null) {
-      setState(() {
-        _status = 10;
-      });
-      return;
-    }
-    tokenHeader = ServerApi.getTokenHeader();
-
-    _serverUrl = GpPreferences()
-        .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_URL);
+    _serverUrl =
+        GpPreferences().getStringSync(SmashPreferencesKeys.KEY_GSS_SERVER_URL);
     if (_serverUrl == null) {
       setState(() {
         _status = 11;
@@ -126,6 +102,18 @@ class _GssExportWidgetState extends State<GssExportWidget> {
     if (_serverUrl!.endsWith("/")) {
       _serverUrl = _serverUrl!.substring(0, _serverUrl!.length - 1);
     }
+
+    String? pwd =
+        GpPreferences().getStringSync(SmashPreferencesKeys.KEY_GSS_SERVER_PWD);
+    if (pwd == null || pwd.trim().isEmpty) {
+      setState(() {
+        _status = 10;
+      });
+      return;
+    }
+
+    _uploadDataUrl = _serverUrl! + Gss2022Utilities.SYNCH_PATH;
+    _authHeader = await Gss2022Utilities.getAuthHeader(pwd);
 
     /*
      * now gather data stats from db
@@ -234,8 +222,9 @@ class _GssExportWidgetState extends State<GssExportWidget> {
                           ? Center(
                               child: Padding(
                                 padding: SmashUI.defaultPadding(),
-                                child: SmashUI.titleText(
-                                    "No access token available. Check your settings."),
+                                child: SmashUI.titleText(IEL
+                                    .of(context)
+                                    .gssExport_noGssPasswordSet), //"No GSS server password has been set. Check your settings."
                               ),
                             )
                           : _status == 1
@@ -343,10 +332,12 @@ class _GssExportWidgetState extends State<GssExportWidget> {
     _uploadTiles = [];
     List<Note> simpleNotes = db.getNotes(doSimple: true, onlyDirty: true);
     for (var note in simpleNotes) {
-      var uploadWidget = ProjectDataUploadListTileProgressWidget(
+      var uploadWidget = ProjectDataUploadListTileProgressWidget2022(
         dio,
         db,
+        _uploadDataUrl,
         note,
+        authHeader: _authHeader,
         orderNotifier: uploadOrder,
         order: order++,
       );
@@ -354,10 +345,12 @@ class _GssExportWidgetState extends State<GssExportWidget> {
     }
     List<Note> formNotes = db.getNotes(doSimple: false, onlyDirty: true);
     for (var note in formNotes) {
-      var uploadWidget = ProjectDataUploadListTileProgressWidget(
+      var uploadWidget = ProjectDataUploadListTileProgressWidget2022(
         dio,
         db,
+        _uploadDataUrl,
         note,
+        authHeader: _authHeader,
         orderNotifier: uploadOrder,
         order: order++,
       );
@@ -365,10 +358,12 @@ class _GssExportWidgetState extends State<GssExportWidget> {
     }
     List<DbImage> imagesList = db.getImages(onlyDirty: true);
     for (var image in imagesList) {
-      var uploadWidget = ProjectDataUploadListTileProgressWidget(
+      var uploadWidget = ProjectDataUploadListTileProgressWidget2022(
         dio,
         db,
+        _uploadDataUrl,
         image,
+        authHeader: _authHeader,
         orderNotifier: uploadOrder,
         order: order++,
       );
@@ -377,10 +372,12 @@ class _GssExportWidgetState extends State<GssExportWidget> {
 
     List<Log> logsList = db.getLogs(onlyDirty: true);
     for (var log in logsList) {
-      var uploadWidget = ProjectDataUploadListTileProgressWidget(
+      var uploadWidget = ProjectDataUploadListTileProgressWidget2022(
         dio,
         db,
+        _uploadDataUrl,
         log,
+        authHeader: _authHeader,
         orderNotifier: uploadOrder,
         order: order++,
       );

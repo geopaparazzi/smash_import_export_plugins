@@ -74,7 +74,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
   late String _genericErrorMessage;
   late Map<String, String> tokenHeader;
 
-  String? _selectedProject;
+  Project? _selectedProject;
   late String _mapsFolderPath;
   late String _projectsFolderPath;
   late String _formsFolderPath;
@@ -89,14 +89,15 @@ class _GssImportWidgetState extends State<GssImportWidget>
   }
 
   Future<void> init() async {
-    _selectedProject = GpPreferences()
+    var selectedProjectJson = GpPreferences()
         .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT);
-    if (_selectedProject == null) {
+    if (selectedProjectJson == null) {
       setState(() {
         _status = 15;
       });
       return;
     }
+    _selectedProject = Project.fromJson(selectedProjectJson);
 
     var token = ServerApi.getGssToken();
     if (token == null) {
@@ -219,9 +220,8 @@ class _GssImportWidgetState extends State<GssImportWidget>
                         ? Center(
                             child: Padding(
                               padding: SmashUI.defaultPadding(),
-                              child: SmashUI.titleText(IEL
-                                  .of(context)
-                                  .gssImport_noGssPasswordSet), //"No GSS server password has been set. Check your settings."
+                              child: SmashUI.titleText(
+                                  "No access token available. Check your settings."),
                             ),
                           )
                         : _status == 13
@@ -268,7 +268,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
                 children: <Widget>[
                   Padding(
                     padding: SmashUI.defaultPadding(),
-                    child: SmashUI.titleText(_selectedProject!,
+                    child: SmashUI.titleText(_selectedProject!.name,
                         bold: true, color: SmashColors.mainSelection),
                   ),
                 ],

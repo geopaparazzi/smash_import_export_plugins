@@ -38,6 +38,7 @@ const LOGMSG = "msg";
 const THUMBNAIL = "thumbnail";
 
 const KEY_GSS_TOKEN = "key_gss_token";
+const KEY_GSS_USERID = "key_gss_userid";
 
 class ServerApi {
   static String getBaseUrl() {
@@ -55,11 +56,11 @@ class ServerApi {
   /// Login to get a token using credentials.
   ///
   /// Returns a string starting with ERROR if problems arised.
-  static Future<String> login(String user, String pwd, String project) async {
-    Map<String, String> formData = {
+  static Future<String> login(String user, String pwd, int projectId) async {
+    Map<String, dynamic> formData = {
       "username": user,
       "password": pwd,
-      "project": project
+      "project": projectId
     };
 
     final uri = Uri.parse("${getBaseUrl()}$API_LOGIN");
@@ -74,7 +75,10 @@ class ServerApi {
       return NETWORKERROR_PREFIX + "Permission denied.";
     }
     if (response.statusCode == 200) {
-      return json.decode(response.body)['token'];
+      var respMap = json.decode(response.body);
+      var userId = respMap['id'];
+      await setGssUserId(userId);
+      return respMap['token'];
     } else {
       return NETWORKERROR_PREFIX + response.body;
     }
@@ -98,21 +102,28 @@ class ServerApi {
     await GpPreferences().setString(KEY_GSS_TOKEN, token);
   }
 
-  static String? getCurrentGssProject() {
+  static int? getGssUserId() {
+    var userId = GpPreferences().getIntSync(KEY_GSS_USERID);
+    return userId;
+  }
+
+  static Future<void> setGssUserId(int id) async {
+    await GpPreferences().setInt(KEY_GSS_USERID, id);
+  }
+
+  static Project? getCurrentGssProject() {
     var currentProject = GpPreferences()
         .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT);
-    return currentProject;
+    return Project.fromJson(currentProject!);
   }
 
   static Future<Uint8List?> getImageThumbnail(int id) async {
-    var projectName = getCurrentGssProject();
-    if (projectName == null) {
+    Project? project = getCurrentGssProject();
+    if (project == null) {
       throw StateError("No project was selected.");
     }
     var uri = Uri.parse("${getBaseUrl()}$API_RENDERIMAGES$id/" +
-        "?" +
-        API_PROJECT_PARAM +
-        projectName);
+        "?$API_PROJECT_PARAM${project.id}");
     var requestHeaders = getTokenHeader();
 
     var response = await get(uri, headers: requestHeaders);
@@ -128,12 +139,12 @@ class ServerApi {
 
   static Future<dynamic> getRenderNotes() async {
     var tokenHeader = getTokenHeader();
-    var projectName = getCurrentGssProject();
-    if (projectName == null) {
+    Project? project = getCurrentGssProject();
+    if (project == null) {
       throw StateError("No project was selected.");
     }
     var uri = Uri.parse(
-        "${getBaseUrl()}$API_RENDERNOTES?$API_PROJECT_PARAM" + projectName);
+        "${getBaseUrl()}$API_RENDERNOTES?$API_PROJECT_PARAM${project.id}");
     var response = await get(uri, headers: tokenHeader);
     if (response.statusCode == 200) {
       var notesList = jsonDecode(response.body);
@@ -145,12 +156,12 @@ class ServerApi {
 
   static Future<List<dynamic>?> getProjectData() async {
     var tokenHeader = getTokenHeader();
-    var projectName = getCurrentGssProject();
-    if (projectName == null) {
+    Project? project = getCurrentGssProject();
+    if (project == null) {
       throw StateError("No project was selected.");
     }
     var uri = Uri.parse(
-        "${getBaseUrl()}$API_PROJECTDATA?$API_PROJECT_PARAM" + projectName);
+        "${getBaseUrl()}$API_PROJECTDATA?$API_PROJECT_PARAM${project.id}");
     var response = await get(uri, headers: tokenHeader);
     if (response.statusCode == 200) {
       var projectDataList = jsonDecode(response.body);
@@ -162,15 +173,13 @@ class ServerApi {
 
   static Future<List<dynamic>> getLastUserPositions() async {
     var tokenHeader = getTokenHeader();
-    var projectName = getCurrentGssProject();
-    if (projectName == null) {
+    Project? project = getCurrentGssProject();
+    if (project == null) {
       throw StateError("No project was selected.");
     }
     var uri = Uri.parse(getBaseUrl() +
         API_LASTUSERPOSITIONS +
-        "?" +
-        API_PROJECT_PARAM +
-        projectName);
+        "?$API_PROJECT_PARAM${project.id}");
     var response = await get(uri, headers: tokenHeader);
     if (response.statusCode == 200) {
       var positionsList = jsonDecode(response.body);
@@ -180,15 +189,49 @@ class ServerApi {
     }
   }
 
-  static Future<List<String>> getProjectNames() async {
+  static Future<List<Project>> getProjects() async {
     var response = await get(Uri.parse(getBaseUrl() + API_PROJECTNAMES));
     if (response.statusCode == 200) {
       var list = jsonDecode(response.body);
-      List<String> namesList =
-          List<String>.from(list.map((projectMap) => projectMap['name']));
-      return namesList;
+      List<Project> projectsList = List<Project>.from(
+          list.map((projectMap) => Project.fromMap(projectMap)));
+      return projectsList;
     } else {
       throw new StateError(response.body);
     }
   }
+}
+
+class Project {
+  late int id;
+  late String name;
+
+  String toJsonString() {
+    return jsonEncode(toMap());
+  }
+
+  Map toMap() {
+    return {
+      'name': name,
+      'id': id,
+    };
+  }
+
+  static Project fromJson(String projectJson) {
+    var projectMap = jsonDecode(projectJson);
+    return fromMap(projectMap);
+  }
+
+  static Project fromMap(Map<String, dynamic> projectMap) {
+    return Project()
+      ..id = projectMap['id']
+      ..name = projectMap['name'];
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Project && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

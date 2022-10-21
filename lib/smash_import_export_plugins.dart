@@ -29,6 +29,7 @@ part 'com/hydrologis/smash/import_export_plugins/export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/geopackage/geopackage_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/gpx/gpx_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/gss/gss_export.dart';
+part 'com/hydrologis/smash/import_export_plugins/export/gss_2022/gss_2022_export.dart';
 part 'com/hydrologis/smash/import_export_plugins/import/gss/gss_import.dart';
 part 'com/hydrologis/smash/import_export_plugins/import/gss_2022/gss_2022_import.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/gtt/gtt_export.dart';

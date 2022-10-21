@@ -5,6 +5,26 @@ part of smash_import_export_plugins;
  * found in the LICENSE file.
  */
 
+class DbNamings {
+  static String GEOM = "the_geom";
+  static String USER = "user";
+  static String PROJECT = "project";
+
+  static String GPSLOG_ID = "id";
+  static String GPSLOG_NAME = "name";
+  static String GPSLOG_STARTTS = "startts";
+  static String GPSLOG_ENDTS = "endts";
+  static String GPSLOG_UPLOADTIMESTAMP = "uploadts";
+  static String GPSLOG_COLOR = "color";
+  static String GPSLOG_WIDTH = "width";
+  static String GPSLOG_DATA = "data";
+
+  static String GPSLOGDATA_ID = "id";
+  static String GPSLOGDATA_ALTIM = "altim";
+  static String GPSLOGDATA_TIMESTAMP = "ts";
+  static String GPSLOGDATA_GPSLOGS = "gpslogid";
+}
+
 /// @author hydrologis
 class GssUtilities {
   static final int DEFAULT_BYTE_ARRAY_READ = 8192;
@@ -59,17 +79,15 @@ class GssUtilities {
 ///
 /// These can be notes, images or gpslogs.
 class ProjectDataUploadListTileProgressWidget extends StatefulWidget {
-  final String _uploadUrl;
   final dynamic _item;
-  final String? authHeader;
   final ProjectDb _projectDb;
   final Dio _dio;
   final ValueNotifier? orderNotifier;
   final int order;
 
   ProjectDataUploadListTileProgressWidget(
-      this._dio, this._projectDb, this._uploadUrl, this._item,
-      {this.authHeader, this.orderNotifier, required this.order});
+      this._dio, this._projectDb, this._item,
+      {this.orderNotifier, required this.order});
 
   @override
   State<StatefulWidget> createState() {
@@ -78,7 +96,8 @@ class ProjectDataUploadListTileProgressWidget extends StatefulWidget {
 }
 
 class ProjectDataUploadListTileProgressWidgetState
-    extends State<ProjectDataUploadListTileProgressWidget> {
+    extends State<ProjectDataUploadListTileProgressWidget>
+    with AfterLayoutMixin {
   bool _uploading = true;
   dynamic _item;
   String _progressString = "";
@@ -89,7 +108,10 @@ class ProjectDataUploadListTileProgressWidgetState
   void initState() {
     _item = widget._item;
     super.initState();
+  }
 
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
     if (widget.orderNotifier == null) {
       // if no order notifier is available, start the upload directly
       upload();
@@ -108,24 +130,21 @@ class ProjectDataUploadListTileProgressWidgetState
 
   Future<void> upload() async {
     bool hasError = false;
-    Options? options;
-    if (widget.authHeader != null) {
-      options = Options(headers: {"Authorization": widget.authHeader});
-    } else {
-      hasError = true;
-      handleError("Auth header missing!");
-      return;
-    }
+    var tokenHeader = ServerApi.getTokenHeader();
+    var headers = <String, dynamic>{}
+      ..addAll(tokenHeader)
+      ..addAll({'Content-type': 'application/json'});
+    Options options = Options(headers: headers);
 
-    var dbPath = widget._projectDb.getPath();
-    var projectName = FileUtilities.nameFromFile(dbPath, false);
+    var project = ServerApi.getCurrentGssProject();
+
     try {
       if (_item is Note) {
-        hasError = await handleNote(options, projectName, hasError);
+        // hasError = await handleNote(options, projectName, hasError);
       } else if (_item is DbImage) {
-        hasError = await handleImage(options, projectName, hasError);
+        // hasError = await handleImage(options, projectName, hasError);
       } else if (_item is Log) {
-        hasError = await handleLog(options, projectName, hasError);
+        hasError = await handleLog(options, project!, hasError);
       }
     } catch (e) {
       hasError = true;
@@ -206,52 +225,76 @@ class ProjectDataUploadListTileProgressWidgetState
   }
 
   Future<bool> handleLog(
-      Options options, String projectName, bool hasError) async {
+      Options options, Project project, bool hasError) async {
     Log log = _item;
     LogProperty? props = widget._projectDb.getLogProperties(log.id!);
 
-    var formData = FormData();
-    formData.fields
-      ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.LOG_OBJID))
-      ..add(MapEntry(PROJECT_NAME, projectName))
-      ..add(MapEntry(LOGS_COLUMN_ID, "${log.id}"))
-      ..add(MapEntry(LOGS_COLUMN_TEXT, log.text ?? ""))
-      ..add(MapEntry(LOGS_COLUMN_STARTTS, "${log.startTime}"))
-      ..add(MapEntry(LOGS_COLUMN_ENDTS, "${log.endTime}"))
-      ..add(MapEntry(LOGSPROP_COLUMN_WIDTH, "${props!.width ?? 3}"))
-      ..add(MapEntry(LOGSPROP_COLUMN_VISIBLE, "${props.isVisible ?? 1}"))
-      ..add(MapEntry(LOGSPROP_COLUMN_COLOR, "${props.color ?? "#FF0000"}"));
-
     List<LogDataPoint> logPoints = widget._projectDb.getLogDataPoints(log.id!);
-    List<Map<String, dynamic>> logPointsList = [];
-    for (var logPoint in logPoints) {
-      logPointsList.add(logPoint.toMap());
-    }
-    var logsJson = jsonEncode(logPointsList);
-    formData.fields.add(MapEntry(TABLE_GPSLOG_DATA, logsJson));
 
-    await widget._dio.post(
-      widget._uploadUrl,
-      data: formData,
-      options: options,
-      onSendProgress: (received, total) {
-        var msg;
-        if (total <= 0) {
-          msg =
-              "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
-        } else {
-          msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
-        }
-        setState(() {
-          _uploading = true;
-          _progressString = msg;
-        });
-      },
-      cancelToken: cancelToken,
-    ).catchError((err) {
+    var gpslogdata = [];
+    var coords = <Coordinate>[];
+
+    for (var point in logPoints) {
+      var ts2Str = TimeUtilities.ISO8601_TS_FORMATTER
+          .format(DateTime.fromMillisecondsSinceEpoch(point.ts!));
+      gpslogdata.add({
+        DbNamings.GEOM:
+            "SRID=4326;POINT (${point.lon} ${point.lat} ${point.altim})",
+        DbNamings.GPSLOGDATA_TIMESTAMP: ts2Str,
+      });
+      coords.add(Coordinate(point.lon, point.lat));
+    }
+
+    var line = GeometryFactory.defaultPrecision().createLineString(coords);
+    var lineStr = "SRID=4326;${line.toText()}";
+    var starttsStr = TimeUtilities.ISO8601_TS_FORMATTER
+        .format(DateTime.fromMillisecondsSinceEpoch(log.startTime!));
+    var endtsStr = TimeUtilities.ISO8601_TS_FORMATTER
+        .format(DateTime.fromMillisecondsSinceEpoch(log.endTime!));
+
+    var simpleColor = "#FF0000";
+    if (props != null) {
+      simpleColor = props.color!.split("@")[0];
+    }
+
+    int? userId = ServerApi.getGssUserId();
+
+    var newGpslog = {
+      DbNamings.GPSLOG_NAME: log.text,
+      DbNamings.GPSLOG_STARTTS: starttsStr,
+      DbNamings.GPSLOG_ENDTS: endtsStr,
+      DbNamings.GEOM: lineStr,
+      DbNamings.GPSLOG_WIDTH: props!.width ?? 3,
+      DbNamings.GPSLOG_COLOR: simpleColor,
+      DbNamings.USER: userId,
+      DbNamings.PROJECT: project.id
+    };
+    newGpslog["gpslogdata"] = gpslogdata;
+
+    try {
+      await widget._dio.post(
+        ServerApi.getBaseUrl() + API_GPSLOGS,
+        data: newGpslog,
+        options: options,
+        onSendProgress: (received, total) {
+          var msg;
+          if (total <= 0) {
+            msg =
+                "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
+          } else {
+            msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
+          }
+          setState(() {
+            _uploading = true;
+            _progressString = msg;
+          });
+        },
+        cancelToken: cancelToken,
+      );
+    } catch (exception) {
       hasError = true;
-      handleError(err);
-    });
+      handleError(exception);
+    }
     if (!cancelToken.isCancelled && !hasError) {
       log.isDirty = 0;
       widget._projectDb.updateLogDirty(log.id!, false);
@@ -259,148 +302,148 @@ class ProjectDataUploadListTileProgressWidgetState
     return hasError;
   }
 
-  Future<bool> handleImage(
-      Options options, String projectName, bool hasError) async {
-    DbImage image = _item;
-    var formData = FormData();
-    formData.fields
-      ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.IMAGE_OBJID))
-      ..add(MapEntry(PROJECT_NAME, projectName))
-      ..add(MapEntry(IMAGES_COLUMN_ID, "${image.id}"))
-      ..add(MapEntry(IMAGES_COLUMN_TEXT, image.text))
-      ..add(MapEntry(IMAGES_COLUMN_IMAGEDATA_ID, "${image.imageDataId}"))
-      ..add(MapEntry(IMAGES_COLUMN_TS, "${image.timeStamp}"))
-      ..add(MapEntry(IMAGES_COLUMN_LON, "${image.lon}"))
-      ..add(MapEntry(IMAGES_COLUMN_LAT, "${image.lat}"))
-      ..add(MapEntry(IMAGES_COLUMN_ALTIM, "${image.altim}"));
-    if (image.noteId != null) {
-      formData.fields..add(MapEntry(IMAGES_COLUMN_NOTE_ID, "${image.noteId}"));
-    }
-    var imageBytes = widget._projectDb.getImageDataBytes(image.imageDataId!);
-    formData.files.add(MapEntry(
-      TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_IMAGE,
-      MultipartFile.fromBytes(imageBytes!, filename: image.text),
-    ));
+  // Future<bool> handleImage(
+  //     Options options, String projectName, bool hasError) async {
+  //   DbImage image = _item;
+  //   var formData = FormData();
+  //   formData.fields
+  //     ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.IMAGE_OBJID))
+  //     ..add(MapEntry(PROJECT_NAME, projectName))
+  //     ..add(MapEntry(IMAGES_COLUMN_ID, "${image.id}"))
+  //     ..add(MapEntry(IMAGES_COLUMN_TEXT, image.text))
+  //     ..add(MapEntry(IMAGES_COLUMN_IMAGEDATA_ID, "${image.imageDataId}"))
+  //     ..add(MapEntry(IMAGES_COLUMN_TS, "${image.timeStamp}"))
+  //     ..add(MapEntry(IMAGES_COLUMN_LON, "${image.lon}"))
+  //     ..add(MapEntry(IMAGES_COLUMN_LAT, "${image.lat}"))
+  //     ..add(MapEntry(IMAGES_COLUMN_ALTIM, "${image.altim}"));
+  //   if (image.noteId != null) {
+  //     formData.fields..add(MapEntry(IMAGES_COLUMN_NOTE_ID, "${image.noteId}"));
+  //   }
+  //   var imageBytes = widget._projectDb.getImageDataBytes(image.imageDataId!);
+  //   formData.files.add(MapEntry(
+  //     TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_IMAGE,
+  //     MultipartFile.fromBytes(imageBytes!, filename: image.text),
+  //   ));
 
-    var thumbBytes = widget._projectDb.getThumbnailBytes(image.imageDataId!);
-    formData.files.add(MapEntry(
-      TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_THUMBNAIL,
-      MultipartFile.fromBytes(thumbBytes!, filename: image.text),
-    ));
+  //   var thumbBytes = widget._projectDb.getThumbnailBytes(image.imageDataId!);
+  //   formData.files.add(MapEntry(
+  //     TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_THUMBNAIL,
+  //     MultipartFile.fromBytes(thumbBytes!, filename: image.text),
+  //   ));
 
-    await widget._dio.post(
-      widget._uploadUrl,
-      data: formData,
-      options: options,
-      onSendProgress: (received, total) {
-        print("$received / $total");
-        var msg;
-        if (total <= 0) {
-          msg =
-              "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
-        } else {
-          msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
-        }
-        setState(() {
-          _uploading = true;
-          _progressString = msg;
-        });
-      },
-      cancelToken: cancelToken,
-    ).catchError((err) {
-      hasError = true;
-      handleError(err);
-    });
-    if (!cancelToken.isCancelled && !hasError) {
-      image.isDirty = 0;
-      widget._projectDb.updateImageDirty(image.id!, false);
-    }
-    return hasError;
-  }
+  //   await widget._dio.post(
+  //     widget._uploadUrl,
+  //     data: formData,
+  //     options: options,
+  //     onSendProgress: (received, total) {
+  //       print("$received / $total");
+  //       var msg;
+  //       if (total <= 0) {
+  //         msg =
+  //             "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
+  //       } else {
+  //         msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
+  //       }
+  //       setState(() {
+  //         _uploading = true;
+  //         _progressString = msg;
+  //       });
+  //     },
+  //     cancelToken: cancelToken,
+  //   ).catchError((err) {
+  //     hasError = true;
+  //     handleError(err);
+  //   });
+  //   if (!cancelToken.isCancelled && !hasError) {
+  //     image.isDirty = 0;
+  //     widget._projectDb.updateImageDirty(image.id!, false);
+  //   }
+  //   return hasError;
+  // }
 
-  Future<bool> handleNote(
-      Options options, String projectName, bool hasError) async {
-    Note note = _item;
-    var formData = FormData();
-    formData.fields
-      ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.NOTE_OBJID))
-      ..add(MapEntry(PROJECT_NAME, projectName))
-      ..add(MapEntry(NOTES_COLUMN_ID, "${note.id}"))
-      ..add(MapEntry(NOTES_COLUMN_TEXT, note.text))
-      ..add(MapEntry(NOTES_COLUMN_DESCRIPTION, note.description ?? ""))
-      ..add(MapEntry(NOTES_COLUMN_TS, "${note.timeStamp}"))
-      ..add(MapEntry(NOTES_COLUMN_LON, "${note.lon}"))
-      ..add(MapEntry(NOTES_COLUMN_LAT, "${note.lat}"))
-      ..add(MapEntry(NOTES_COLUMN_ALTIM, "${note.altim}"));
-    if (note.form != null) {
-      formData.fields.add(MapEntry(NOTES_COLUMN_FORM, note.form!));
+  // Future<bool> handleNote(
+  //     Options options, String projectName, bool hasError) async {
+  //   Note note = _item;
+  //   var formData = FormData();
+  //   formData.fields
+  //     ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.NOTE_OBJID))
+  //     ..add(MapEntry(PROJECT_NAME, projectName))
+  //     ..add(MapEntry(NOTES_COLUMN_ID, "${note.id}"))
+  //     ..add(MapEntry(NOTES_COLUMN_TEXT, note.text))
+  //     ..add(MapEntry(NOTES_COLUMN_DESCRIPTION, note.description ?? ""))
+  //     ..add(MapEntry(NOTES_COLUMN_TS, "${note.timeStamp}"))
+  //     ..add(MapEntry(NOTES_COLUMN_LON, "${note.lon}"))
+  //     ..add(MapEntry(NOTES_COLUMN_LAT, "${note.lat}"))
+  //     ..add(MapEntry(NOTES_COLUMN_ALTIM, "${note.altim}"));
+  //   if (note.form != null) {
+  //     formData.fields.add(MapEntry(NOTES_COLUMN_FORM, note.form!));
 
-      List<String> imageIds = FormUtilities.getImageIds(note.form);
+  //     List<String> imageIds = FormUtilities.getImageIds(note.form);
 
-      if (imageIds.isNotEmpty) {
-        for (var imageId in imageIds) {
-          var dbImage = widget._projectDb.getImageById(int.parse(imageId));
-          var imageBytes =
-              widget._projectDb.getImageDataBytes(dbImage.imageDataId!);
-          var thumbBytes =
-              widget._projectDb.getThumbnailBytes(dbImage.imageDataId!);
-          var key =
-              "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_IMAGE}_${dbImage.id}";
-          formData.files.add(MapEntry(
-            key,
-            MultipartFile.fromBytes(imageBytes!, filename: dbImage.text),
-          ));
-          key =
-              "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_THUMBNAIL}_${dbImage.id}";
-          formData.files.add(MapEntry(
-            key,
-            MultipartFile.fromBytes(thumbBytes!, filename: dbImage.text),
-          ));
-        }
-      }
-    }
+  //     if (imageIds.isNotEmpty) {
+  //       for (var imageId in imageIds) {
+  //         var dbImage = widget._projectDb.getImageById(int.parse(imageId));
+  //         var imageBytes =
+  //             widget._projectDb.getImageDataBytes(dbImage.imageDataId!);
+  //         var thumbBytes =
+  //             widget._projectDb.getThumbnailBytes(dbImage.imageDataId!);
+  //         var key =
+  //             "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_IMAGE}_${dbImage.id}";
+  //         formData.files.add(MapEntry(
+  //           key,
+  //           MultipartFile.fromBytes(imageBytes!, filename: dbImage.text),
+  //         ));
+  //         key =
+  //             "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_THUMBNAIL}_${dbImage.id}";
+  //         formData.files.add(MapEntry(
+  //           key,
+  //           MultipartFile.fromBytes(thumbBytes!, filename: dbImage.text),
+  //         ));
+  //       }
+  //     }
+  //   }
 
-    NoteExt? noteExt = note.noteExt;
-    if (noteExt != null) {
-      formData.fields
-        ..add(MapEntry(NOTESEXT_COLUMN_MARKER, noteExt.marker))
-        ..add(MapEntry(NOTESEXT_COLUMN_SIZE, "${noteExt.size}"))
-        ..add(MapEntry(NOTESEXT_COLUMN_ROTATION, "${noteExt.rotation}"))
-        ..add(MapEntry(NOTESEXT_COLUMN_COLOR, noteExt.color))
-        ..add(MapEntry(NOTESEXT_COLUMN_ACCURACY, "${noteExt.accuracy}"))
-        ..add(MapEntry(NOTESEXT_COLUMN_HEADING, "${noteExt.heading}"))
-        ..add(MapEntry(NOTESEXT_COLUMN_SPEED, "${noteExt.speed}"))
-        ..add(MapEntry(
-            NOTESEXT_COLUMN_SPEEDACCURACY, "${noteExt.speedaccuracy}"));
-    }
+  //   NoteExt? noteExt = note.noteExt;
+  //   if (noteExt != null) {
+  //     formData.fields
+  //       ..add(MapEntry(NOTESEXT_COLUMN_MARKER, noteExt.marker))
+  //       ..add(MapEntry(NOTESEXT_COLUMN_SIZE, "${noteExt.size}"))
+  //       ..add(MapEntry(NOTESEXT_COLUMN_ROTATION, "${noteExt.rotation}"))
+  //       ..add(MapEntry(NOTESEXT_COLUMN_COLOR, noteExt.color))
+  //       ..add(MapEntry(NOTESEXT_COLUMN_ACCURACY, "${noteExt.accuracy}"))
+  //       ..add(MapEntry(NOTESEXT_COLUMN_HEADING, "${noteExt.heading}"))
+  //       ..add(MapEntry(NOTESEXT_COLUMN_SPEED, "${noteExt.speed}"))
+  //       ..add(MapEntry(
+  //           NOTESEXT_COLUMN_SPEEDACCURACY, "${noteExt.speedaccuracy}"));
+  //   }
 
-    await widget._dio.post(
-      widget._uploadUrl,
-      data: formData,
-      options: options,
-      onSendProgress: (received, total) {
-        var msg;
-        if (total <= 0) {
-          msg =
-              "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
-        } else {
-          msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
-        }
-        setState(() {
-          _uploading = true;
-          _progressString = msg;
-        });
-      },
-      cancelToken: cancelToken,
-    ).catchError((err) {
-      hasError = true;
-      handleError(err);
-    });
-    if (!cancelToken.isCancelled && !hasError) {
-      widget._projectDb.updateNoteDirty(note.id!, false);
-    }
-    return hasError;
-  }
+  //   await widget._dio.post(
+  //     widget._uploadUrl,
+  //     data: formData,
+  //     options: options,
+  //     onSendProgress: (received, total) {
+  //       var msg;
+  //       if (total <= 0) {
+  //         msg =
+  //             "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
+  //       } else {
+  //         msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
+  //       }
+  //       setState(() {
+  //         _uploading = true;
+  //         _progressString = msg;
+  //       });
+  //     },
+  //     cancelToken: cancelToken,
+  //   ).catchError((err) {
+  //     hasError = true;
+  //     handleError(err);
+  //   });
+  //   if (!cancelToken.isCancelled && !hasError) {
+  //     widget._projectDb.updateNoteDirty(note.id!, false);
+  //   }
+  //   return hasError;
+  // }
 
   void handleError(err) {
     if (err is DioError) {
@@ -437,8 +480,8 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
   String? _gssUser;
   String? _gssPwd;
   bool? _allowSelfCert;
-  List<String> _projectsList = [];
-  String? _selectedProject;
+  List<Project> _projectsList = [];
+  Project? _selectedProject;
   String? serverError;
 
   @override
@@ -453,10 +496,28 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
         .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_USER, "");
     String? gssPwd = await GpPreferences()
         .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PWD, "dummy");
-    String? selectedProject = await GpPreferences()
+    String? selectedProjectJson = await GpPreferences()
         .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT, "");
-    List<String>? projectsList = await GpPreferences().getStringList(
-        SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT_LIST, []);
+    Project? selectedProject;
+    try {
+      var projectMap = jsonDecode(selectedProjectJson!);
+      selectedProject = Project()
+        ..id = projectMap['id']
+        ..name = projectMap['name'];
+    } catch (e) {}
+    String? projectsListJson = await GpPreferences()
+        .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT_LIST, "");
+    var projectsMapsList;
+    try {
+      projectsMapsList = jsonDecode(projectsListJson!);
+    } catch (e) {
+      projectsMapsList = [];
+    }
+    List<Project> projectsList =
+        List<Project>.from(projectsMapsList.map((projectMap) => Project()
+          ..id = projectMap['id']
+          ..name = projectMap['name']));
+
     bool? allowSelfCert = await GpPreferences().getBoolean(
         SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_ALLOW_SELFCERTIFICATE, true);
 
@@ -466,9 +527,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
       _gssPwd = gssPwd;
       _allowSelfCert = allowSelfCert;
       _selectedProject = selectedProject;
-      if (projectsList != null) {
-        _projectsList = projectsList;
-      }
+      _projectsList = projectsList;
     });
   }
 
@@ -567,12 +626,12 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                     height: 50.0,
                                     width:
                                         ScreenUtilities.getWidth(context) * 0.9,
-                                    child: DropdownButton<String>(
+                                    child: DropdownButton<Project>(
                                       isExpanded: true,
-                                      items: _projectsList.map((String value) {
-                                        return DropdownMenuItem<String>(
+                                      items: _projectsList.map((Project value) {
+                                        return DropdownMenuItem<Project>(
                                           value: value,
-                                          child: Text(value),
+                                          child: Text(value.name),
                                         );
                                       }).toList(),
                                       value: _selectedProject,
@@ -581,7 +640,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                         await GpPreferences().setString(
                                             SmashPreferencesKeys
                                                 .KEY_GSS_DJANGO_SERVER_PROJECT,
-                                            _selectedProject!);
+                                            _selectedProject!.toJsonString());
                                         setState(() {});
                                       },
                                     ),
@@ -595,21 +654,26 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                       onPressed: () async {
                                         try {
                                           _projectsList =
-                                              await ServerApi.getProjectNames();
+                                              await ServerApi.getProjects();
                                           if (_projectsList.isNotEmpty) {
-                                            await GpPreferences().setStringList(
+                                            var tmp = _projectsList
+                                                .map((p) => p.toMap())
+                                                .toList();
+                                            var projectsListJson =
+                                                jsonEncode(tmp);
+                                            await GpPreferences().setString(
                                                 SmashPreferencesKeys
                                                     .KEY_GSS_DJANGO_SERVER_PROJECT_LIST,
-                                                _projectsList);
-                                            if (_selectedProject == null ||
-                                                _selectedProject!.length == 0) {
+                                                projectsListJson);
+                                            if (_selectedProject == null) {
                                               _selectedProject =
                                                   _projectsList[0];
                                             }
                                             await GpPreferences().setString(
                                                 SmashPreferencesKeys
                                                     .KEY_GSS_DJANGO_SERVER_PROJECT,
-                                                _selectedProject!);
+                                                _selectedProject!
+                                                    .toJsonString());
                                           }
                                         } catch (ex, st) {
                                           serverError = ex.toString();
@@ -781,7 +845,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                   "User, password, url and project are necessary to login";
                             } else {
                               var token = await ServerApi.login(
-                                  _gssUser!, _gssPwd!, _selectedProject!);
+                                  _gssUser!, _gssPwd!, _selectedProject!.id);
                               if (token.startsWith(NETWORKERROR_PREFIX)) {
                                 var errorJson =
                                     token.replaceFirst(NETWORKERROR_PREFIX, "");

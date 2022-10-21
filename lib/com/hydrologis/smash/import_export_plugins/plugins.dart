@@ -17,5 +17,6 @@ List<AExportPlugin> exportPlugins = [
   GeopackageExportPlugin(),
   ImagesExportPlugin(),
   GssExportPlugin(),
+  Gss2022ExportPlugin(),
   GttExportPlugin(),
 ];
