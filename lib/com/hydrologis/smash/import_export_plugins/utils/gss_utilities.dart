@@ -23,6 +23,36 @@ class DbNamings {
   static String GPSLOGDATA_ALTIM = "altim";
   static String GPSLOGDATA_TIMESTAMP = "ts";
   static String GPSLOGDATA_GPSLOGS = "gpslogid";
+
+  static String NOTE_ID = "id";
+  static String NOTE_PREV = "previous";
+  static String NOTE_ALTIM = "altim";
+  static String NOTE_TS = "ts";
+  static String NOTE_UPLOADTS = "uploadts";
+  static String NOTE_DESCRIPTION = "description";
+  static String NOTE_TEXT = "text";
+  static String NOTE_MARKER = "marker";
+  static String NOTE_SIZE = "size";
+  static String NOTE_ROTATION = "rotation";
+  static String NOTE_COLOR = "color";
+  static String NOTE_ACCURACY = "accuracy";
+  static String NOTE_HEADING = "heading";
+  static String NOTE_SPEED = "speed";
+  static String NOTE_SPEEDACCURACY = "speedaccuracy";
+  static String NOTE_FORM = "form";
+  static String NOTE_IMAGES = "images";
+
+  static String IMAGE_ID = "id";
+  static String IMAGE_ALTIM = "altim";
+  static String IMAGE_TIMESTAMP = "ts";
+  static String IMAGE_UPLOADTIMESTAMP = "uploadts";
+  static String IMAGE_AZIMUTH = "azimuth";
+  static String IMAGE_TEXT = "text";
+  static String IMAGE_THUMB = "thumbnail";
+  static String IMAGE_IMAGEDATA = "imagedata";
+  static String IMAGE_NOTE = "notes";
+  static String IMAGEDATA_ID = "id";
+  static String IMAGEDATA_DATA = "data";
 }
 
 /// @author hydrologis
@@ -137,14 +167,15 @@ class ProjectDataUploadListTileProgressWidgetState
     Options options = Options(headers: headers);
 
     var project = ServerApi.getCurrentGssProject();
+    int? userId = ServerApi.getGssUserId();
 
     try {
       if (_item is Note) {
-        // hasError = await handleNote(options, projectName, hasError);
+        hasError = await handleNote(options, project!, userId!, hasError);
       } else if (_item is DbImage) {
         // hasError = await handleImage(options, projectName, hasError);
       } else if (_item is Log) {
-        hasError = await handleLog(options, project!, hasError);
+        hasError = await handleLog(options, project!, userId!, hasError);
       }
     } catch (e) {
       hasError = true;
@@ -225,7 +256,7 @@ class ProjectDataUploadListTileProgressWidgetState
   }
 
   Future<bool> handleLog(
-      Options options, Project project, bool hasError) async {
+      Options options, Project project, int userId, bool hasError) async {
     Log log = _item;
     LogProperty? props = widget._projectDb.getLogProperties(log.id!);
 
@@ -256,8 +287,6 @@ class ProjectDataUploadListTileProgressWidgetState
     if (props != null) {
       simpleColor = props.color!.split("@")[0];
     }
-
-    int? userId = ServerApi.getGssUserId();
 
     var newGpslog = {
       DbNamings.GPSLOG_NAME: log.text,
@@ -361,89 +390,92 @@ class ProjectDataUploadListTileProgressWidgetState
   //   return hasError;
   // }
 
-  // Future<bool> handleNote(
-  //     Options options, String projectName, bool hasError) async {
-  //   Note note = _item;
-  //   var formData = FormData();
-  //   formData.fields
-  //     ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.NOTE_OBJID))
-  //     ..add(MapEntry(PROJECT_NAME, projectName))
-  //     ..add(MapEntry(NOTES_COLUMN_ID, "${note.id}"))
-  //     ..add(MapEntry(NOTES_COLUMN_TEXT, note.text))
-  //     ..add(MapEntry(NOTES_COLUMN_DESCRIPTION, note.description ?? ""))
-  //     ..add(MapEntry(NOTES_COLUMN_TS, "${note.timeStamp}"))
-  //     ..add(MapEntry(NOTES_COLUMN_LON, "${note.lon}"))
-  //     ..add(MapEntry(NOTES_COLUMN_LAT, "${note.lat}"))
-  //     ..add(MapEntry(NOTES_COLUMN_ALTIM, "${note.altim}"));
-  //   if (note.form != null) {
-  //     formData.fields.add(MapEntry(NOTES_COLUMN_FORM, note.form!));
+  Future<bool> handleNote(
+      Options options, Project project, int userId, bool hasError) async {
+    Note note = _item;
+    NoteExt? noteExt = note.noteExt;
 
-  //     List<String> imageIds = FormUtilities.getImageIds(note.form);
+    var tsStr = TimeUtilities.ISO8601_TS_FORMATTER
+        .format(DateTime.fromMillisecondsSinceEpoch(note.timeStamp));
 
-  //     if (imageIds.isNotEmpty) {
-  //       for (var imageId in imageIds) {
-  //         var dbImage = widget._projectDb.getImageById(int.parse(imageId));
-  //         var imageBytes =
-  //             widget._projectDb.getImageDataBytes(dbImage.imageDataId!);
-  //         var thumbBytes =
-  //             widget._projectDb.getThumbnailBytes(dbImage.imageDataId!);
-  //         var key =
-  //             "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_IMAGE}_${dbImage.id}";
-  //         formData.files.add(MapEntry(
-  //           key,
-  //           MultipartFile.fromBytes(imageBytes!, filename: dbImage.text),
-  //         ));
-  //         key =
-  //             "${TABLE_IMAGE_DATA}_${IMAGESDATA_COLUMN_THUMBNAIL}_${dbImage.id}";
-  //         formData.files.add(MapEntry(
-  //           key,
-  //           MultipartFile.fromBytes(thumbBytes!, filename: dbImage.text),
-  //         ));
-  //       }
-  //     }
-  //   }
+    var newNote = {
+      DbNamings.GEOM: 'SRID=4326;POINT (${note.lon} ${note.lat})',
+      DbNamings.NOTE_ID: note.id,
+      DbNamings.NOTE_ALTIM: note.altim,
+      DbNamings.NOTE_TS: tsStr,
+      // DbNamings.NOTE_UPLOADTS: uploadtsStr,
+      DbNamings.NOTE_DESCRIPTION: note.description,
+      DbNamings.NOTE_TEXT: note.text,
+      DbNamings.NOTE_MARKER: noteExt?.marker ?? "circle",
+      DbNamings.NOTE_SIZE: noteExt?.size ?? 36,
+      DbNamings.NOTE_ROTATION: noteExt?.rotation ?? 0.0,
+      DbNamings.NOTE_COLOR: noteExt?.color ?? "#FF0000",
+      DbNamings.NOTE_ACCURACY: noteExt?.accuracy ?? -1.0,
+      DbNamings.NOTE_HEADING: noteExt?.heading ?? -9999.0,
+      DbNamings.NOTE_SPEED: noteExt?.speed ?? -1.0,
+      DbNamings.NOTE_SPEEDACCURACY: noteExt?.speedaccuracy ?? -1.0,
+      DbNamings.USER: userId,
+      DbNamings.PROJECT: project.id,
+      DbNamings.NOTE_FORM: note.form,
+    };
+    if (note.form != null) {
+      List<String> imageIds = FormUtilities.getImageIds(note.form);
 
-  //   NoteExt? noteExt = note.noteExt;
-  //   if (noteExt != null) {
-  //     formData.fields
-  //       ..add(MapEntry(NOTESEXT_COLUMN_MARKER, noteExt.marker))
-  //       ..add(MapEntry(NOTESEXT_COLUMN_SIZE, "${noteExt.size}"))
-  //       ..add(MapEntry(NOTESEXT_COLUMN_ROTATION, "${noteExt.rotation}"))
-  //       ..add(MapEntry(NOTESEXT_COLUMN_COLOR, noteExt.color))
-  //       ..add(MapEntry(NOTESEXT_COLUMN_ACCURACY, "${noteExt.accuracy}"))
-  //       ..add(MapEntry(NOTESEXT_COLUMN_HEADING, "${noteExt.heading}"))
-  //       ..add(MapEntry(NOTESEXT_COLUMN_SPEED, "${noteExt.speed}"))
-  //       ..add(MapEntry(
-  //           NOTESEXT_COLUMN_SPEEDACCURACY, "${noteExt.speedaccuracy}"));
-  //   }
+      if (imageIds.isNotEmpty) {
+        var imagesMap = {};
+        for (var imageId in imageIds) {
+          var dbImage = widget._projectDb.getImageById(int.parse(imageId));
+          var imageBytes =
+              widget._projectDb.getImageDataBytes(dbImage.imageDataId!);
 
-  //   await widget._dio.post(
-  //     widget._uploadUrl,
-  //     data: formData,
-  //     options: options,
-  //     onSendProgress: (received, total) {
-  //       var msg;
-  //       if (total <= 0) {
-  //         msg =
-  //             "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
-  //       } else {
-  //         msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
-  //       }
-  //       setState(() {
-  //         _uploading = true;
-  //         _progressString = msg;
-  //       });
-  //     },
-  //     cancelToken: cancelToken,
-  //   ).catchError((err) {
-  //     hasError = true;
-  //     handleError(err);
-  //   });
-  //   if (!cancelToken.isCancelled && !hasError) {
-  //     widget._projectDb.updateNoteDirty(note.id!, false);
-  //   }
-  //   return hasError;
-  // }
+          var imgTsStr = TimeUtilities.ISO8601_TS_FORMATTER
+              .format(DateTime.fromMillisecondsSinceEpoch(dbImage.timeStamp));
+          var newImage = {
+            DbNamings.GEOM: 'SRID=4326;POINT (${dbImage.lon} ${dbImage.lat})',
+            DbNamings.IMAGE_ALTIM: dbImage.altim,
+            DbNamings.IMAGE_TIMESTAMP: imgTsStr,
+            DbNamings.IMAGE_AZIMUTH: dbImage.azim,
+            DbNamings.IMAGE_TEXT: dbImage.text,
+            DbNamings.IMAGE_IMAGEDATA: {
+              DbNamings.IMAGEDATA_DATA: base64Encode(imageBytes!),
+            },
+            DbNamings.USER: userId,
+            DbNamings.PROJECT: project.id,
+          };
+          imagesMap[imageId] = newImage;
+        }
+        newNote[DbNamings.NOTE_IMAGES] = imagesMap;
+      }
+    }
+    try {
+      await widget._dio.post(
+        ServerApi.getBaseUrl() + API_NOTES,
+        data: newNote,
+        options: options,
+        onSendProgress: (received, total) {
+          var msg;
+          if (total <= 0) {
+            msg =
+                "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
+          } else {
+            msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
+          }
+          setState(() {
+            _uploading = true;
+            _progressString = msg;
+          });
+        },
+        cancelToken: cancelToken,
+      );
+    } catch (exception) {
+      hasError = true;
+      handleError(exception);
+    }
+    if (!cancelToken.isCancelled && !hasError) {
+      widget._projectDb.updateNoteDirty(note.id!, false);
+    }
+    return hasError;
+  }
 
   void handleError(err) {
     if (err is DioError) {
