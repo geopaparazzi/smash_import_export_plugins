@@ -173,7 +173,7 @@ class ProjectDataUploadListTileProgressWidgetState
       if (_item is Note) {
         hasError = await handleNote(options, project!, userId!, hasError);
       } else if (_item is DbImage) {
-        // hasError = await handleImage(options, projectName, hasError);
+        hasError = await handleImage(options, project!, userId!, hasError);
       } else if (_item is Log) {
         hasError = await handleLog(options, project!, userId!, hasError);
       }
@@ -331,64 +331,56 @@ class ProjectDataUploadListTileProgressWidgetState
     return hasError;
   }
 
-  // Future<bool> handleImage(
-  //     Options options, String projectName, bool hasError) async {
-  //   DbImage image = _item;
-  //   var formData = FormData();
-  //   formData.fields
-  //     ..add(MapEntry(GssUtilities.OBJID_TYPE_KEY, GssUtilities.IMAGE_OBJID))
-  //     ..add(MapEntry(PROJECT_NAME, projectName))
-  //     ..add(MapEntry(IMAGES_COLUMN_ID, "${image.id}"))
-  //     ..add(MapEntry(IMAGES_COLUMN_TEXT, image.text))
-  //     ..add(MapEntry(IMAGES_COLUMN_IMAGEDATA_ID, "${image.imageDataId}"))
-  //     ..add(MapEntry(IMAGES_COLUMN_TS, "${image.timeStamp}"))
-  //     ..add(MapEntry(IMAGES_COLUMN_LON, "${image.lon}"))
-  //     ..add(MapEntry(IMAGES_COLUMN_LAT, "${image.lat}"))
-  //     ..add(MapEntry(IMAGES_COLUMN_ALTIM, "${image.altim}"));
-  //   if (image.noteId != null) {
-  //     formData.fields..add(MapEntry(IMAGES_COLUMN_NOTE_ID, "${image.noteId}"));
-  //   }
-  //   var imageBytes = widget._projectDb.getImageDataBytes(image.imageDataId!);
-  //   formData.files.add(MapEntry(
-  //     TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_IMAGE,
-  //     MultipartFile.fromBytes(imageBytes!, filename: image.text),
-  //   ));
+  Future<bool> handleImage(
+      Options options, Project project, int userId, bool hasError) async {
+    DbImage dbImage = _item;
+    var imageBytes = widget._projectDb.getImageDataBytes(dbImage.imageDataId!);
 
-  //   var thumbBytes = widget._projectDb.getThumbnailBytes(image.imageDataId!);
-  //   formData.files.add(MapEntry(
-  //     TABLE_IMAGE_DATA + "_" + IMAGESDATA_COLUMN_THUMBNAIL,
-  //     MultipartFile.fromBytes(thumbBytes!, filename: image.text),
-  //   ));
+    var imgTsStr = TimeUtilities.ISO8601_TS_FORMATTER
+        .format(DateTime.fromMillisecondsSinceEpoch(dbImage.timeStamp));
+    var newImage = {
+      DbNamings.GEOM: 'SRID=4326;POINT (${dbImage.lon} ${dbImage.lat})',
+      DbNamings.IMAGE_ALTIM: dbImage.altim,
+      DbNamings.IMAGE_TIMESTAMP: imgTsStr,
+      DbNamings.IMAGE_AZIMUTH: dbImage.azim,
+      DbNamings.IMAGE_TEXT: dbImage.text,
+      DbNamings.IMAGE_IMAGEDATA: {
+        DbNamings.IMAGEDATA_DATA: base64Encode(imageBytes!),
+      },
+      DbNamings.USER: userId,
+      DbNamings.PROJECT: project.id,
+    };
 
-  //   await widget._dio.post(
-  //     widget._uploadUrl,
-  //     data: formData,
-  //     options: options,
-  //     onSendProgress: (received, total) {
-  //       print("$received / $total");
-  //       var msg;
-  //       if (total <= 0) {
-  //         msg =
-  //             "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
-  //       } else {
-  //         msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
-  //       }
-  //       setState(() {
-  //         _uploading = true;
-  //         _progressString = msg;
-  //       });
-  //     },
-  //     cancelToken: cancelToken,
-  //   ).catchError((err) {
-  //     hasError = true;
-  //     handleError(err);
-  //   });
-  //   if (!cancelToken.isCancelled && !hasError) {
-  //     image.isDirty = 0;
-  //     widget._projectDb.updateImageDirty(image.id!, false);
-  //   }
-  //   return hasError;
-  // }
+    try {
+      await widget._dio.post(
+        ServerApi.getBaseUrl() + API_IMAGES,
+        data: newImage,
+        options: options,
+        onSendProgress: (received, total) {
+          var msg;
+          if (total <= 0) {
+            msg =
+                "${IEL.of(context).network_uploading} ${(received / 1024.0 / 1024.0).round()}MB, ${IEL.of(context).network_pleaseWait}"; //Uploading //please wait...
+          } else {
+            msg = ((received / total) * 100.0).toStringAsFixed(0) + "%";
+          }
+          setState(() {
+            _uploading = true;
+            _progressString = msg;
+          });
+        },
+        cancelToken: cancelToken,
+      );
+    } catch (exception) {
+      hasError = true;
+      handleError(exception);
+    }
+    if (!cancelToken.isCancelled && !hasError) {
+      dbImage.isDirty = 0;
+      widget._projectDb.updateImageDirty(dbImage.id!, false);
+    }
+    return hasError;
+  }
 
   Future<bool> handleNote(
       Options options, Project project, int userId, bool hasError) async {
