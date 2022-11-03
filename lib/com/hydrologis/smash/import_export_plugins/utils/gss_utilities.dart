@@ -53,6 +53,9 @@ class DbNamings {
   static String IMAGE_NOTE = "notes";
   static String IMAGEDATA_ID = "id";
   static String IMAGEDATA_DATA = "data";
+
+  static String LASTUSER_TIMESTAMP = "ts";
+  static String LASTUSER_UPLOADTIMESTAMP = "uploadts";
 }
 
 /// @author hydrologis
@@ -500,10 +503,13 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
   //static final subtitle = "Geopaparazzi Survey Server";
   static final iconData = MdiIcons.cloudLock;
 
+  static final String POSITION_UPLOAD_TIMER_TAG = "GSS_POSITION_UPLOAD";
+
   String? _gssUrl;
   String? _gssUser;
   String? _gssPwd;
   bool? _allowSelfCert;
+  bool? _uploadDevicePosition = false;
   List<Project> _projectsList = [];
   Project? _selectedProject;
   String? serverError;
@@ -649,7 +655,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                   Container(
                                     height: 50.0,
                                     width:
-                                        ScreenUtilities.getWidth(context) * 0.9,
+                                        ScreenUtilities.getWidth(context) * 0.8,
                                     child: DropdownButton<Project>(
                                       isExpanded: true,
                                       items: _projectsList.map((Project value) {
@@ -838,6 +844,55 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                           .KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE,
                                       newValue!);
                                   await getData();
+                                  setState(() {
+                                    _allowSelfCert = newValue;
+                                  });
+                                },
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Card(
+                      margin: SmashUI.defaultMargin(),
+                      color: SmashColors.mainBackground,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: SmashUI.defaultPadding(),
+                            child: SmashUI.normalText(
+                                "Upload device position to server in regular time intervals.",
+                                bold: true),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: p, bottom: p, right: p, left: 2 * p),
+                              child: Checkbox(
+                                value: _uploadDevicePosition,
+                                onChanged: (newValue) async {
+                                  GpsState gpsState = Provider.of<GpsState>(
+                                      context,
+                                      listen: false);
+                                  if (newValue!) {
+                                    // enable uploader
+                                    Function updateFunction =
+                                        (SmashPosition position,
+                                            GpsStatus status) async {
+                                      await ServerApi.sendLastUserPositions(
+                                          position);
+                                    };
+                                    gpsState.addGpsTimer(
+                                        POSITION_UPLOAD_TIMER_TAG,
+                                        updateFunction);
+                                  } else {
+                                    gpsState.stopGpsTimer(
+                                        POSITION_UPLOAD_TIMER_TAG);
+                                  }
+                                  setState(() {
+                                    _uploadDevicePosition = newValue;
+                                  });
                                 },
                               )),
                         ],

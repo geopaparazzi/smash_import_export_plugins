@@ -24,6 +24,7 @@ import 'package:smash_import_export_plugins/generated/l10n.dart';
 import 'package:smashlibs/com/hydrologis/flutterlibs/utils/logging.dart';
 import 'package:smashlibs/smashlibs.dart';
 import 'package:http/http.dart' hide MultipartFile, Response;
+import 'package:provider/provider.dart';
 
 part 'com/hydrologis/smash/import_export_plugins/export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/geopackage/geopackage_export.dart';

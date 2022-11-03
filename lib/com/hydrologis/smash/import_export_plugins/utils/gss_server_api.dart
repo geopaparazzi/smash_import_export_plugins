@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:dart_hydrologis_utils/dart_hydrologis_utils.dart';
 import 'package:http/http.dart';
+import 'package:smash_import_export_plugins/smash_import_export_plugins.dart';
 import 'dart:typed_data';
 
 import 'package:smashlibs/smashlibs.dart';
@@ -186,6 +188,36 @@ class ServerApi {
       return positionsList;
     } else {
       return [];
+    }
+  }
+
+  static Future<void> sendLastUserPositions(SmashPosition position) async {
+    var tokenHeader = getTokenHeader();
+    Project? project = getCurrentGssProject();
+    if (project == null) {
+      throw StateError("No project was selected.");
+    }
+    var uri = Uri.parse(getBaseUrl() +
+        API_LASTUSERPOSITIONS +
+        "?$API_PROJECT_PARAM${project.id}");
+
+    var ts = TimeUtilities.ISO8601_TS_FORMATTER
+        .format(DateTime.fromMillisecondsSinceEpoch(position.time.toInt()));
+
+    var data = {
+      DbNamings.LASTUSER_TIMESTAMP: ts,
+      DbNamings.GEOM:
+          'SRID=4326;POINT (${position.longitude} ${position.latitude})',
+      DbNamings.USER: getGssUserId(),
+      DbNamings.PROJECT: project.id,
+    };
+    var dataJson = jsonEncode(data);
+    var headers = {'Content-Type': 'application/json; charset=UTF-8'}
+      ..addAll(tokenHeader);
+    var response = await put(uri, body: dataJson, headers: headers);
+    if (response.statusCode != 200) {
+      print(response.body);
+      throw new StateError(response.body);
     }
   }
 
