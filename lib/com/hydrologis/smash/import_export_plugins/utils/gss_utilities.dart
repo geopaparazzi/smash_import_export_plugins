@@ -529,16 +529,16 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
     String? selectedProjectJson = await GpPreferences()
         .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT, "");
     Project? selectedProject;
+    var projectsMapsList;
     try {
       var projectMap = jsonDecode(selectedProjectJson!);
       selectedProject = Project()
         ..id = projectMap['id']
         ..name = projectMap['name'];
-    } catch (e) {}
-    String? projectsListJson = await GpPreferences()
-        .getString(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT_LIST, "");
-    var projectsMapsList;
-    try {
+
+      String? projectsListJson = await GpPreferences().getString(
+          SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT_LIST, "");
+
       projectsMapsList = jsonDecode(projectsListJson!);
     } catch (e) {
       projectsMapsList = [];
@@ -547,6 +547,15 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
         List<Project>.from(projectsMapsList.map((projectMap) => Project()
           ..id = projectMap['id']
           ..name = projectMap['name']));
+
+    if (selectedProject == null && projectsList.isNotEmpty) {
+      selectedProject = projectsList[0];
+    }
+    if (selectedProject != null &&
+        projectsList.isNotEmpty &&
+        !projectsList.contains(selectedProject)) {
+      selectedProject = projectsList[0];
+    }
 
     bool? allowSelfCert = await GpPreferences().getBoolean(
         SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_ALLOW_SELFCERTIFICATE, true);
@@ -841,8 +850,18 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                 onChanged: (newValue) async {
                                   await GpPreferences().setBoolean(
                                       SmashPreferencesKeys
-                                          .KEY_GSS_SERVER_ALLOW_SELFCERTIFICATE,
+                                          .KEY_GSS_DJANGO_SERVER_ALLOW_SELFCERTIFICATE,
                                       newValue!);
+                                  if (_gssUrl != null) {
+                                    var url = _gssUrl!
+                                        .replaceFirst("https://", "")
+                                        .replaceFirst("http://", "")
+                                        .split(":")[0];
+                                    NetworkHelper
+                                        .toggleAllowSelfSignedCertificates(
+                                            newValue, url);
+                                  }
+
                                   await getData();
                                   setState(() {
                                     _allowSelfCert = newValue;

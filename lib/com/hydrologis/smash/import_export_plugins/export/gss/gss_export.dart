@@ -78,7 +78,7 @@ class _GssExportWidgetState extends State<GssExportWidget> {
   late String _genericErrorMessage;
   late Map<String, String> tokenHeader;
 
-  String? _selectedProject;
+  Project? _selectedProject;
 
   String? _serverUrl;
 
@@ -97,14 +97,15 @@ class _GssExportWidgetState extends State<GssExportWidget> {
   }
 
   Future<void> init() async {
-    _selectedProject = GpPreferences()
+    String? selectedProjectJson = GpPreferences()
         .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_PROJECT);
-    if (_selectedProject == null) {
+    if (selectedProjectJson == null) {
       setState(() {
         _status = 15;
       });
       return;
     }
+    _selectedProject = Project.fromJson(selectedProjectJson!);
 
     var token = ServerApi.getGssToken();
     if (token == null) {
@@ -246,6 +247,27 @@ class _GssExportWidgetState extends State<GssExportWidget> {
                                         CrossAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
+                                      Container(
+                                        width: double.infinity,
+                                        child: Card(
+                                          margin: SmashUI.defaultMargin(),
+                                          elevation: SmashUI.DEFAULT_ELEVATION,
+                                          color: SmashColors.mainBackground,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Padding(
+                                                padding:
+                                                    SmashUI.defaultPadding(),
+                                                child: SmashUI.titleText(
+                                                    _selectedProject!.name,
+                                                    bold: true,
+                                                    color: SmashColors
+                                                        .mainSelection),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                       Padding(
                                         padding: SmashUI.defaultPadding(),
                                         child: SmashUI.titleText(
