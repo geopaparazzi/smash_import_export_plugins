@@ -691,6 +691,7 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                         color: SmashColors.mainDecorations,
                                       ),
                                       onPressed: () async {
+                                        serverError = null;
                                         try {
                                           _projectsList =
                                               await ServerApi.getProjects();
@@ -716,6 +717,11 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                           }
                                         } catch (ex, st) {
                                           serverError = ex.toString();
+                                          serverError =
+                                              handleError(serverError!);
+                                          SmashDialogs.showToast(
+                                              context, serverError!,
+                                              isError: true);
                                         }
                                         setState(() {});
                                       },
@@ -860,6 +866,13 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                     NetworkHelper
                                         .toggleAllowSelfSignedCertificates(
                                             newValue, url);
+                                  } else {
+                                    // reset to disabled if there is no host to set
+                                    newValue = false;
+                                    await GpPreferences().setBoolean(
+                                        SmashPreferencesKeys
+                                            .KEY_GSS_DJANGO_SERVER_ALLOW_SELFCERTIFICATE,
+                                        newValue);
                                   }
 
                                   await getData();
@@ -962,6 +975,11 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                               }
                             });
                           }
+                          if (serverError != null) {
+                            serverError = handleError(serverError!);
+                            SmashDialogs.showToast(context, serverError!,
+                                isError: true);
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -970,23 +988,30 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Center(
-                      child: serverError != null
-                          ? SmashUI.titleText(serverError!,
-                              bold: true, color: SmashColors.mainDanger)
-                          : ServerApi.getGssToken() == null
-                              ? SmashUI.titleText(
-                                  "No token available, please login.",
-                                  bold: true,
-                                  color: SmashColors.mainDanger)
-                              : SmashUI.titleText("Token is in store."),
+                  if (serverError == null)
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Center(
+                        child: ServerApi.getGssToken() == null
+                            ? SmashUI.titleText(
+                                "No token available, please login.",
+                                bold: true,
+                                color: SmashColors.mainDanger)
+                            : SmashUI.titleText("Token is in store."),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
     );
+  }
+
+  String handleError(String serverError) {
+    if (serverError
+        .toLowerCase()
+        .contains("certificate_verify_failed: self signed")) {
+      return "Unable to connect to ssl with self signed certificate. Allow self signed certificates in the settings.";
+    }
+    return serverError;
   }
 }

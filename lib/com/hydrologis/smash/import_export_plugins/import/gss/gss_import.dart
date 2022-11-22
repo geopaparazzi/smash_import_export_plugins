@@ -132,7 +132,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
       _baseMapsList.clear();
       _projectsList.clear();
       for (var bm in projectData) {
-        var name = bm['file'];
+        var name = bm['label'];
         if (FileManager.isVectordataFile(name) ||
             FileManager.isTiledataFile(name)) {
           _baseMapsList.add(bm);
