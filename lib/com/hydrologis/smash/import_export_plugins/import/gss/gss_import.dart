@@ -307,13 +307,13 @@ class _GssImportWidgetState extends State<GssImportWidget>
                     itemBuilder: (context, index) {
                       var map = _baseMapsList[index];
                       var name = map['label'];
-                      String downloadUrl = map['file'];
-                      var fileName =
-                          FileUtilities.nameFromFile(downloadUrl, true);
+                      String baseurl =
+                          ServerApi.getBaseUrl(needFinalSlash: false);
+                      String downloadUrl = baseurl + map['file'];
 
                       return FileDownloadListTileProgressWidget(
                         downloadUrl,
-                        FileUtilities.joinPaths(_mapsFolderPath, fileName),
+                        FileUtilities.joinPaths(_mapsFolderPath, name),
                         name,
                         tokenHeader: tokenHeader,
                       );
@@ -355,14 +355,13 @@ class _GssImportWidgetState extends State<GssImportWidget>
                     itemBuilder: (context, index) {
                       var map = _projectsList[index];
                       var name = map['label'];
-
-                      String downloadUrl = map['file'];
-                      var fileName =
-                          FileUtilities.nameFromFile(downloadUrl, true);
+                      String baseurl =
+                          ServerApi.getBaseUrl(needFinalSlash: false);
+                      String downloadUrl = baseurl + map['file'];
 
                       return FileDownloadListTileProgressWidget(
                         downloadUrl,
-                        FileUtilities.joinPaths(_projectsFolderPath, fileName),
+                        FileUtilities.joinPaths(_projectsFolderPath, name),
                         name,
                         tokenHeader: tokenHeader,
                       );
@@ -404,14 +403,13 @@ class _GssImportWidgetState extends State<GssImportWidget>
                     itemBuilder: (context, index) {
                       var map = _tagsList[index];
                       var name = map['label'];
-
-                      String downloadUrl = map['file'];
-                      var fileName =
-                          FileUtilities.nameFromFile(downloadUrl, true);
+                      String baseurl =
+                          ServerApi.getBaseUrl(needFinalSlash: false);
+                      String downloadUrl = baseurl + map['file'];
 
                       return FileDownloadListTileProgressWidget(
                         downloadUrl,
-                        FileUtilities.joinPaths(_formsFolderPath, fileName),
+                        FileUtilities.joinPaths(_formsFolderPath, name),
                         name,
                         tokenHeader: tokenHeader,
                       );

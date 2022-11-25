@@ -43,13 +43,13 @@ const KEY_GSS_TOKEN = "key_gss_token";
 const KEY_GSS_USERID = "key_gss_userid";
 
 class ServerApi {
-  static String getBaseUrl() {
+  static String getBaseUrl({bool needFinalSlash = true}) {
     String? url = GpPreferences()
         .getStringSync(SmashPreferencesKeys.KEY_GSS_DJANGO_SERVER_URL);
     if (url == null) {
       throw StateError("No server url has been set. Check your settings.");
     }
-    if (!url.endsWith("/")) {
+    if (needFinalSlash && !url.endsWith("/")) {
       url = url + "/";
     }
     return url;

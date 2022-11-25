@@ -705,7 +705,9 @@ class GssSettingsState extends State<GssSettings> with AfterLayoutMixin {
                                                 SmashPreferencesKeys
                                                     .KEY_GSS_DJANGO_SERVER_PROJECT_LIST,
                                                 projectsListJson);
-                                            if (_selectedProject == null) {
+                                            if (_selectedProject == null ||
+                                                !_projectsList.contains(
+                                                    _selectedProject)) {
                                               _selectedProject =
                                                   _projectsList[0];
                                             }
