@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dart_hydrologis_utils/dart_hydrologis_utils.dart';
 import 'package:http/http.dart';
 import 'package:smash_import_export_plugins/smash_import_export_plugins.dart';
+import 'package:smashlibs/com/hydrologis/flutterlibs/utils/logging.dart';
 import 'dart:typed_data';
 
 import 'package:smashlibs/smashlibs.dart';
@@ -231,6 +232,82 @@ class ServerApi {
     } else {
       throw new StateError(response.body);
     }
+  }
+
+  static const LAYERSKEY_URL = 'url';
+  static const LAYERSKEY_TYPE = 'type';
+  static const LAYERSKEY_FORMAT = 'format';
+  static const LAYERSKEY_LABEL = 'label';
+  static const LAYERSKEY_SRID = 'srid';
+  static const LAYERSKEY_ISVISIBLE = 'isvisible';
+  static const LAYERSKEY_OPACITY = 'opacity';
+  static const LAYERSKEY_WMSVERSION = 'wmsversion';
+  static const LAYERSKEY_ATTRIBUTION = 'attribution';
+  static const LAYERSKEY_SUBDOMAINS = 'subdomains';
+  static const LAYERSKEY_MINZOOM = 'minzoom';
+  static const LAYERSKEY_MAXZOOM = 'maxzoom';
+
+  static Future<Map<String, List<String>>> getBackGroundLayers() async {
+    var tokenHeader = getTokenHeader();
+    Project? project = getCurrentGssProject();
+    if (project == null) {
+      throw StateError("No project was selected.");
+    }
+    Map<String, List<String>> layers = {"WMS": [], "TMS": []};
+
+    try {
+      var uri = Uri.parse(
+          getBaseUrl() + API_WMSSOURCES + "?$API_PROJECT_PARAM${project.id}");
+      var response = await get(uri, headers: tokenHeader);
+      if (response.statusCode == 200) {
+        var list = jsonDecode(response.body);
+        for (var item in list) {
+          var json = '''
+                    {
+                        "$LAYERSKEY_LABEL": "${item['layername']}",
+                        "$LAYERSKEY_URL":"${item['getcapabilities']}",
+                        "$LAYERSKEY_ISVISIBLE": true,
+                        "$LAYERSKEY_OPACITY": ${item['opacity'] * 100},
+                        "$LAYERSKEY_FORMAT": "${item['imageformat']}",
+                        "$LAYERSKEY_ATTRIBUTION": "${item['attribution']}",
+                        "$LAYERSKEY_SRID": ${item['epsg']},
+                        "$LAYERSKEY_WMSVERSION": "${item['version']}",
+                        "$LAYERSKEY_TYPE": "wms"
+                    }
+                    ''';
+          layers['WMS']!.add(json);
+        }
+      }
+      uri = Uri.parse(
+          getBaseUrl() + API_TMSSOURCES + "?$API_PROJECT_PARAM${project.id}");
+      response = await get(uri, headers: tokenHeader);
+      if (response.statusCode == 200) {
+        var list = jsonDecode(response.body);
+        for (var item in list) {
+          var subdomains = item['subdomains'];
+          var json = '''
+                  {
+                      "$LAYERSKEY_LABEL": "${item['label']}",
+                      "$LAYERSKEY_URL": "${item['urltemplate']}",
+                      "$LAYERSKEY_MINZOOM": 1,
+                      "$LAYERSKEY_MAXZOOM": ${item['maxzoom']},
+                      "$LAYERSKEY_OPACITY": ${item['opacity'] * 100},
+                      "$LAYERSKEY_ATTRIBUTION": "${item['attribution']}",
+                      "$LAYERSKEY_TYPE": "tms",
+                      "$LAYERSKEY_ISVISIBLE": true ${subdomains != null && subdomains.isNotEmpty ? "," : ""}
+                      ${subdomains != null ? "\"subdomains\": \"${subdomains.join(',')}\"" : ""}
+                  }
+                  ''';
+          layers['TMS']!.add(json);
+        }
+      }
+    } catch (e) {
+      if (e is Exception) {
+        SMLogger().e("ERROR", e, null);
+      }
+      print(e);
+    }
+    return layers;
   }
 }
 

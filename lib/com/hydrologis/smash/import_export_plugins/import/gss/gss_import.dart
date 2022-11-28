@@ -82,6 +82,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
   final List<dynamic> _baseMapsList = [];
   final List<dynamic> _projectsList = [];
   final List<dynamic> _tagsList = [];
+  final Map<String, List<String>> _backGroundLayersMap = {"WMS": [], "TMS": []};
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -142,6 +143,10 @@ class _GssImportWidgetState extends State<GssImportWidget>
           _tagsList.add(bm);
         }
       }
+
+      var tmpBackGroundLayersMap = await ServerApi.getBackGroundLayers();
+      _backGroundLayersMap["WMS"]!.addAll(tmpBackGroundLayersMap["WMS"]!);
+      _backGroundLayersMap["TMS"]!.addAll(tmpBackGroundLayersMap["TMS"]!);
 
       setState(() {
         _status = 1;
@@ -413,6 +418,57 @@ class _GssImportWidgetState extends State<GssImportWidget>
                         name,
                         tokenHeader: tokenHeader,
                       );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: Card(
+              margin: SmashUI.defaultMargin(),
+              elevation: SmashUI.DEFAULT_ELEVATION,
+              color: SmashColors.mainBackground,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: SmashUI.defaultPadding(),
+                    child: SmashUI.normalText("WMS/TMS Background Maps",
+                        bold: true),
+                  ),
+                  Padding(
+                    padding: SmashUI.defaultPadding(),
+                    child: SmashUI.smallText(
+                        _backGroundLayersMap["WMS"]!.isEmpty &&
+                                _backGroundLayersMap["TMS"]!.isEmpty
+                            ? "No WMS/TMS definitions available."
+                            : "WMS/TMS definitions are installed into the app and visible in the online layer view.",
+                        color: Colors.grey),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      MdiIcons.earth,
+                      color: SmashColors.mainDecorations,
+                    ),
+                    title: Text(
+                        "${_backGroundLayersMap["WMS"]!.length} WMS, ${_backGroundLayersMap["TMS"]!.length} TMS available."),
+                    trailing: Icon(
+                      Icons.file_download,
+                      color: SmashColors.mainDecorations,
+                    ),
+                    onTap: () async {
+                      // add WMS and TMS to the preferences
+                      var wmsList = _backGroundLayersMap["WMS"];
+                      wmsList!.forEach((element) {
+                        GpPreferences().addNewWms(element);
+                      });
+                      var tmsList = _backGroundLayersMap["TMS"];
+                      tmsList!.forEach((element) {
+                        GpPreferences().addNewTms(element);
+                      });
+                      SmashDialogs.showToast(context,
+                          "WMS/TMS definitions added to online layers list.");
                     },
                   ),
                 ],
