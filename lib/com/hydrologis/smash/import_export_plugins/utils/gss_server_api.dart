@@ -215,7 +215,7 @@ class ServerApi {
     var dataJson = jsonEncode(data);
     var headers = {'Content-Type': 'application/json; charset=UTF-8'}
       ..addAll(tokenHeader);
-    var response = await put(uri, body: dataJson, headers: headers);
+    var response = await post(uri, body: dataJson, headers: headers);
     if (response.statusCode != 200) {
       print(response.body);
       throw new StateError(response.body);
