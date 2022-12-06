@@ -8,3 +8,12 @@ Help [translate SMASH on Hosted Weblate](https://hosted.weblate.org/engage/smash
 [![Translation status](https://hosted.weblate.org/widgets/smash/-/multi-auto.svg)](https://hosted.weblate.org/engage/smash/?utm_source=widget)
 
 You can always add other lanuages.
+
+Update translation:
+
+```sh
+# To solve Weblate duplicated translation issue
+echo '{}' > lib/l10n/intl_nb.arb
+flutter pub get
+flutter gen-l10n
+```
