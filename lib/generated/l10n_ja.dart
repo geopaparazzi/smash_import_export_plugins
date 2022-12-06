@@ -8,46 +8,46 @@ class IELJa extends IEL {
   String get exportWidget_export => 'エクスポート';
 
   @override
-  String get exportWidget_pdfExported => 'PDFエクスポート';
+  String get exportWidget_pdfExported => 'PDFエクスポート済み';
 
   @override
   String get exportWidget_exportToPortableDocumentFormat => 'プロジェクトをPDF形式にエクスポート';
 
   @override
-  String get exportWidget_gpxExported => 'GPXエクスポート';
+  String get exportWidget_gpxExported => 'GPXエクスポート済み';
 
   @override
   String get exportWidget_exportToGpx => 'プロジェクトをGPXにエクスポート';
 
   @override
-  String get exportWidget_kmlExported => 'KMLエクスポート';
+  String get exportWidget_kmlExported => 'KMLエクスポート済み';
 
   @override
   String get exportWidget_exportToKml => 'プロジェクトをKMLにエクスポート';
 
   @override
-  String get exportWidget_imagesToFolderExported => '画像エクスポート';
+  String get exportWidget_imagesToFolderExported => '画像エクスポート済み';
 
   @override
-  String get exportWidget_exportImagesToFolder => 'Export project images to folder';
+  String get exportWidget_exportImagesToFolder => 'プロジェクトの画像をフォルダにエクスポート';
 
   @override
-  String get exportWidget_exportImagesToFolderTitle => 'Images';
+  String get exportWidget_exportImagesToFolderTitle => '画像';
 
   @override
-  String get exportWidget_geopackageExported => 'ジオパッケージがエクスポートされました';
+  String get exportWidget_geopackageExported => 'GeoPackageエクスポート済み';
 
   @override
-  String get exportWidget_exportToGeopackage => 'プロジェクトをGeopackageにエクスポート';
+  String get exportWidget_exportToGeopackage => 'プロジェクトをGeoPackageにエクスポート';
 
   @override
   String get exportWidget_exportToGSS => 'Geopaparazzi Survey Serverにエクスポート';
 
   @override
-  String get gssExport_gssExport => 'GSS Export';
+  String get gssExport_gssExport => 'GSSエクスポート';
 
   @override
-  String get gssExport_setProjectDirty => 'プロジェクトをDIRTYに設定しますか？';
+  String get gssExport_setProjectDirty => 'プロジェクトをダーティに設定しますか？';
 
   @override
   String get gssExport_thisCantBeUndone => 'これは元に戻せません！';
@@ -56,7 +56,7 @@ class IELJa extends IEL {
   String get gssExport_restoreProjectAsDirty => 'プロジェクトをすべてダーティとして復元します。';
 
   @override
-  String get gssExport_setProjectClean => 'プロジェクトをCLEANに設定しますか？';
+  String get gssExport_setProjectClean => 'プロジェクトをクリーンに設定しますか？';
 
   @override
   String get gssExport_restoreProjectAsClean => 'プロジェクトをすべてクリーンな状態で復元します。';
@@ -86,7 +86,7 @@ class IELJa extends IEL {
   String get gssExport_gpsLogs => 'GPSログ:';
 
   @override
-  String get gssExport_simpleNotes => 'Simple Notes:';
+  String get gssExport_simpleNotes => 'シンプルノート:';
 
   @override
   String get gssExport_formNotes => 'フォームノート:';
@@ -101,13 +101,13 @@ class IELJa extends IEL {
   String get gssExport_upload => 'アップロード';
 
   @override
-  String get gssImport_gssImport => 'GSS Import';
+  String get gssImport_gssImport => 'GSSインポート';
 
   @override
   String get gssImport_downloadingDataList => 'データリストをダウンロードしています…';
 
   @override
-  String get gssImport_unableDownloadDataList => 'エラーのため,データリストをダウンロードできません。設定とログを確認してください。';
+  String get gssImport_unableDownloadDataList => 'エラーのため、データリストをダウンロードできません。設定とログを確認してください。';
 
   @override
   String get gssImport_noGssUrlSet => 'GSSサーバーのURLが設定されていません。設定を確認してください。';
@@ -179,7 +179,7 @@ class IELJa extends IEL {
   String get network_completed => '完了しました。';
 
   @override
-  String get network_buildingBaseCachePerformance => 'パフォーマンス向上のためのベースキャッシュの構築（時間がかかる場合があります…';
+  String get network_buildingBaseCachePerformance => 'パフォーマンス向上のためのベースキャッシュの構築（時間がかかる場合があります）…';
 
   @override
   String get network_thisFIleAlreadyBeingDownloaded => 'このファイルはすでにダウンロード中です。';
@@ -188,10 +188,10 @@ class IELJa extends IEL {
   String get network_download => 'ダウンロード';
 
   @override
-  String get network_downloadFile => 'ファイルのダウンロード';
+  String get network_downloadFile => 'ファイル';
 
   @override
-  String get network_toTheDeviceTakeTime => 'デバイスへ？これには時間がかかる場合があります。';
+  String get network_toTheDeviceTakeTime => 'をデバイスにダウンロードしますか？ これには時間がかかる場合があります。';
 
   @override
   String get network_availableMaps => '利用可能なマップ';
@@ -209,7 +209,7 @@ class IELJa extends IEL {
   String get network_permissionOnServerDenied => 'サーバーへのアクセスが拒否されました。';
 
   @override
-  String get network_couldNotConnectToServer => 'サーバーに接続できませんでした。オンラインですか？アドレスを確認してください。';
+  String get network_couldNotConnectToServer => 'サーバーに接続できませんでした。オンラインですか？ アドレスを確認してください。';
 
   @override
   String get gttExport_chooseGttProject => 'GTTプロジェクトを選択してください:';
@@ -263,10 +263,10 @@ class IELJa extends IEL {
   String get gttExport_dataUploadedUponSync => '同期時に次のデータがアップロードされます。';
 
   @override
-  String get gttExport_dataUploadedSelectedProject => 'The following data will be uploaded only if the project is selected.';
+  String get gttExport_dataUploadedSelectedProject => '以下のデータはプロジェクトが選択されている場合のみアップロードされます。';
 
   @override
-  String get gttExport_contactAdmin => '利用可能なプロジェクトがありません。システム管理者に確認してください。';
+  String get gttExport_contactAdmin => '利用可能なプロジェクトがない場合は、システム管理者に確認してください。';
 
   @override
   String get gttExport_selectProject => 'プロジェクトを選択';
@@ -299,13 +299,13 @@ class IELJa extends IEL {
   String get gttExport_formsUploadedToGttServer => 'GTTサーバーにアップロードされたフォーム';
 
   @override
-  String get gttExport_simpleNotesUpload => 'シンプルノートのアップロード';
+  String get gttExport_simpleNotesUpload => 'シンプルノートのアップロード ';
 
   @override
   String get gttExport_notesUploadedToGttServer => 'GTTサーバーにアップロードされたメモ';
 
   @override
-  String get gttExport_simpleLogsUpload => 'GPSログのアップロード';
+  String get gttExport_simpleLogsUpload => 'GPSログのアップロード ';
 
   @override
   String get gttExport_logsUploadedToGttServer => 'GTTサーバーにアップロードされたログ';
@@ -344,7 +344,7 @@ class IELJa extends IEL {
   String get gttImport_importFormsFromGttServer => 'GTTサーバープロジェクトからフォームをインポート';
 
   @override
-  String get gttImport_GTTServerProjectsWillBeImported => 'All GTT Server Projects will be imported';
+  String get gttImport_GTTServerProjectsWillBeImported => 'すべてのGTTサーバーのプロジェクトがインポートされます';
 
   @override
   String get gttImport_importingForms => 'フォームのインポート';
@@ -356,7 +356,7 @@ class IELJa extends IEL {
   String get gttImport_import => 'インポート';
 
   @override
-  String get gttImport_projectFormImport => 'プロジェクトフォームのインポート';
+  String get gttImport_projectFormImport => 'プロジェクトフォームのインポート ';
 
   @override
   String get gttImport_projectFormImported => 'GTTサーバーからインポートされたプロジェクトフォーム';
