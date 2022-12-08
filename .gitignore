@@ -30,3 +30,7 @@ build/
 
 .flutter-plugins-dependencies
 .flutter-plugins
+
+# Localization
+lib/l10n/intl_nb.arb
+
