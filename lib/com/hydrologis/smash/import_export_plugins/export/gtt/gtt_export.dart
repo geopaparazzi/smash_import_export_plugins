@@ -112,16 +112,20 @@ class _GttExportWidgetState extends State<GttExportWidget> {
 
   Future<void> init() async {
     _projects = [
-      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+      DropdownMenuItem(
+          child: Text(IEL.of(context).gttExport_selectProject), value: "none")
     ];
     _gpsLogsProj = [
-      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+      DropdownMenuItem(
+          child: Text(IEL.of(context).gttExport_selectProject), value: "none")
     ];
     _simpleNotesProj = [
-      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+      DropdownMenuItem(
+          child: Text(IEL.of(context).gttExport_selectProject), value: "none")
     ];
     _imagesProj = [
-      DropdownMenuItem(child: Text(IEL.of(context).gttExport_selectProject), value: "none")
+      DropdownMenuItem(
+          child: Text(IEL.of(context).gttExport_selectProject), value: "none")
     ];
 
     _serverUrl = GpPreferences().getStringSync(GttUtilities.KEY_GTT_SERVER_URL);
@@ -385,13 +389,23 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                         ),
                                                         ListTile(
                                                           leading: Icon(
+                                                            SmashIcons
+                                                                .formNotesIcon,
+                                                            color: SmashColors
+                                                                .mainDecorations,
+                                                          ),
+                                                          title: SmashUI.normalText(
+                                                              "${IEL.of(context).gttExport_formNotes}: $_formNotesCount"), //
+                                                        ),
+                                                        ListTile(
+                                                          leading: Icon(
                                                             SmashIcons.logIcon,
                                                             color: SmashColors
                                                                 .mainDecorations,
                                                           ),
                                                           title: SmashUI.normalText(
                                                               "${IEL.of(context).gttExport_gpsLogs}: $_gpsLogCount"), //"Gps Logs:"
-                                                          trailing:
+                                                          subtitle:
                                                               DropdownButton<
                                                                   String>(
                                                             items: _gpsLogsProj,
@@ -413,7 +427,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                           ),
                                                           title: SmashUI.normalText(
                                                               "${IEL.of(context).gttExport_simpleNotes}: $_simpleNotesCount"), //"Simple Notes"
-                                                          trailing:
+                                                          subtitle:
                                                               DropdownButton<
                                                                   String>(
                                                             items:
@@ -436,7 +450,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                           ),
                                                           title: SmashUI.normalText(
                                                               "${IEL.of(context).gttExport_images}: $_imagesCount"), //"Images"
-                                                          trailing:
+                                                          subtitle:
                                                               DropdownButton<
                                                                   String>(
                                                             items: _imagesProj,
@@ -447,16 +461,6 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                                     _selectedImagesProj =
                                                                         s.toString()),
                                                           ),
-                                                        ),
-                                                        ListTile(
-                                                          leading: Icon(
-                                                            SmashIcons
-                                                                .formNotesIcon,
-                                                            color: SmashColors
-                                                                .mainDecorations,
-                                                          ),
-                                                          title: SmashUI.normalText(
-                                                              "${IEL.of(context).gttExport_formNotes}: $_formNotesCount"), //
                                                         ),
                                                       ],
                                                     ),
