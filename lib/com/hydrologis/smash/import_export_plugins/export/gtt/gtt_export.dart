@@ -363,30 +363,24 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                         bold: true),
                                                   ),
                                                   Padding(
-                                                    padding: SmashUI
-                                                        .defaultPadding(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: SmashUI
+                                                                .DEFAULT_PADDING,
+                                                            horizontal: 24),
                                                     child: SmashUI.smallText(
-                                                        IEL
-                                                            .of(context)
-                                                            .gttExport_dataUploadedSelectedProject, //"The following data will be uploaded upon sync."
-                                                        color: Colors.grey),
-                                                  ),
-                                                  Padding(
-                                                    padding: SmashUI
-                                                        .defaultPadding(),
-                                                    child: SmashUI.smallText(
-                                                        IEL
-                                                            .of(context)
-                                                            .gttExport_contactAdmin, //"The following data will be uploaded upon sync."
+                                                        //"The following data will be uploaded upon sync. If there is no available project, please contact your admin."
+                                                        "${IEL.of(context).gttExport_dataUploadedSelectedProject} ${IEL.of(context).gttExport_contactAdmin}",
                                                         color: Colors.grey),
                                                   ),
                                                   Expanded(
                                                     child: ListView(
+                                                      padding: EdgeInsets.all(
+                                                          SmashUI
+                                                              .DEFAULT_PADDING),
                                                       children: <Widget>[
                                                         // projWidget,
-                                                        SizedBox(
-                                                          height: 32,
-                                                        ),
+                                                        SizedBox(height: 8),
                                                         ListTile(
                                                           leading: Icon(
                                                             SmashIcons
@@ -397,6 +391,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                           title: SmashUI.normalText(
                                                               "${IEL.of(context).gttExport_formNotes}: $_formNotesCount"), //
                                                         ),
+                                                        SizedBox(height: 16),
                                                         ListTile(
                                                           leading: Icon(
                                                             SmashIcons.logIcon,
@@ -415,9 +410,10 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                                 setState(() =>
                                                                     _selectedGpsLogProj =
                                                                         s.toString()),
+                                                            isExpanded: true,
                                                           ),
                                                         ),
-
+                                                        SizedBox(height: 16),
                                                         ListTile(
                                                           leading: Icon(
                                                             SmashIcons
@@ -439,8 +435,10 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                               _selectedSimpleNotesProj =
                                                                   s.toString();
                                                             }),
+                                                            isExpanded: true,
                                                           ),
                                                         ),
+                                                        SizedBox(height: 16),
                                                         ListTile(
                                                           leading: Icon(
                                                             SmashIcons
@@ -460,6 +458,7 @@ class _GttExportWidgetState extends State<GttExportWidget> {
                                                                 setState(() =>
                                                                     _selectedImagesProj =
                                                                         s.toString()),
+                                                            isExpanded: true,
                                                           ),
                                                         ),
                                                       ],
