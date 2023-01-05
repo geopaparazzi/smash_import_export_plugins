@@ -631,7 +631,7 @@ abstract class IEL {
   /// No description provided for @gttExport_contactAdmin.
   ///
   /// In en, this message translates to:
-  /// **'No Available Project, Contact your Admin.'**
+  /// **'If there is no available project, please contact your admin.'**
   String get gttExport_contactAdmin;
 
   /// No description provided for @gttExport_selectProject.

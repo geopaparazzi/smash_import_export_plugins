@@ -266,7 +266,7 @@ class IELFr extends IEL {
   String get gttExport_dataUploadedSelectedProject => 'The following data will be uploaded only if the project is selected.';
 
   @override
-  String get gttExport_contactAdmin => 'No Available Project, Contact your Admin.';
+  String get gttExport_contactAdmin => 'If there is no available project, please contact your admin.';
 
   @override
   String get gttExport_selectProject => 'Select Project';
