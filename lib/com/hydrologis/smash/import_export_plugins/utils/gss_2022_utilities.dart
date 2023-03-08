@@ -532,6 +532,7 @@ class Gss2022SettingsState extends State<Gss2022Settings>
                                         .settings_serverUrlStartWithHttp; //"Server url needs to start with http or https."
                                   }
                                 },
+                                keyboardType: TextInputType.url,
                               )),
                         ],
                       ),

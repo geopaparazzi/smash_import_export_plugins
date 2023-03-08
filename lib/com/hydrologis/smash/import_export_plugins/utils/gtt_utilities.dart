@@ -586,6 +586,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                         .settings_serverUrlStartWithHttp; //"Server url needs to start with http or https."
                                   }
                                 },
+                                keyboardType: TextInputType.url,
                               )),
                         ],
                       ),
