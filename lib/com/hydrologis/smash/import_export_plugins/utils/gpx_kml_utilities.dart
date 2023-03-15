@@ -230,6 +230,10 @@ class KmlExporter {
     // int parsedColor = ColorUtilities.toColor(color);
     LogProperty? logProperties = db.getLogProperties(log.id!);
     String hexColor = logProperties!.color ?? "#FF0000";
+
+    // remove colortables
+    hexColor = "FF" + hexColor.split("@")[0].substring(1);
+
     sB += "<color>${hexColor}</color>\n";
     sB += "<width>${logProperties.width}</width>\n";
     sB += "</LineStyle>\n";
