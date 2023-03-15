@@ -21,10 +21,10 @@ dependencies:
   # git:
   #  url: https://github.com/moovida/dart_hydrologis_db.git
   smashlibs:
-    # path: ../smashlibs/
-    git:
-      url: https://github.com/moovida/smashlibs.git
-      ref: "9222198"
+    path: ../smashlibs/
+    # git:
+    #   url: https://github.com/moovida/smashlibs.git
+    #   ref: "9222198"
 
   
   # apache 2
@@ -47,6 +47,9 @@ dependencies:
   # Apache 2.0
   pdf: ^3.8.3
   # pdf: '>=2.1.0 <=3.6.0'
+
+  # MIT
+  archive: ^3.3.6
 
   # MIT
   provider: ^6.0.4

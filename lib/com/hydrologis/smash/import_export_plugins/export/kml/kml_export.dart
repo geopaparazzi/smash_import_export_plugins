@@ -99,9 +99,10 @@ class _KmlExportWidgetState extends State<KmlExportWidget>
     var exportsFolder = await Workspace.getExportsFolder();
     var ts = HU.TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
     outFilePath =
-        HU.FileUtilities.joinPaths(exportsFolder.path, "smash_export_$ts.kml");
+        HU.FileUtilities.joinPaths(exportsFolder.path, "smash_export_$ts.kmz");
 
-    await GpxExporter.exportDb(widget.projectDb, File(outFilePath), true);
+    await KmlExporter().exportDb(widget.projectDb, File(outFilePath));
+    // await GpxExporter.exportDb(widget.projectDb, File(outFilePath), true);
 
     setState(() {
       building = false;
