@@ -269,116 +269,116 @@ class IELIt extends IEL {
   String get gttExport_contactAdmin => 'Nessun progetto disponibile, contattare l\'amministratore.';
 
   @override
-  String get gttExport_selectProject => 'Select Project';
+  String get gttExport_selectProject => 'Seleziona progetto';
 
   @override
-  String get gttExport_gpsLogs => 'Gps Logs';
+  String get gttExport_gpsLogs => 'Log GPS';
 
   @override
-  String get gttExport_simpleNotes => 'Simple Notes';
+  String get gttExport_simpleNotes => 'Note semplici';
 
   @override
-  String get gttExport_formNotes => 'Form Notes';
+  String get gttExport_formNotes => 'Schede';
 
   @override
-  String get gttExport_images => 'Images';
+  String get gttExport_images => 'Immagini';
 
   @override
-  String get gttExport_uploadingData => 'Uploading data';
+  String get gttExport_uploadingData => 'Caricamento dati';
 
   @override
-  String get gttExport_shouldNotHappen => 'Should not happen';
+  String get gttExport_shouldNotHappen => 'Non dovrebbe succedere';
 
   @override
-  String get gttExport_upload => 'Upload';
+  String get gttExport_upload => 'Caricamento';
 
   @override
-  String get gttExport_formNotesUpload => 'Form Notes Upload';
+  String get gttExport_formNotesUpload => 'Caricamento schede';
 
   @override
-  String get gttExport_formsUploadedToGttServer => 'Forms uploaded to GTT Server';
+  String get gttExport_formsUploadedToGttServer => 'Caricamento schede a server GTT';
 
   @override
-  String get gttExport_simpleNotesUpload => 'Simple Notes Upload ';
+  String get gttExport_simpleNotesUpload => 'Caricamento note semplici ';
 
   @override
-  String get gttExport_notesUploadedToGttServer => 'Notes uploaded to GTT Server';
+  String get gttExport_notesUploadedToGttServer => 'Caricamento note a server GTT';
 
   @override
-  String get gttExport_simpleLogsUpload => 'GPS Logs Upload ';
+  String get gttExport_simpleLogsUpload => 'Caricamento log GPS ';
 
   @override
-  String get gttExport_logsUploadedToGttServer => 'Logs uploaded to GTT Server';
+  String get gttExport_logsUploadedToGttServer => 'Caricamento log a server GTT';
 
   @override
-  String get gttImport_gttImport => 'GTT Import';
+  String get gttImport_gttImport => 'Import GTT';
 
   @override
-  String get gttImport_nothingToSync => 'Nothing to sync.';
+  String get gttImport_nothingToSync => 'Nulla da sincronizzare.';
 
   @override
-  String get gttImport_collectingSyncStats => 'Collecting sync stats...';
+  String get gttImport_collectingSyncStats => 'Controllo statistiche di sincronizzazione...';
 
   @override
-  String get gttImport_unableToSyncDueToError => 'Unable to sync due to an error, check diagnostics.';
+  String get gttImport_unableToSyncDueToError => 'È avvenuto un errore di sincronizzazione, controllare la dignostica.';
 
   @override
-  String get gttImport_noGttServerUrl => 'No GTT server url has been set. Check your settings.';
+  String get gttImport_noGttServerUrl => 'Non è stato impostato un url del server. Controllare le impostazioni.';
 
   @override
-  String get gttImport_noGttServerPassword => 'No GTT server password has been set. Check your settings.';
+  String get gttImport_noGttServerPassword => 'Non è stata impostata una password del server. Controllare le impostazioni.';
 
   @override
-  String get gttImport_noGttServerUser => 'No GTT server user has been set. Check your settings.';
+  String get gttImport_noGttServerUser => 'Non è stato impostato un utente del server. Controllare le impostazioni.';
 
   @override
-  String get gttImport_unableToRetrieveProjects => 'Unable to retrieve GTT Projects List. Check your settings.';
+  String get gttImport_unableToRetrieveProjects => 'Impossibile reperire la lista di progetti GTT. Controllare le impostazioni.';
 
   @override
-  String get gttImport_unableToRetrieveApiKey => 'Unable to retrieve GTT Api Key. Check your settings.';
+  String get gttImport_unableToRetrieveApiKey => 'Impossibile reperire l\'API Key GTT. Controllare le impostazioni.';
 
   @override
-  String get gttImport_importProjectForm => 'Import Project Forms';
+  String get gttImport_importProjectForm => 'Importa schede di progetto';
 
   @override
-  String get gttImport_importFormsFromGttServer => 'Import Forms from GTT Server Projects';
+  String get gttImport_importFormsFromGttServer => 'Importa schede da progetti GTT';
 
   @override
-  String get gttImport_GTTServerProjectsWillBeImported => 'All GTT Server Projects will be imported';
+  String get gttImport_GTTServerProjectsWillBeImported => 'Tutti i progetti GTT verranno importati';
 
   @override
-  String get gttImport_importingForms => 'Importing Forms';
+  String get gttImport_importingForms => 'Importo schede';
 
   @override
-  String get gttImport_shouldNotHappen => 'Should not happen';
+  String get gttImport_shouldNotHappen => 'Non dovrebbe succedere';
 
   @override
-  String get gttImport_import => 'Import';
+  String get gttImport_import => 'Importa';
 
   @override
-  String get gttImport_projectFormImport => 'Project Form Import ';
+  String get gttImport_projectFormImport => 'Importa scheda del progetto ';
 
   @override
-  String get gttImport_projectFormImported => 'Project Form imported from GTT Server';
+  String get gttImport_projectFormImported => 'Scheda del progetto importata dal server GTT';
 
   @override
-  String get gttImport_singleProject => 'Single Project';
+  String get gttImport_singleProject => 'Progetto singolo';
 
   @override
-  String get gttImport_allProjects => 'All Projects';
+  String get gttImport_allProjects => 'Tutti i progetti';
 
   @override
-  String get gttImport_chooseGttProject => 'Choose GTT Project:';
+  String get gttImport_chooseGttProject => 'Seleziona progetto GTT:';
 
   @override
-  String get exportWidget_exportToGTT => 'Export to GeoTaskTracker Server';
+  String get exportWidget_exportToGTT => 'Esporta al server GeoTaskTracker';
 
   @override
-  String get importWidget_importFromGTT => 'Import from GeoTaskTracker Server';
+  String get importWidget_importFromGTT => 'Importa dal server GeoTaskTracker';
 
   @override
-  String get settings_serverUsername => 'Server Username';
+  String get settings_serverUsername => 'Utente del server';
 
   @override
-  String get settings_pleaseEnterValidUsername => 'Please enter a valid server username.';
+  String get settings_pleaseEnterValidUsername => 'Inserire un nome utente del server valido.';
 }

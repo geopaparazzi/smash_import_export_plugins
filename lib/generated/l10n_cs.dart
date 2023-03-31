@@ -266,7 +266,7 @@ class IELCs extends IEL {
   String get gttExport_dataUploadedSelectedProject => 'Následující údaje se nahrají pouze v případě, že je projekt vybrán.';
 
   @override
-  String get gttExport_contactAdmin => 'Žádný dostupný projekt, kontaktujte správce.';
+  String get gttExport_contactAdmin => 'Pokud není k dispozici žádný projekt, obraťte se na správce.';
 
   @override
   String get gttExport_selectProject => 'Vybrat projekt';

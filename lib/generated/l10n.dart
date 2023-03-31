@@ -499,7 +499,7 @@ abstract class IEL {
   /// No description provided for @network_uploading.
   ///
   /// In en, this message translates to:
-  /// **'Uploading'**
+  /// **'Uploading…'**
   String get network_uploading;
 
   /// No description provided for @network_pleaseWait.

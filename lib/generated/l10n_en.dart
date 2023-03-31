@@ -200,7 +200,7 @@ class IELEn extends IEL {
   String get network_searchMapByName => 'Search map by name';
 
   @override
-  String get network_uploading => 'Uploading';
+  String get network_uploading => 'Uploading…';
 
   @override
   String get network_pleaseWait => 'please wait…';
