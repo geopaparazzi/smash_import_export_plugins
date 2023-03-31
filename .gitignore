@@ -32,5 +32,5 @@ build/
 .flutter-plugins
 
 # Localization
-lib/l10n/intl_nb.arb
+# lib/l10n/intl_nb.arb
 
