@@ -474,16 +474,17 @@ class ProjectDataUploadListTileProgressWidgetState
 
   void handleError(err) {
     if (err is DioError) {
-      if (err.message.contains("403")) {
+      String msg = err?.message ?? "";
+      if (msg.contains("403")) {
         _errorString = IEL
             .of(context)
             .network_permissionOnServerDenied; //"Permission on server denied."
-      } else if (err.message.contains("Connection refused")) {
+      } else if (msg.contains("Connection refused")) {
         _errorString = IEL
             .of(context)
             .network_couldNotConnectToServer; //"Could not connect to the server. Is it online? Check your address."
       } else {
-        _errorString = err.message;
+        _errorString = msg;
       }
     } else {
       _errorString = err.toString();

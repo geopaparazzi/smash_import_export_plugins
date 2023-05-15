@@ -164,6 +164,7 @@ class _Gss2022ImportWidgetState extends State<Gss2022ImportWidget>
       });
     } on Exception catch (e, s) {
       if (e is DioError) {
+        String emsg = e?.message ?? "";
         if (e.response != null) {
           var code = e.response?.statusCode;
           var msg = e.response?.statusMessage ?? "no message";
@@ -178,12 +179,12 @@ class _Gss2022ImportWidgetState extends State<Gss2022ImportWidget>
             });
             SMLogger().e(msg, e, s);
           }
-        } else if (e.message.isNotEmpty) {
+        } else if (emsg.isNotEmpty) {
           setState(() {
-            _genericErrorMessage = e.message;
+            _genericErrorMessage = emsg;
             _status = 100;
           });
-          SMLogger().e(e.message, e, s);
+          SMLogger().e(emsg, e, s);
         }
       } else {
         setState(() {

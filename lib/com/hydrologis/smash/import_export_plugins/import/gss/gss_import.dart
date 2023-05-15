@@ -71,7 +71,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
    * 100 = generic error
    */
   int _status = 0;
-  late String _genericErrorMessage;
+  late String? _genericErrorMessage;
   late Map<String, String> tokenHeader;
 
   Project? _selectedProject;
@@ -153,6 +153,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
       });
     } on Exception catch (e, s) {
       if (e is DioError) {
+        String emsg = e?.message ?? "";
         if (e.response != null) {
           var code = e.response?.statusCode;
           var msg = e.response?.statusMessage ?? "no message";
@@ -167,12 +168,12 @@ class _GssImportWidgetState extends State<GssImportWidget>
             });
             SMLogger().e(msg, e, s);
           }
-        } else if (e.message.isNotEmpty) {
+        } else if (emsg.isNotEmpty) {
           setState(() {
-            _genericErrorMessage = e.message;
+            _genericErrorMessage = emsg;
             _status = 100;
           });
-          SMLogger().e(e.message, e, s);
+          SMLogger().e(emsg, e, s);
         }
       } else {
         setState(() {
@@ -251,7 +252,7 @@ class _GssImportWidgetState extends State<GssImportWidget>
                                         child: Padding(
                                           padding: SmashUI.defaultPadding(),
                                           child: SmashUI.errorWidget(
-                                              _genericErrorMessage),
+                                              _genericErrorMessage!),
                                         ),
                                       )
                                     : getOkView(context),
