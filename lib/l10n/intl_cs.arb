@@ -129,7 +129,7 @@
   "@network_availableMaps": {},
   "network_searchMapByName": "Hledání mapy podle názvu",
   "@network_searchMapByName": {},
-  "network_uploading": "Nahrávání",
+  "network_uploading": "Nahrávání…",
   "@network_uploading": {},
   "network_permissionOnServerDenied": "Oprávnění na serveru odepřeno.",
   "@network_permissionOnServerDenied": {},
