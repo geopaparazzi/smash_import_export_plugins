@@ -201,7 +201,8 @@ class _Gss2022ImportWidgetState extends State<Gss2022ImportWidget>
     return WillPopScope(
       onWillPop: () async {
         // make sure new tags are read
-        await TagsManager().readFileTags();
+        TagsManager().reset();
+        await TagsManager().readTags();
         return true;
       },
       child: Scaffold(

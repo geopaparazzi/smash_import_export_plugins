@@ -168,7 +168,8 @@ class _GttImportWidgetState extends State<GttImportWidget> {
   }
 
   @override
-  Widget build(BuildContext context) { // For importing all projects
+  Widget build(BuildContext context) {
+    // For importing all projects
 
     Widget projWidget = Container(
       padding: EdgeInsets.all(10),
@@ -356,7 +357,8 @@ class _GttImportWidgetState extends State<GttImportWidget> {
         /**
          * re-reading the tags.
          */
-        await TagsManager().readFileTags();
+        TagsManager().reset();
+        await TagsManager().readTags();
       } catch (e) {
         debugPrint("Import Error: $e");
       }
