@@ -16,7 +16,7 @@ dependencies:
     sdk: flutter
   intl: '>=0.16.1 <=0.18.0'
 
-  dart_hydrologis_db: ^1.0.0
+  dart_hydrologis_db: ^1.0.1
   # path: ../dart_hydrologis_db/
   # git:
   #  url: https://github.com/moovida/dart_hydrologis_db.git
@@ -28,11 +28,11 @@ dependencies:
 
   
   # apache 2
-  flutter_geopackage: ^0.6.0
+  flutter_geopackage: ^0.6.3
 
-  dart_hydrologis_utils: ^0.6.1
+  dart_hydrologis_utils: ^0.8.0
     # path: ../dart_hydrologis_utils/
-  dart_jts: ^0.2.0
+  dart_jts: ^0.2.3
     # path: ../dart_jts/
 
 
