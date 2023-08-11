@@ -138,7 +138,7 @@ class PdfExporter {
 
                   Uint8List? imageDataBytes =
                       db.getImageDataBytes(image.imageDataId!);
-                  List<int> resizeImage = HU.ImageUtilities.resizeImage(
+                  List<int> resizeImage = ImageUtilities.resizeImage(
                       imageDataBytes!,
                       longestSizeTo: EXPORT_IMG_LONGSIZE);
 
@@ -208,7 +208,7 @@ class PdfExporter {
                     "timestamp: ${HU.TimeUtilities.ISO8601_TS_FORMATTER.format(DateTime.fromMillisecondsSinceEpoch(image.timeStamp))}"),
           ]);
           Uint8List? imageDataBytes = db.getImageDataBytes(image.imageDataId!);
-          List<int> resizeImage = HU.ImageUtilities.resizeImage(imageDataBytes!,
+          List<int> resizeImage = ImageUtilities.resizeImage(imageDataBytes!,
               longestSizeTo: EXPORT_IMG_LONGSIZE);
 
           final pdfImage = pw.MemoryImage(resizeImage as Uint8List);

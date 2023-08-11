@@ -45,7 +45,7 @@ class _ImportWidgetState extends State<ImportWidget> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ip.getSettingsPage()!));
           },
-          icon: const Icon(
+          icon: Icon(
             MdiIcons.cog,
           ),
         );

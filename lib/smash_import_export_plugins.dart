@@ -27,6 +27,7 @@ import 'package:http/http.dart' hide MultipartFile, Response;
 import 'package:provider/provider.dart';
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
+import 'package:geoimage/geoimage.dart';
 
 part 'com/hydrologis/smash/import_export_plugins/export.dart';
 part 'com/hydrologis/smash/import_export_plugins/export/geopackage/geopackage_export.dart';

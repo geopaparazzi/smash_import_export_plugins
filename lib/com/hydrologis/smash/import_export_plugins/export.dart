@@ -47,7 +47,7 @@ class _ExportWidgetState extends State<ExportWidget> {
               return settingsPage!;
             }));
           },
-          icon: const Icon(
+          icon: Icon(
             MdiIcons.cog,
           ),
         );
