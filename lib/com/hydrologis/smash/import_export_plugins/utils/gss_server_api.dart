@@ -31,6 +31,9 @@ const API_WMSSOURCES = "api/wmssources/";
 const API_TMSSOURCES = "api/tmssources/";
 const API_USERCONFIGS = "api/userconfigurations/";
 
+const API_DYNAMICLAYERS_LIST = "formlayers/layers/";
+const API_DYNAMICLAYERS_DATA = "formlayers/data/";
+
 const API_PROJECT_PARAM = "project=";
 
 const LOG = "log";
@@ -135,6 +138,53 @@ class ServerApi {
       var dataString = imageMap[THUMBNAIL];
       var imgData = Base64Decoder().convert(dataString);
       return imgData;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Map<String, dynamic>?> getDynamicLayers() async {
+    Project? project = getCurrentGssProject();
+    if (project == null) {
+      throw StateError("No project was selected.");
+    }
+    var uri = Uri.parse("${getBaseUrl()}$API_DYNAMICLAYERS_LIST" +
+        "?$API_PROJECT_PARAM${project.id}");
+    var requestHeaders = getTokenHeader();
+
+    var response = await get(uri, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> layersMap = jsonDecode(response.body);
+      return layersMap;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<String?> downloadDynamicLayerToDevice(
+      String layerName, dynamic formDefinition) async {
+    Project? project = getCurrentGssProject();
+    if (project == null) {
+      throw StateError("No project was selected.");
+    }
+
+    var mapsFolder = await Workspace.getMapsFolder();
+    var layerFilePath =
+        FileUtilities.joinPaths(mapsFolder.path, layerName + ".geojson");
+    var layerTagsFilePath =
+        FileUtilities.joinPaths(mapsFolder.path, layerName + ".tags");
+
+    var uri = Uri.parse("${getBaseUrl()}$API_DYNAMICLAYERS_DATA$layerName" +
+        "?$API_PROJECT_PARAM${project.id}");
+    var requestHeaders = getTokenHeader();
+
+    var response = await get(uri, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      FileUtilities.writeStringToFile(layerFilePath, response.body);
+
+      var formString = jsonEncode(formDefinition);
+      FileUtilities.writeStringToFile(layerTagsFilePath, formString);
+      return layerFilePath;
     } else {
       return null;
     }
