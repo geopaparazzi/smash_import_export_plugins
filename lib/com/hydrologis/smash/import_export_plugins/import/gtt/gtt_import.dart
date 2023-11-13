@@ -354,11 +354,6 @@ class _GttImportWidgetState extends State<GttImportWidget> {
          * writing to file.
          */
         FileUtilities.writeStringToFile(fileName, form);
-        /**
-         * re-reading the tags.
-         */
-        TagsManager().reset();
-        await TagsManager().readTags();
       } catch (e) {
         debugPrint("Import Error: $e");
       }
