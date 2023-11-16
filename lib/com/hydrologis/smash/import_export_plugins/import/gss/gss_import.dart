@@ -44,8 +44,9 @@ class GssImportPlugin extends AImportPlugin {
   }
 
   @override
-  Widget getSettingsPage() {
-    return GssSettings();
+  Widget? getSettingsPage() {
+    // gss settings are handled centrally
+    return null;
   }
 }
 
@@ -141,6 +142,18 @@ class _GssImportWidgetState extends State<GssImportWidget>
           _projectsList.add(bm);
         } else if (name.endsWith("_tags.json")) {
           _tagsList.add(bm);
+        }
+      }
+
+      // check if there are forms from the dynamic layers
+      List<dynamic>? dynamicFormsList = await ServerApi.getForms();
+      if (dynamicFormsList != null) {
+        for (var formJson in dynamicFormsList) {
+          var name = formJson['name'];
+          _tagsList.add({
+            'label': name,
+            'form': formJson['definition'],
+          });
         }
       }
 
@@ -408,16 +421,28 @@ class _GssImportWidgetState extends State<GssImportWidget>
                     itemBuilder: (context, index) {
                       var map = _tagsList[index];
                       var name = map['label'];
-                      String baseurl =
-                          ServerApi.getBaseUrl(needFinalSlash: false);
-                      String downloadUrl = baseurl + map['file'];
 
-                      return FileDownloadListTileProgressWidget(
-                        downloadUrl,
-                        FileUtilities.joinPaths(_formsFolderPath, name),
-                        name,
-                        tokenHeader: tokenHeader,
-                      );
+                      if (map['file'] != null) {
+                        String baseurl =
+                            ServerApi.getBaseUrl(needFinalSlash: false);
+                        String downloadUrl = baseurl + map['file'];
+
+                        return FileDownloadListTileProgressWidget(
+                          downloadUrl,
+                          FileUtilities.joinPaths(_formsFolderPath, name),
+                          name,
+                          tokenHeader: tokenHeader,
+                        );
+                      } else if (map['form'] != null) {
+                        return FileDownloadListTileProgressWidget(
+                          "dummy",
+                          FileUtilities.joinPaths(
+                              _formsFolderPath, name + "_tags.json"),
+                          name,
+                          tokenHeader: tokenHeader,
+                          textData: json.encode(map['form']),
+                        );
+                      }
                     },
                   ),
                 ],
