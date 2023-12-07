@@ -200,7 +200,7 @@ class IELCs extends IEL {
   String get network_searchMapByName => 'Hledání mapy podle názvu';
 
   @override
-  String get network_uploading => 'Nahrávání';
+  String get network_uploading => 'Nahrávání…';
 
   @override
   String get network_pleaseWait => 'prosím, počkejte…';
