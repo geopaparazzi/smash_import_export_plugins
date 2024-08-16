@@ -14,6 +14,8 @@ import 'l10n_ja.dart';
 import 'l10n_nb.dart';
 import 'l10n_ru.dart';
 
+// ignore_for_file: type=lint
+
 /// Callers can lookup localized strings with an instance of IEL
 /// returned by `IEL.of(context)`.
 ///

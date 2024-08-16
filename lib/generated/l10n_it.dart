@@ -1,5 +1,7 @@
 import 'l10n.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for Italian (`it`).
 class IELIt extends IEL {
   IELIt([String locale = 'it']) : super(locale);

@@ -1,5 +1,7 @@
 import 'l10n.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for German (`de`).
 class IELDe extends IEL {
   IELDe([String locale = 'de']) : super(locale);

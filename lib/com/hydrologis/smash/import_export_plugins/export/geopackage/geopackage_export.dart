@@ -230,7 +230,7 @@ class GeopackageExporter {
                 """;
 
     var gf = GeometryFactory.defaultPrecision();
-    var images = gpDb.getImages();
+    var images = gpDb.getImages(onlySimple: false);
     for (var img in images) {
       if (img.id != null) {
         var point = gf.createPoint(Coordinate(img.lon, img.lat));

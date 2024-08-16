@@ -1,5 +1,7 @@
 import 'l10n.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for Russian (`ru`).
 class IELRu extends IEL {
   IELRu([String locale = 'ru']) : super(locale);
