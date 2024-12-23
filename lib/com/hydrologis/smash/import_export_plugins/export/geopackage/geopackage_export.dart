@@ -61,66 +61,119 @@ class GeopackageExportWidget extends StatefulWidget {
   State<GeopackageExportWidget> createState() => _GeopackageExportWidgetState();
 }
 
-class _GeopackageExportWidgetState extends State<GeopackageExportWidget>
-    with AfterLayoutMixin {
-  bool building = true;
+class _GeopackageExportWidgetState extends State<GeopackageExportWidget> {
+  bool buildingWithout = false;
+  bool buildingWith = false;
   String? error;
   late String outFilePath;
 
   @override
-  void afterFirstLayout(BuildContext context) {
-    buildGeopackage();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    var w = ScreenUtilities.getWidth(context);
     return Scaffold(
         appBar: AppBar(title: const Text(TITLE_GPKG)),
-        body: building
-            ? Center(
-                child: SmashCircularProgress(),
-              )
-            : error != null
-                ? SmashUI.errorWidget(error!)
-                : Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SmashUI.titleText(
-                          IEL.of(context).exportWidget_geopackageExported,
-                        ),
-                        SmashUI.smallText(
-                          outFilePath,
-                        ),
-                      ],
-                    ),
-                  ));
+        body: Center(
+            child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 100,
+              width: w / 3,
+              child: ElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    buildingWith = true;
+                  });
+                  try {
+                    await buildGeopackage(true);
+                  } catch (e) {
+                    error = e.toString();
+                  }
+                  setState(() {
+                    buildingWith = false;
+                  });
+                },
+                child: buildingWith
+                    ? SmashCircularProgress()
+                    : SmashUI.titleText("Export with images",
+                        color: SmashColors.mainDecorations, bold: true),
+              ),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 100,
+              width: w / 3,
+              child: ElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    buildingWithout = true;
+                  });
+                  try {
+                    await buildGeopackage(false);
+                  } catch (e) {
+                    error = e.toString();
+                  }
+                  setState(() {
+                    buildingWithout = false;
+                  });
+                },
+                child: buildingWithout
+                    ? SmashCircularProgress()
+                    : SmashUI.titleText("Export without images",
+                        color: SmashColors.mainDecorations, bold: true),
+              ),
+            ),
+            if (error != null) SmashUI.errorWidget(error!),
+          ],
+        )));
   }
 
-  Future<void> buildGeopackage() async {
+  // building
+  //           ? Center(
+  //               child: SmashCircularProgress(),
+  //             )
+  //           : error != null
+  //               ? SmashUI.errorWidget(error!)
+  //               : Center(
+  //                   child: Column(
+  //                     mainAxisSize: MainAxisSize.min,
+  //                     crossAxisAlignment: CrossAxisAlignment.center,
+  //                     children: [
+  //                       SmashUI.titleText(
+  //                         IEL.of(context).exportWidget_geopackageExported,
+  //                       ),
+  //                       SmashUI.smallText(
+  //                         outFilePath,
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ));
+
+  Future<void> buildGeopackage(bool withImages) async {
     var exportsFolder = await Workspace.getExportsFolder();
     var ts = HU.TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
     outFilePath =
         HU.FileUtilities.joinPaths(exportsFolder.path, "smash_export_$ts.gpkg");
-    String? errorString =
-        await GeopackageExporter.exportDb(widget.projectDb, File(outFilePath));
+    String? errorString = await GeopackageExporter.exportDb(
+        widget.projectDb, File(outFilePath), withImages);
 
     if (errorString != null) {
       setState(() {
-        building = false;
+        buildingWithout = false;
         error = errorString;
       });
     } else {
       setState(() {
-        building = false;
+        buildingWithout = false;
       });
     }
   }
 }
 
 class GeopackageExporter {
-  static Future<String?> exportDb(ProjectDb db, File outputFile) async {
+  static Future<String?> exportDb(
+      ProjectDb db, File outputFile, bool withImages) async {
     if (await outputFile.exists()) {
       return "Not writing over existing file.";
     }
@@ -131,7 +184,11 @@ class GeopackageExporter {
     newDb.openOrCreate();
 
     exportNotesTable(newDb, db);
-    exportImagesTable(newDb, db);
+    if (withImages) {
+      exportImagesTable(newDb, db);
+    } else {
+      exportImagesTableWithout(newDb, db);
+    }
     exportLogsTable(newDb, db, useFiltered);
 
     newDb.close();
@@ -250,6 +307,53 @@ class GeopackageExporter {
           img.isDirty,
           imageDataBytes,
           thumbnailBytes,
+        ]);
+      }
+    }
+  }
+
+  static void exportImagesTableWithout(GeopackageDb newDb, ProjectDb gpDb) {
+    newDb.createSpatialTable(
+      TableName(TABLE_IMAGES, schemaSupported: false),
+      4326,
+      "the_geom POINT",
+      [
+        "$IMAGES_COLUMN_ID  INTEGER PRIMARY KEY AUTOINCREMENT",
+        "$IMAGES_COLUMN_ALTIM  REAL NOT NULL",
+        "$IMAGES_COLUMN_AZIM REAL NOT NULL",
+        "$IMAGES_COLUMN_TS TEXT NOT NULL",
+        "$IMAGES_COLUMN_TEXT TEXT NOT NULL",
+        "$IMAGES_COLUMN_ISDIRTY  INTEGER",
+        "$IMAGESDATA_COLUMN_IMAGE BLOB",
+        "$IMAGESDATA_COLUMN_THUMBNAIL BLOB",
+      ],
+      null,
+      false,
+    );
+
+    var sql = """
+                INSERT INTO $TABLE_IMAGES (the_geom, $IMAGES_COLUMN_ID, $IMAGES_COLUMN_ALTIM,
+                    $IMAGES_COLUMN_AZIM, $IMAGES_COLUMN_TS, $IMAGES_COLUMN_TEXT, $IMAGES_COLUMN_ISDIRTY
+                ) 
+                VALUES (?,?,?,?,?,?,?);
+                """;
+
+    var gf = GeometryFactory.defaultPrecision();
+    var images = gpDb.getImages(onlySimple: false);
+    for (var img in images) {
+      if (img.id != null) {
+        var point = gf.createPoint(Coordinate(img.lon, img.lat));
+        var geomBytes = GeoPkgGeomWriter().write(point);
+
+        newDb.execute(sql, arguments: [
+          geomBytes,
+          img.id,
+          img.altim,
+          img.azim,
+          HU.TimeUtilities.ISO8601_TS_FORMATTER
+              .format(DateTime.fromMillisecondsSinceEpoch(img.timeStamp)),
+          img.text,
+          img.isDirty,
         ]);
       }
     }
