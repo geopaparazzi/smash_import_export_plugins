@@ -100,11 +100,22 @@ class _ImagesExportWidgetState extends State<ImagesExportWidget>
 
     if (images.isNotEmpty) {
       var exportsFolder = await Workspace.getExportsFolder();
-      var ts = TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
-      outFilePath =
-          FileUtilities.joinPaths(exportsFolder.path, "images_export_$ts");
-      var outFolder = Directory(outFilePath);
-      await outFolder.create();
+
+      var projectPath = widget.projectDb.getPath();
+      var projectName = FileUtilities.nameFromFile(projectPath, false);
+
+      try {
+        outFilePath = FileUtilities.joinPaths(exportsFolder.path, projectName);
+        var outFolder = Directory(outFilePath);
+        await outFolder.create();
+      } on Exception catch (e, s) {
+        SMLogger().e("Error creating export folder: $e", e, s);
+        var ts = TimeUtilities.DATE_TS_FORMATTER.format(DateTime.now());
+        outFilePath =
+            FileUtilities.joinPaths(exportsFolder.path, "export_images_$ts");
+        var outFolder = Directory(outFilePath);
+        await outFolder.create();
+      }
 
       images.forEach((image) {
         var dataId = image.imageDataId;
