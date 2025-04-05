@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'l10n_ca.dart';
 import 'l10n_cs.dart';
 import 'l10n_de.dart';
 import 'l10n_en.dart';
@@ -13,6 +14,9 @@ import 'l10n_it.dart';
 import 'l10n_ja.dart';
 import 'l10n_nb.dart';
 import 'l10n_ru.dart';
+import 'l10n_ta.dart';
+import 'l10n_tr.dart';
+import 'l10n_zh.dart';
 
 // ignore_for_file: type=lint
 
@@ -98,6 +102,7 @@ abstract class IEL {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
+    Locale('ca'),
     Locale('cs'),
     Locale('de'),
     Locale('fr'),
@@ -105,7 +110,11 @@ abstract class IEL {
     Locale('ja'),
     Locale('nb'),
     Locale('nb', 'NO'),
-    Locale('ru')
+    Locale('ru'),
+    Locale('ta'),
+    Locale('tr'),
+    Locale('zh'),
+    Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans')
   ];
 
   /// No description provided for @exportWidget_export.
@@ -874,13 +883,23 @@ class _IELDelegate extends LocalizationsDelegate<IEL> {
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['cs', 'de', 'en', 'fr', 'it', 'ja', 'nb', 'ru'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ca', 'cs', 'de', 'en', 'fr', 'it', 'ja', 'nb', 'ru', 'ta', 'tr', 'zh'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_IELDelegate old) => false;
 }
 
 IEL lookupIEL(Locale locale) {
+
+  // Lookup logic when language+script codes are specified.
+  switch (locale.languageCode) {
+    case 'zh': {
+  switch (locale.scriptCode) {
+    case 'Hans': return IELZhHans();
+   }
+  break;
+   }
+  }
 
   // Lookup logic when language+country codes are specified.
   switch (locale.languageCode) {
@@ -894,6 +913,7 @@ IEL lookupIEL(Locale locale) {
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'ca': return IELCa();
     case 'cs': return IELCs();
     case 'de': return IELDe();
     case 'en': return IELEn();
@@ -902,6 +922,9 @@ IEL lookupIEL(Locale locale) {
     case 'ja': return IELJa();
     case 'nb': return IELNb();
     case 'ru': return IELRu();
+    case 'ta': return IELTa();
+    case 'tr': return IELTr();
+    case 'zh': return IELZh();
   }
 
   throw FlutterError(

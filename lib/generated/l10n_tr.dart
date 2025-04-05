@@ -2,66 +2,66 @@ import 'l10n.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for German (`de`).
-class IELDe extends IEL {
-  IELDe([String locale = 'de']) : super(locale);
+/// The translations for Turkish (`tr`).
+class IELTr extends IEL {
+  IELTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get exportWidget_export => 'Exportieren';
+  String get exportWidget_export => 'Dışa aktar';
 
   @override
-  String get exportWidget_pdfExported => 'PDF exportiert';
+  String get exportWidget_pdfExported => 'PDF exported';
 
   @override
-  String get exportWidget_exportToPortableDocumentFormat => 'Exportiere Projekt als Portable Document Format';
+  String get exportWidget_exportToPortableDocumentFormat => 'Export project to Portable Document Format';
 
   @override
-  String get exportWidget_gpxExported => 'GPX exportiert';
+  String get exportWidget_gpxExported => 'GPX exported';
 
   @override
-  String get exportWidget_exportToGpx => 'Projekt als GPX exportieren';
+  String get exportWidget_exportToGpx => 'Export project to GPX';
 
   @override
-  String get exportWidget_kmlExported => 'KML exportiert';
+  String get exportWidget_kmlExported => 'KML exported';
 
   @override
-  String get exportWidget_exportToKml => 'Exportiere Projekt als KML';
+  String get exportWidget_exportToKml => 'Export project to KML';
 
   @override
-  String get exportWidget_imagesToFolderExported => 'Bilder exportieren';
+  String get exportWidget_imagesToFolderExported => 'Images exported';
 
   @override
-  String get exportWidget_exportImagesToFolder => 'Exportiere Projektbilder in Ordner';
+  String get exportWidget_exportImagesToFolder => 'Export project images to folder';
 
   @override
-  String get exportWidget_exportImagesToFolderTitle => 'Bilder';
+  String get exportWidget_exportImagesToFolderTitle => 'Görüntüler';
 
   @override
-  String get exportWidget_geopackageExported => 'Geopaket exportiert';
+  String get exportWidget_geopackageExported => 'Geopackage exported';
 
   @override
-  String get exportWidget_exportToGeopackage => 'Projekt in Geopaket exportieren';
+  String get exportWidget_exportToGeopackage => 'Export project to Geopackage';
 
   @override
-  String get exportWidget_exportToGSS => 'Zum Geopaparazzi Survey Server exportieren';
+  String get exportWidget_exportToGSS => 'Export to Geopaparazzi Survey Server';
 
   @override
-  String get gssExport_gssExport => 'GSS Exportieren';
+  String get gssExport_gssExport => 'GSS Export';
 
   @override
-  String get gssExport_setProjectDirty => 'Projekt auf DIRTY setzen?';
+  String get gssExport_setProjectDirty => 'Set project to DIRTY?';
 
   @override
-  String get gssExport_thisCantBeUndone => 'Das kann nicht rückgängig gemacht werden!';
+  String get gssExport_thisCantBeUndone => 'This can\'t be undone!';
 
   @override
-  String get gssExport_restoreProjectAsDirty => 'Stellen Sie das Projekt als völlig fehlerhaft wieder her.';
+  String get gssExport_restoreProjectAsDirty => 'Restore project as all dirty.';
 
   @override
-  String get gssExport_setProjectClean => 'Projekt auf CLEAN setzen?';
+  String get gssExport_setProjectClean => 'Set project to CLEAN?';
 
   @override
-  String get gssExport_restoreProjectAsClean => 'Projekt als vollständig bereinigt wiederherstellen.';
+  String get gssExport_restoreProjectAsClean => 'Restore project as all clean.';
 
   @override
   String get gssExport_nothingToSync => 'Nothing to sync.';
@@ -88,19 +88,19 @@ class IELDe extends IEL {
   String get gssExport_gpsLogs => 'GPS Logs:';
 
   @override
-  String get gssExport_simpleNotes => 'Simple Notes:';
+  String get gssExport_simpleNotes => 'Basit notlar:';
 
   @override
-  String get gssExport_formNotes => 'Form Notes:';
+  String get gssExport_formNotes => 'Form notları:';
 
   @override
-  String get gssExport_images => 'Images:';
+  String get gssExport_images => 'Görüntüler:';
 
   @override
   String get gssExport_shouldNotHappen => 'Should not happen';
 
   @override
-  String get gssExport_upload => 'Upload';
+  String get gssExport_upload => 'Yükle';
 
   @override
   String get gssImport_gssImport => 'GSS Import';
@@ -130,7 +130,7 @@ class IELDe extends IEL {
   String get gssImport_noDataAvailable => 'No data available.';
 
   @override
-  String get gssImport_projects => 'Projects';
+  String get gssImport_projects => 'Projeler';
 
   @override
   String get gssImport_projectsDownloadedProjectFolder => 'Projects are downloaded into the projects folder.';
@@ -148,7 +148,7 @@ class IELDe extends IEL {
   String get gssImport_noTagsAvailable => 'No tags available.';
 
   @override
-  String get importWidget_import => 'Import';
+  String get importWidget_import => 'İçe aktar';
 
   @override
   String get importWidget_importFromGeopaparazzi => 'Import from Geopaparazzi Survey Server';
@@ -163,7 +163,7 @@ class IELDe extends IEL {
   String get settings_geopaparazziSurveyServer => 'Geopaparazzi Survey Server';
 
   @override
-  String get settings_serverUrl => 'Server URL';
+  String get settings_serverUrl => 'Sunucu URL\'si';
 
   @override
   String get settings_serverUrlStartWithHttp => 'The server URL needs to start with HTTP or HTTPS.';
@@ -280,10 +280,10 @@ class IELDe extends IEL {
   String get gttExport_simpleNotes => 'Simple Notes';
 
   @override
-  String get gttExport_formNotes => 'Form Notes';
+  String get gttExport_formNotes => 'Form notları';
 
   @override
-  String get gttExport_images => 'Images';
+  String get gttExport_images => 'Görüntüler';
 
   @override
   String get gttExport_uploadingData => 'Uploading data';
@@ -292,7 +292,7 @@ class IELDe extends IEL {
   String get gttExport_shouldNotHappen => 'Should not happen';
 
   @override
-  String get gttExport_upload => 'Upload';
+  String get gttExport_upload => 'Yükle';
 
   @override
   String get gttExport_formNotesUpload => 'Form Notes Upload';
@@ -355,7 +355,7 @@ class IELDe extends IEL {
   String get gttImport_shouldNotHappen => 'Should not happen';
 
   @override
-  String get gttImport_import => 'Import';
+  String get gttImport_import => 'İçe aktar';
 
   @override
   String get gttImport_projectFormImport => 'Project Form Import ';
