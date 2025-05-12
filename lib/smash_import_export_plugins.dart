@@ -9,7 +9,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:dart_hydrologis_db/dart_hydrologis_db.dart';
 import 'package:dart_hydrologis_utils/dart_hydrologis_utils.dart';
 import 'package:dart_hydrologis_utils/dart_hydrologis_utils.dart' as HU;
-import 'package:dart_jts/dart_jts.dart';
+import 'package:dart_jts/dart_jts.dart' hide Key;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
