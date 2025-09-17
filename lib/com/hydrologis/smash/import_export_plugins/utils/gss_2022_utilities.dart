@@ -518,14 +518,15 @@ class Gss2022SettingsState extends State<Gss2022Settings>
                                   }
                                   await GpPreferences().setString(
                                       SmashPreferencesKeys.KEY_GSS_SERVER_URL,
-                                      res);
+                                      res!);
                                   setState(() {
                                     _gssUrl = res;
                                   });
                                 },
                                 validationFunction: (text) {
-                                  if (text.startsWith("http://") ||
-                                      text.startsWith("https://")) {
+                                  if (text != null &&
+                                      (text.startsWith("http://") ||
+                                          text.startsWith("https://"))) {
                                     return null;
                                   } else {
                                     return IEL
@@ -568,7 +569,7 @@ class Gss2022SettingsState extends State<Gss2022Settings>
                                   }
                                   await GpPreferences().setString(
                                       SmashPreferencesKeys.KEY_GSS_SERVER_PWD,
-                                      res);
+                                      res!);
                                   setState(() {
                                     _gssPwd = res;
                                   });

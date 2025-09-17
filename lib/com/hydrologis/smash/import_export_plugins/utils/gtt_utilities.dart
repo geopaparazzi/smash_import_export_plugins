@@ -569,7 +569,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                     res = _gttUrl;
                                   }
                                   await GpPreferences().setString(
-                                      GttUtilities.KEY_GTT_SERVER_URL, res);
+                                      GttUtilities.KEY_GTT_SERVER_URL, res!);
                                   await GpPreferences().setString(
                                       GttUtilities.KEY_GTT_SERVER_KEY, "");
                                   setState(() {
@@ -577,8 +577,9 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                   });
                                 },
                                 validationFunction: (text) {
-                                  if (text.startsWith("http://") ||
-                                      text.startsWith("https://")) {
+                                  if (text != null &&
+                                      (text.startsWith("http://") ||
+                                          text.startsWith("https://"))) {
                                     return null;
                                   } else {
                                     return IEL
@@ -620,7 +621,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                     res = _gttUser;
                                   }
                                   await GpPreferences().setString(
-                                      GttUtilities.KEY_GTT_SERVER_USER, res);
+                                      GttUtilities.KEY_GTT_SERVER_USER, res!);
                                   await GpPreferences().setString(
                                       GttUtilities.KEY_GTT_SERVER_KEY, "");
                                   setState(() {
@@ -670,7 +671,7 @@ class GttSettingsState extends State<GttSettings> with AfterLayoutMixin {
                                     res = _gttPwd;
                                   }
                                   await GpPreferences().setString(
-                                      GttUtilities.KEY_GTT_SERVER_PWD, res);
+                                      GttUtilities.KEY_GTT_SERVER_PWD, res!);
                                   await GpPreferences().setString(
                                       GttUtilities.KEY_GTT_SERVER_KEY, "");
                                   setState(() {
