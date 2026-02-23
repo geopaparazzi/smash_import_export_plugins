@@ -102,13 +102,13 @@ class GpxExporter {
 
     Log? log = db.getLogById(logId);
     if (log != null) {
-      var logName = log.text ?? "no name log";
+      var parentLogName = log.text ?? "no name log";
       var gpx = Gpx();
       gpx.creator =
           "SMASH - http://www.geopaparazzi.eu using dart-gpx library.";
       gpx.metadata = Metadata();
       gpx.metadata?.keywords = "SMASH, export, log";
-      gpx.metadata?.name = "$logName";
+      gpx.metadata?.name = "$parentLogName";
       gpx.metadata?.time = DateTime.now();
       List<Wpt> wpts = [];
       gpx.wpts = wpts;
@@ -116,27 +116,43 @@ class GpxExporter {
       List<Trk> trks = [];
       gpx.trks = trks;
 
-      List<Wpt> segmentPts = [];
-      List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id!);
-      logDataPoints.forEach((logPoint) {
-        var wpt = Wpt(
-          lat: useFiltered ? logPoint.filtered_lat : logPoint.lat,
-          lon: useFiltered ? logPoint.filtered_lon : logPoint.lon,
-          ele: logPoint.altim,
-          name: logPoint.id.toString(),
-          time: DateTime.fromMillisecondsSinceEpoch(logPoint.ts!),
-        );
-        segmentPts.add(wpt);
+      final logIds = <int>[log.id!];
+      // collect children if any
+      var childLogs = db.getChildLogs(log.id!);
+      childLogs.forEach((childLog) {
+        logIds.add(childLog.id!);
       });
-      Trkseg logSegment = Trkseg(trkpts: segmentPts);
-      List<Trkseg> segments = [logSegment];
-      var t = Trk(name: log.text, number: log.id, trksegs: segments);
-      trks.add(t);
 
+      for (final id in logIds) {
+        final log = db.getLogById(id);
+        if (log == null) continue;
+
+        final logName = (log.text == null || log.text!.trim().isEmpty)
+            ? "log_$id"
+            : log.text!.trim();
+
+        List<Wpt> segmentPts = [];
+        List<LogDataPoint> logDataPoints = db.getLogDataPoints(log.id!);
+        logDataPoints.forEach((logPoint) {
+          var wpt = Wpt(
+            lat: useFiltered ? logPoint.filtered_lat : logPoint.lat,
+            lon: useFiltered ? logPoint.filtered_lon : logPoint.lon,
+            ele: logPoint.altim,
+            name: logPoint.id.toString(),
+            time: DateTime.fromMillisecondsSinceEpoch(logPoint.ts!),
+          );
+          segmentPts.add(wpt);
+        });
+        Trkseg logSegment = Trkseg(trkpts: segmentPts);
+        List<Trkseg> segments = [logSegment];
+        var t = Trk(name: logName, number: log.id, trksegs: segments);
+        trks.add(t);
+      }
       var ext = doKml ? "kml" : "gpx";
-      logName = logName.replaceAll(" ", "_").replaceAll("\\s+", "_");
+      parentLogName =
+          parentLogName.replaceAll(" ", "_").replaceAll("\\s+", "_");
       var outFilePath =
-          HU.FileUtilities.joinPaths(outputFolderPath, "$logName.$ext");
+          HU.FileUtilities.joinPaths(outputFolderPath, "$parentLogName.$ext");
       var outputFile = File(outFilePath);
       if (doKml) {
         var kmlString = KmlWriter().asString(gpx, pretty: true);
@@ -144,6 +160,36 @@ class GpxExporter {
       } else {
         var gpxString = GpxWriter().asString(gpx, pretty: true);
         await outputFile.writeAsString(gpxString);
+
+        // now also export the style
+        var fileName = HU.FileUtilities.nameFromFile(outFilePath, false);
+        var sldPath =
+            HU.FileUtilities.joinPaths(outputFolderPath, fileName + ".sld");
+
+        // create style
+        var sldString = HU.DefaultSlds.simpleLineSld();
+        var style = HU.SldObjectParser.fromString(sldString);
+        style.parse();
+        LineStyle? lineStyle;
+        var fts = style.featureTypeStyles.first;
+        if (fts.rules.isNotEmpty) {
+          var rule = fts.rules.first;
+          if (rule.lineSymbolizers.isNotEmpty) {
+            lineStyle = rule.lineSymbolizers.first.style;
+          }
+        }
+        if (lineStyle != null) {
+          var logProp = db.getLogProperties(logId);
+          if (logProp != null) {
+            lineStyle.strokeColorHex = logProp.color != null
+                ? ColorExt.asHex(ColorExt(logProp.color!))
+                : '#FF0000';
+            lineStyle.strokeWidth = logProp.width ?? 3.0;
+          }
+        }
+        sldString = HU.SldObjectBuilder.buildFromFeatureTypeStyles(
+            style.featureTypeStyles);
+        HU.FileUtilities.writeStringToFile(sldPath, sldString);
       }
     }
   }
