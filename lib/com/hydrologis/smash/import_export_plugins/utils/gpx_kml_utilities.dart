@@ -214,7 +214,7 @@ class KmlExporter {
         "xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
     kmlString += "<Document>\n";
     kmlString += "<name>";
-    kmlString += dbName;
+    kmlString += makeXmlSafe(dbName);
     kmlString += "</name>\n";
     kmlString += getMarker("red-pushpin",
         "http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png", 20, 2);
@@ -293,7 +293,7 @@ class KmlExporter {
     var images = [];
     String name = makeXmlSafe(note.text);
     if (note.hasForm()) {
-      name = FormUtilities.getFormItemLabel(note.form!, name);
+      name = makeXmlSafe(FormUtilities.getFormItemLabel(note.form!, name));
     }
     var sB = "<Placemark>\n";
     sB += "<styleUrl>#red-pushpin</styleUrl>\n";

@@ -11,5 +11,7 @@ linter:
     prefer_single_quotes: false.
 #     - camel_case_types
 analyzer:
+  errors:
+    omit_local_variable_types: ignore
 #   exclude:
 #     - path/to/excluded/files/**
