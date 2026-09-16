@@ -12,7 +12,7 @@ class GpxExporter {
     var dbName = HU.FileUtilities.nameFromFile(db.getPath(), false);
 
     bool useFiltered = GpPreferences().getBooleanSync(
-        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, false);
+        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, true);
 
     var gpx = Gpx();
     gpx.creator = "SMASH - http://www.geopaparazzi.eu using dart-gpx library.";
@@ -98,7 +98,7 @@ class GpxExporter {
       ProjectDb db, int logId, String outputFolderPath,
       {bool doKml = false}) async {
     bool useFiltered = GpPreferences().getBooleanSync(
-        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, false);
+        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, true);
 
     Log? log = db.getLogById(logId);
     if (log != null) {
@@ -204,7 +204,7 @@ class KmlExporter {
     dbName = HU.FileUtilities.nameFromFile(db.getPath(), false);
 
     useFiltered = GpPreferences().getBooleanSync(
-        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, false);
+        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, true);
 
     var kmlString = "";
     kmlString += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";

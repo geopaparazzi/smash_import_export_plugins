@@ -178,7 +178,7 @@ class GeopackageExporter {
       return "Not writing over existing file.";
     }
     bool useFiltered = GpPreferences().getBooleanSync(
-        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, false);
+        SmashPreferencesKeys.KEY_GPS_USE_FILTER_GENERALLY, true);
 
     GeopackageDb newDb = GeopackageDb(outputFile.path);
     newDb.openOrCreate();
