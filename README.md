@@ -1,3 +1,11 @@
+# ⚠️ ARCHIVED — DO NOT USE ⚠️
+
+> [!CAUTION]
+> **This project is no longer used and has been placed into archived mode. The content (and all translations) have been merged into the parent [SMASH](https://github.com/geopaparazzi/smash) project to make maintenance simpler.**
+
+
+
+
 ## Description
 
 This flutter package contains the import/export plugins for [SMASH](https://github.com/geopaparazzi/smash).
